@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Word Counter – Count Words & Characters Online</title>
+  <meta name="description" content="Free word counter to count words and characters online instantly.">
+</head>
+<body>
+
+<h1>Word Counter</h1>
+
+<p>Paste your text below to instantly count words and characters.</p>
+
+<textarea id="text" rows="10" cols="60" placeholder="Paste your text here..."></textarea>
+
+<p>
+Words: <span id="words">0</span><br>
+Characters (with spaces): <span id="chars">0</span><br>
+Characters (without spaces): <span id="charsNoSpace">0</span>
+</p>
+
+<script>
+const t = document.getElementById("text");
+t.addEventListener("input", () => {
+  const v = t.value;
+  document.getElementById("chars").textContent = v.length;
+  document.getElementById("charsNoSpace").textContent = v.replace(/\s/g,"").length;
+  document.getElementById("words").textContent = v.trim() ? v.trim().split(/\s+/).length : 0;
+});
+</script>
+
+</body>
+</html>

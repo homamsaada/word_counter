@@ -130,6 +130,7 @@
   margin-bottom: 16px;
   font-size: 1.15rem;
   line-height: 2.2;
+  width: 100%;
 }
 
 .calc-label {
@@ -186,6 +187,7 @@
   display: flex;
   gap: 4px;
   align-items: center;
+  margin-inline-start: auto;
 }
 
 .ctrl-btn {
@@ -238,14 +240,26 @@
 <script>
 // Store raw results and precision for each calculator
 const calcData = {
-  1: { raw: null, precision: 2, isPercent: false },
-  2: { raw: null, precision: 2, isPercent: true },
-  3: { raw: null, precision: 2, isPercent: true, signed: true },
-  4: { raw: null, precision: 2, isPercent: false },
-  5: { raw: null, precision: 2, isPercent: false },
-  6: { raw: null, precision: 2, isPercent: false },
-  7: { raw: null, precision: 2, isPercent: true, signed: true }
+  1: { raw: null, precision: null, maxPrecision: 10, isPercent: false },
+  2: { raw: null, precision: null, maxPrecision: 10, isPercent: true },
+  3: { raw: null, precision: null, maxPrecision: 10, isPercent: true, signed: true },
+  4: { raw: null, precision: null, maxPrecision: 10, isPercent: false },
+  5: { raw: null, precision: null, maxPrecision: 10, isPercent: false },
+  6: { raw: null, precision: null, maxPrecision: 10, isPercent: false },
+  7: { raw: null, precision: null, maxPrecision: 10, isPercent: true, signed: true }
 };
+
+// Get actual decimal places of a number
+function getDecimalPlaces(num) {
+  if (Number.isInteger(num)) return 0;
+  const str = num.toString();
+  if (str.includes('e')) {
+    // Handle scientific notation
+    return Math.min(10, parseInt(str.split('e-')[1]) || 10);
+  }
+  const decimalPart = str.split('.')[1];
+  return decimalPart ? Math.min(decimalPart.length, 10) : 0;
+}
 
 // Format number based on precision
 function formatResult(calcId) {
@@ -258,13 +272,19 @@ function formatResult(calcId) {
     return;
   }
   
+  // Use actual precision if not manually set
+  const precision = data.precision !== null ? data.precision : getDecimalPlaces(data.raw);
+  
   let formatted;
   
-  // Check if it's a whole number
-  if (Number.isInteger(data.raw) && data.precision === 0) {
+  if (precision === 0 && Number.isInteger(data.raw)) {
     formatted = data.raw.toString();
   } else {
-    formatted = data.raw.toFixed(data.precision);
+    formatted = data.raw.toFixed(precision);
+    // Remove trailing zeros only if precision was auto-detected
+    if (data.precision === null) {
+      formatted = parseFloat(formatted).toString();
+    }
   }
   
   // Add sign for signed results
@@ -288,7 +308,14 @@ function formatResult(calcId) {
 // Adjust precision
 function adjustPrecision(calcId, delta) {
   const data = calcData[calcId];
-  data.precision = Math.max(0, Math.min(10, data.precision + delta));
+  if (data.raw === null) return;
+  
+  // Initialize precision if not set
+  if (data.precision === null) {
+    data.precision = getDecimalPlaces(data.raw);
+  }
+  
+  data.precision = Math.max(0, Math.min(data.maxPrecision, data.precision + delta));
   formatResult(calcId);
 }
 
@@ -297,7 +324,9 @@ function copyResult(calcId) {
   const data = calcData[calcId];
   if (data.raw === null || isNaN(data.raw)) return;
   
-  const text = data.raw.toFixed(data.precision);
+  const precision = data.precision !== null ? data.precision : getDecimalPlaces(data.raw);
+  const text = data.raw.toFixed(precision);
+  
   navigator.clipboard.writeText(text).then(() => {
     App.showToast(App.state.lang === 'ar' ? 'تم النسخ!' : 'Copied!');
   });
@@ -366,7 +395,9 @@ function calculate(calcId) {
     }
   }
   
+  // Reset precision when new calculation
   calcData[calcId].raw = result;
+  calcData[calcId].precision = null;
   formatResult(calcId);
 }
 </script>

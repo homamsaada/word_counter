@@ -1,0 +1,183 @@
+<!-- Tool: Percentage Calculator | حاسبة النسبة المئوية -->
+<div class="tool-card">
+  <div class="tool-header">
+    <div class="tool-icon">🔢</div>
+    <div>
+      <h1 class="tool-title">{{tool.name}}</h1>
+      <p class="tool-description">{{tool.description}}</p>
+    </div>
+  </div>
+  
+  <!-- Calculator 1: What is X% of Y? -->
+  <div class="calc-row-inline">
+    <span class="calc-label">{{tool.whatIsPercent}}</span>
+    <input type="number" class="calc-input-sm" id="calc1-percent" placeholder="10" oninput="calcPercentOf()">
+    <span class="calc-label">{{tool.percentOf}}</span>
+    <input type="number" class="calc-input-sm" id="calc1-number" placeholder="200" oninput="calcPercentOf()">
+    <span class="calc-label">=</span>
+    <span class="calc-result" id="result1">—</span>
+  </div>
+  
+  <!-- Calculator 2: X is what % of Y? -->
+  <div class="calc-row-inline">
+    <input type="number" class="calc-input-sm" id="calc2-part" placeholder="25" oninput="calcWhatPercent()">
+    <span class="calc-label">{{tool.isWhatPercent}}</span>
+    <input type="number" class="calc-input-sm" id="calc2-whole" placeholder="200" oninput="calcWhatPercent()">
+    <span class="calc-label">=</span>
+    <span class="calc-result" id="result2">—</span>
+  </div>
+  
+  <!-- Calculator 3: Percentage Change -->
+  <div class="calc-row-inline">
+    <span class="calc-label">{{tool.percentChange}} {{tool.from}}</span>
+    <input type="number" class="calc-input-sm" id="calc3-from" placeholder="100" oninput="calcPercentChange()">
+    <span class="calc-label">{{tool.to}}</span>
+    <input type="number" class="calc-input-sm" id="calc3-to" placeholder="150" oninput="calcPercentChange()">
+    <span class="calc-label">=</span>
+    <span class="calc-result" id="result3">—</span>
+  </div>
+  
+  <!-- Calculator 4: Discount -->
+  <div class="calc-row-inline">
+    <span class="calc-label">{{tool.originalPrice}}</span>
+    <input type="number" class="calc-input-sm" id="calc4-price" placeholder="500" oninput="calcDiscount()">
+    <span class="calc-label">- {{tool.discount}}</span>
+    <input type="number" class="calc-input-sm" id="calc4-discount" placeholder="20" oninput="calcDiscount()">
+    <span class="calc-label">% =</span>
+    <span class="calc-result" id="result4">—</span>
+  </div>
+</div>
+
+<!-- How to Use -->
+<div class="how-to-use">
+  <h3>📖 {{ui.howToUse}}</h3>
+  <p>{{tool.howToUseText}}</p>
+</div>
+
+<style>
+.calc-row-inline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 20px 24px;
+  background: var(--bg-tertiary);
+  border-radius: var(--border-radius-lg);
+  margin-bottom: 16px;
+}
+
+.calc-input-sm {
+  width: 100px;
+  padding: 12px 14px;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius);
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-family: inherit;
+  text-align: center;
+  transition: all var(--transition-fast);
+}
+
+.calc-input-sm:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.calc-input-sm::placeholder {
+  color: var(--text-muted);
+}
+
+.calc-result {
+  min-width: 80px;
+  padding: 12px 16px;
+  background: var(--accent-gradient);
+  border-radius: var(--border-radius);
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+  transition: all var(--transition-fast);
+}
+
+.calc-result.increase {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+.calc-result.decrease {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+@media (max-width: 768px) {
+  .calc-row-inline {
+    justify-content: center;
+  }
+  
+  .calc-input-sm {
+    width: 80px;
+  }
+}
+</style>
+
+<script>
+// Calculator 1: What is X% of Y?
+function calcPercentOf() {
+  const percent = parseFloat(document.getElementById('calc1-percent').value);
+  const number = parseFloat(document.getElementById('calc1-number').value);
+  const resultEl = document.getElementById('result1');
+  
+  if (!isNaN(percent) && !isNaN(number)) {
+    const result = (percent / 100) * number;
+    resultEl.textContent = App.formatNumber(result);
+  } else {
+    resultEl.textContent = '—';
+  }
+}
+
+// Calculator 2: X is what % of Y?
+function calcWhatPercent() {
+  const part = parseFloat(document.getElementById('calc2-part').value);
+  const whole = parseFloat(document.getElementById('calc2-whole').value);
+  const resultEl = document.getElementById('result2');
+  
+  if (!isNaN(part) && !isNaN(whole) && whole !== 0) {
+    const result = (part / whole) * 100;
+    resultEl.textContent = App.formatNumber(result) + '%';
+  } else {
+    resultEl.textContent = '—';
+  }
+}
+
+// Calculator 3: Percentage Change
+function calcPercentChange() {
+  const from = parseFloat(document.getElementById('calc3-from').value);
+  const to = parseFloat(document.getElementById('calc3-to').value);
+  const resultEl = document.getElementById('result3');
+  
+  if (!isNaN(from) && !isNaN(to) && from !== 0) {
+    const change = ((to - from) / Math.abs(from)) * 100;
+    const isIncrease = change >= 0;
+    
+    resultEl.textContent = (isIncrease ? '+' : '') + App.formatNumber(change) + '%';
+    resultEl.className = 'calc-result ' + (isIncrease ? 'increase' : 'decrease');
+  } else {
+    resultEl.textContent = '—';
+    resultEl.className = 'calc-result';
+  }
+}
+
+// Calculator 4: Discount
+function calcDiscount() {
+  const price = parseFloat(document.getElementById('calc4-price').value);
+  const discount = parseFloat(document.getElementById('calc4-discount').value);
+  const resultEl = document.getElementById('result4');
+  
+  if (!isNaN(price) && !isNaN(discount)) {
+    const finalPrice = price - (price * discount / 100);
+    resultEl.textContent = App.formatNumber(finalPrice);
+  } else {
+    resultEl.textContent = '—';
+  }
+}
+</script>

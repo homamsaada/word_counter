@@ -163,6 +163,14 @@ const App = {
       });
     });
 
+    // Favorite button
+    document.querySelector('[data-favorite-btn]')?.addEventListener('click', () => {
+      const toolId = document.body.dataset.toolId;
+      if (toolId) {
+        this.toggleFavorite(toolId);
+      }
+    });
+
     // Clear data button
     document.querySelector('[data-clear-data]')?.addEventListener('click', () => {
       this.clearAllData();
@@ -423,10 +431,19 @@ const App = {
   },
 
   shareUrl(title, url) {
+    const shareUrl = url || window.location.href;
+    const shareTitle = title || document.title;
+    
     if (navigator.share) {
-      navigator.share({ title, url });
+      navigator.share({ 
+        title: shareTitle, 
+        url: shareUrl 
+      }).catch(() => {
+        // User cancelled or error - fallback to copy
+        this.copyToClipboard(shareUrl);
+      });
     } else {
-      this.copyToClipboard(url || window.location.href);
+      this.copyToClipboard(shareUrl);
     }
   }
 };

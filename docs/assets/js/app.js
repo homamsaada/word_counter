@@ -184,15 +184,15 @@ const App = {
   changeLanguage(lang) {
     // Get current path and switch language
     const currentPath = window.location.pathname;
-    const currentLang = this.state.lang;
     
+    // Replace /ar/ with /en/ or vice versa
     let newPath;
-    if (currentPath.startsWith(`/${currentLang}/`)) {
-      newPath = currentPath.replace(`/${currentLang}/`, `/${lang}/`);
-    } else if (currentPath === `/${currentLang}` || currentPath === `/${currentLang}/`) {
-      newPath = `/${lang}/`;
+    if (currentPath.includes('/ar/')) {
+      newPath = currentPath.replace('/ar/', `/${lang}/`);
+    } else if (currentPath.includes('/en/')) {
+      newPath = currentPath.replace('/en/', `/${lang}/`);
     } else {
-      newPath = `/${lang}${currentPath}`;
+      newPath = `/udda/${lang}/`;
     }
     
     window.location.href = newPath;

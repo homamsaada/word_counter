@@ -193,7 +193,7 @@
         "metaDescription": "حاسبة النسبة المئوية المجانية - احسب النسبة من أي عدد، نسبة الخصم، الزيادة والنقصان، وتحويل الأرقام لنسب مئوية. أداة سهلة وسريعة.",
         "keywords": "حاسبة النسبة المئوية، حساب النسبة، نسبة الخصم، حساب الخصم، percentage calculator",
         "description": "احسب النسبة المئوية بسهولة وسرعة",
-        "searchTerms": "نسبة مئوية نسب مئويه بالمية بالميه خصم تخفيض حسم سعر اوف عرض تنزيلات زيادة نقصان فرق ربع نص ثلث percent % حساب رياضيات",
+        "searchTerms": "نسبة مئوية نسب مئويه بالمية بالميه خصم تخفيض حسم سعر اوف عرض تنزيلات زيادة نقصان فرق ربع نص ثلث percent % حساب رياضيات ربح خسارة ضريبة",
         "whatIsPercent": "ما هي نسبة",
         "of": "من",
         "percentOf": "% من",
@@ -208,6 +208,11 @@
         "discount": "نسبة الخصم",
         "finalPrice": "السعر النهائي",
         "youSave": "توفّر",
+        "afterDiscount": "بعد خصم",
+        "priceBecame": "صار السعر",
+        "originalWas": "الأصلي =",
+        "buyPrice": "سعر الشراء",
+        "sellPrice": "سعر البيع",
         "howToUseText": "أدخل الأرقام في الخانات المناسبة وستظهر النتيجة فوراً. يمكنك حساب النسبة من عدد، أو معرفة نسبة عدد من آخر، أو حساب نسبة التغيّر بين رقمين."
       },
       "en": {
@@ -216,7 +221,7 @@
         "metaDescription": "Free Percentage Calculator - Calculate percentage of any number, discount percentage, increase and decrease, and convert numbers to percentages. Easy and fast tool.",
         "keywords": "percentage calculator, calculate percentage, discount calculator, percent change",
         "description": "Calculate percentages easily and quickly",
-        "searchTerms": "percent percentage % discount sale off price change increase decrease difference quarter half third ratio math calculator",
+        "searchTerms": "percent percentage % discount sale off price change increase decrease difference quarter half third ratio math calculator profit loss tax",
         "whatIsPercent": "What is",
         "of": "of",
         "percentOf": "% of",
@@ -231,6 +236,11 @@
         "discount": "Discount",
         "finalPrice": "Final Price",
         "youSave": "You Save",
+        "afterDiscount": "After",
+        "priceBecame": "% off, price is",
+        "originalWas": "Original =",
+        "buyPrice": "Buy price",
+        "sellPrice": "Sell price",
         "howToUseText": "Enter numbers in the appropriate fields and the result will appear instantly. You can calculate percentage of a number, find what percentage one number is of another, or calculate percentage change between two numbers."
       }
     },

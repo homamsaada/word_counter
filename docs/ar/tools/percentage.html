@@ -277,6 +277,35 @@
     <span class="calc-label">% =</span>
     <span class="calc-result" id="result4">—</span>
   </div>
+  
+  <!-- Calculator 5: Add percentage to number -->
+  <div class="calc-row-inline">
+    <input type="number" class="calc-input-sm" id="calc5-number" placeholder="200" oninput="calcAddPercent()">
+    <span class="calc-label">+</span>
+    <input type="number" class="calc-input-sm" id="calc5-percent" placeholder="15" oninput="calcAddPercent()">
+    <span class="calc-label">% =</span>
+    <span class="calc-result" id="result5">—</span>
+  </div>
+  
+  <!-- Calculator 6: Original price before discount -->
+  <div class="calc-row-inline">
+    <span class="calc-label">بعد خصم</span>
+    <input type="number" class="calc-input-sm" id="calc6-discount" placeholder="20" oninput="calcOriginalPrice()">
+    <span class="calc-label">% صار السعر</span>
+    <input type="number" class="calc-input-sm" id="calc6-final" placeholder="80" oninput="calcOriginalPrice()">
+    <span class="calc-label">الأصلي =</span>
+    <span class="calc-result" id="result6">—</span>
+  </div>
+  
+  <!-- Calculator 7: Profit/Loss percentage -->
+  <div class="calc-row-inline">
+    <span class="calc-label">سعر الشراء</span>
+    <input type="number" class="calc-input-sm" id="calc7-buy" placeholder="100" oninput="calcProfitLoss()">
+    <span class="calc-label">سعر البيع</span>
+    <input type="number" class="calc-input-sm" id="calc7-sell" placeholder="130" oninput="calcProfitLoss()">
+    <span class="calc-label">=</span>
+    <span class="calc-result" id="result7">—</span>
+  </div>
 </div>
 
 <!-- How to Use -->
@@ -411,10 +440,56 @@ function calcDiscount() {
     resultEl.textContent = '—';
   }
 }
+
+// Calculator 5: Add percentage to number
+function calcAddPercent() {
+  const number = parseFloat(document.getElementById('calc5-number').value);
+  const percent = parseFloat(document.getElementById('calc5-percent').value);
+  const resultEl = document.getElementById('result5');
+  
+  if (!isNaN(number) && !isNaN(percent)) {
+    const result = number + (number * percent / 100);
+    resultEl.textContent = App.formatNumber(result);
+  } else {
+    resultEl.textContent = '—';
+  }
+}
+
+// Calculator 6: Original price before discount
+function calcOriginalPrice() {
+  const discount = parseFloat(document.getElementById('calc6-discount').value);
+  const finalPrice = parseFloat(document.getElementById('calc6-final').value);
+  const resultEl = document.getElementById('result6');
+  
+  if (!isNaN(discount) && !isNaN(finalPrice) && discount !== 100) {
+    const original = finalPrice / (1 - discount / 100);
+    resultEl.textContent = App.formatNumber(original);
+  } else {
+    resultEl.textContent = '—';
+  }
+}
+
+// Calculator 7: Profit/Loss percentage
+function calcProfitLoss() {
+  const buyPrice = parseFloat(document.getElementById('calc7-buy').value);
+  const sellPrice = parseFloat(document.getElementById('calc7-sell').value);
+  const resultEl = document.getElementById('result7');
+  
+  if (!isNaN(buyPrice) && !isNaN(sellPrice) && buyPrice !== 0) {
+    const profitLoss = ((sellPrice - buyPrice) / buyPrice) * 100;
+    const isProfit = profitLoss >= 0;
+    
+    resultEl.textContent = (isProfit ? '+' : '') + App.formatNumber(profitLoss) + '%';
+    resultEl.className = 'calc-result ' + (isProfit ? 'increase' : 'decrease');
+  } else {
+    resultEl.textContent = '—';
+    resultEl.className = 'calc-result';
+  }
+}
 </script>
 
 <script>
-  window.toolsData = [{"id":"percentage","icon":"🔢","name":"حاسبة النسبة المئوية","keywords":"حاسبة النسبة المئوية، حساب النسبة، نسبة الخصم، حساب الخصم، percentage calculator","searchTerms":"نسبة مئوية نسب مئويه بالمية بالميه خصم تخفيض حسم سعر اوف عرض تنزيلات زيادة نقصان فرق ربع نص ثلث percent % حساب رياضيات","category":"calculators","categoryName":"حاسبات","url":"/udda/ar/tools/percentage.html"}];
+  window.toolsData = [{"id":"percentage","icon":"🔢","name":"حاسبة النسبة المئوية","keywords":"حاسبة النسبة المئوية، حساب النسبة، نسبة الخصم، حساب الخصم، percentage calculator","searchTerms":"نسبة مئوية نسب مئويه بالمية بالميه خصم تخفيض حسم سعر اوف عرض تنزيلات زيادة نقصان فرق ربع نص ثلث percent % حساب رياضيات ربح خسارة ضريبة","category":"calculators","categoryName":"حاسبات","url":"/udda/ar/tools/percentage.html"}];
 </script>
       </main>
       

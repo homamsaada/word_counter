@@ -1,0 +1,19 @@
+{
+  "name": "udda",
+  "version": "1.0.0",
+  "description": "عُدّة - أدوات مجانية للجميع | Free Tools for Everyone",
+  "scripts": {
+    "build": "node build.js",
+    "serve": "npx serve dist -p 3000",
+    "dev": "node build.js && npx serve dist -p 3000"
+  },
+  "keywords": [
+    "tools",
+    "calculator",
+    "converter",
+    "arabic",
+    "free"
+  ],
+  "author": "Homam",
+  "license": "MIT"
+}

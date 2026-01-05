@@ -1,0 +1,22 @@
+{
+  "tools": [
+    {
+      "id": "percentage",
+      "category": "calculators",
+      "icon": "🔢",
+      "popular": true,
+      "new": false,
+      "related": ["discount-calculator", "profit-margin", "vat-calculator"]
+    }
+  ],
+  "categoryOrder": [
+    "calculators",
+    "converters",
+    "text",
+    "datetime",
+    "generators",
+    "image",
+    "developers",
+    "everyday"
+  ]
+}

@@ -888,9 +888,13 @@ function updateChart(data, principal) {
   
   const isArabic = App.state.lang === 'ar';
   
-  // Always use dark colors for better contrast
-  const textColor = '#374151';  // Dark gray
-  const gridColor = '#E5E7EB';  // Light gray
+  // Detect current theme
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  
+  // Colors based on theme
+  const textColor = isDark ? '#E5E7EB' : '#374151';
+  const gridColor = isDark ? '#374151' : '#E5E7EB';
+  const bgColor = isDark ? '#1F2937' : '#FFFFFF';
   
   growthChart = new Chart(ctx, {
     type: 'bar',
@@ -910,7 +914,7 @@ function updateChart(data, principal) {
           label: isArabic ? 'المبلغ الأصلي' : 'Principal',
           data: principalLine,
           type: 'line',
-          borderColor: 'rgba(99, 102, 241, 1)',
+          borderColor: isDark ? 'rgba(129, 140, 248, 1)' : 'rgba(99, 102, 241, 1)',
           borderWidth: 3,
           borderDash: [8, 4],
           fill: false,
@@ -934,7 +938,9 @@ function updateChart(data, principal) {
         },
         tooltip: {
           rtl: isArabic,
-          backgroundColor: 'rgba(17, 24, 39, 0.95)',
+          backgroundColor: isDark ? 'rgba(255, 255, 255, 0.95)' : 'rgba(17, 24, 39, 0.95)',
+          titleColor: isDark ? '#1F2937' : '#FFFFFF',
+          bodyColor: isDark ? '#374151' : '#E5E7EB',
           titleFont: { size: 14, weight: '600' },
           bodyFont: { size: 13 },
           padding: 12,
@@ -1000,6 +1006,17 @@ function updateTable(data) {
     tbody.appendChild(tr);
   });
 }
+
+// Watch for theme changes and update chart
+const themeObserver = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    if (mutation.attributeName === 'data-theme' && yearlyDataCache.length > 0) {
+      const P = parseFloat(document.getElementById('compound-principal').value);
+      updateChart(yearlyDataCache, P);
+    }
+  });
+});
+themeObserver.observe(document.documentElement, { attributes: true });
 
 // Copy big result
 function copyBigResult() {

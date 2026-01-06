@@ -888,9 +888,13 @@ function updateChart(data, principal) {
   
   const isArabic = App.state.lang === 'ar';
   
-  // Always use dark colors for better contrast
-  const textColor = '#374151';  // Dark gray
-  const gridColor = '#E5E7EB';  // Light gray
+  // Detect current theme
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  
+  // Colors based on theme
+  const textColor = isDark ? '#E5E7EB' : '#374151';
+  const gridColor = isDark ? '#374151' : '#E5E7EB';
+  const bgColor = isDark ? '#1F2937' : '#FFFFFF';
   
   growthChart = new Chart(ctx, {
     type: 'bar',
@@ -910,7 +914,7 @@ function updateChart(data, principal) {
           label: isArabic ? 'المبلغ الأصلي' : 'Principal',
           data: principalLine,
           type: 'line',
-          borderColor: 'rgba(99, 102, 241, 1)',
+          borderColor: isDark ? 'rgba(129, 140, 248, 1)' : 'rgba(99, 102, 241, 1)',
           borderWidth: 3,
           borderDash: [8, 4],
           fill: false,
@@ -934,7 +938,9 @@ function updateChart(data, principal) {
         },
         tooltip: {
           rtl: isArabic,
-          backgroundColor: 'rgba(17, 24, 39, 0.95)',
+          backgroundColor: isDark ? 'rgba(255, 255, 255, 0.95)' : 'rgba(17, 24, 39, 0.95)',
+          titleColor: isDark ? '#1F2937' : '#FFFFFF',
+          bodyColor: isDark ? '#374151' : '#E5E7EB',
           titleFont: { size: 14, weight: '600' },
           bodyFont: { size: 13 },
           padding: 12,
@@ -1000,6 +1006,17 @@ function updateTable(data) {
     tbody.appendChild(tr);
   });
 }
+
+// Watch for theme changes and update chart
+const themeObserver = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    if (mutation.attributeName === 'data-theme' && yearlyDataCache.length > 0) {
+      const P = parseFloat(document.getElementById('compound-principal').value);
+      updateChart(yearlyDataCache, P);
+    }
+  });
+});
+themeObserver.observe(document.documentElement, { attributes: true });
 
 // Copy big result
 function copyBigResult() {
@@ -1247,7 +1264,7 @@ function downloadChart() {
 </script>
 
 <script>
-  window.toolsData = [{"id":"percentage","icon":"🔢","name":"حاسبة النسبة المئوية","keywords":"حاسبة النسبة المئوية، حساب النسبة، نسبة الخصم، حساب الخصم، percentage calculator","searchTerms":"نسبة مئوية نسب مئويه بالمية بالميه بالمئة بالمئه المئوية المئويه خصم تخفيض حسم سعر اوف عرض تنزيلات زيادة نقصان فرق ربع نص ثلث percent percentage حساب رياضيات ربح خسارة ضريبة ضرايب هامش كسر كسور سعر قبل بعد اصلي اصل تكلفة بيع شراء جزء كل مجموع","category":"calculators","categoryName":"حاسبات","url":"/udda/ar/tools/percentage.html"},{"id":"interest-calculator","icon":"💰","name":"حاسبة الفوائد","keywords":"حاسبة الفوائد، فائدة بسيطة، فائدة مركبة، حساب القرض، interest calculator","searchTerms":"فائدة فوائد فايدة فوايد بسيطة مركبة مركبه قرض قروض استثمار عائد عوائد ربح بنك بنوك مال مالية فلوس راس مال رأسمال سنوي شهري يومي ربعي نصف سنوي تراكم تراكمي رصيد مبلغ اصلي معدل نسبة حساب احسب interest loan compound simple bank money investment","category":"calculators","categoryName":"حاسبات","url":"/udda/ar/tools/interest-calculator.html"}];
+  window.toolsData = [{"id":"percentage","icon":"🔢","name":"حاسبة النسبة المئوية","keywords":"حاسبة النسبة المئوية، حساب النسبة، نسبة الخصم، حساب الخصم، percentage calculator","searchTerms":"نسبة النسبة مئوية المئوية نسب مئويه بالمية بالميه بالمئة بالمئه المئويه خصم الخصم تخفيض التخفيض حسم الحسم سعر السعر اوف عرض العرض تنزيلات زيادة الزيادة نقصان النقصان فرق الفرق ربع الربع نص النص ثلث الثلث percent percentage حساب الحساب رياضيات ربح الربح خسارة الخسارة ضريبة الضريبة ضرايب هامش الهامش كسر الكسر كسور قبل بعد اصلي الاصلي اصل الاصل تكلفة التكلفة بيع البيع شراء الشراء جزء الجزء كل الكل مجموع المجموع","category":"calculators","categoryName":"حاسبات","url":"/udda/ar/tools/percentage.html"},{"id":"interest-calculator","icon":"💰","name":"حاسبة الفوائد","keywords":"حاسبة الفوائد، فائدة بسيطة، فائدة مركبة، حساب القرض، interest calculator","searchTerms":"فائدة الفائدة فوائد الفوائد فايدة الفايدة فوايد بسيطة البسيطة مركبة المركبة مركبه قرض القرض قروض القروض استثمار الاستثمار عائد العائد عوائد العوائد ربح الربح بنك البنك بنوك البنوك مال المال مالية المالية فلوس الفلوس راس رأس رأسمال سنوي السنوي شهري الشهري يومي اليومي ربعي نصف تراكم التراكم تراكمي رصيد الرصيد مبلغ المبلغ اصلي الاصلي معدل المعدل نسبة النسبة حساب الحساب احسب interest loan compound simple bank money investment","category":"calculators","categoryName":"حاسبات","url":"/udda/ar/tools/interest-calculator.html"}];
 </script>
       </main>
       

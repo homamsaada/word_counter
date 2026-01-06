@@ -272,15 +272,25 @@ const App = {
       });
 
       input.addEventListener('blur', (e) => {
-        // Delay to allow click on results
-        setTimeout(() => this.hideSearchResults(input), 200);
+        // Delay to allow click on results - increased timeout
+        setTimeout(() => this.hideSearchResults(input), 300);
       });
 
+      // Handle click on results directly
       input.addEventListener('focus', (e) => {
         if (e.target.value.trim()) {
           this.handleSearch(e.target.value, input);
         }
       });
+    });
+    
+    // Delegate click events on search results
+    document.addEventListener('click', (e) => {
+      const resultItem = e.target.closest('.search-result-item');
+      if (resultItem && resultItem.href) {
+        e.preventDefault();
+        window.location.href = resultItem.href;
+      }
     });
   },
 

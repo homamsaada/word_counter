@@ -289,6 +289,7 @@
         "accumulatedInterest": "الفائدة المتراكمة",
         "endBalance": "الرصيد النهائي",
         "exportExcel": "تصدير Excel",
+        "downloadChart": "تحميل المخطط",
         "copyAll": "نسخ الكل",
         "copy": "نسخ",
         "howToUseText": "أدخل المبلغ الأصلي ومعدل الفائدة والمدة. للفائدة المركبة اختر عدد مرات التركيب في السنة."
@@ -319,6 +320,7 @@
         "accumulatedInterest": "Accumulated Interest",
         "endBalance": "End Balance",
         "exportExcel": "Export Excel",
+        "downloadChart": "Download Chart",
         "copyAll": "Copy All",
         "copy": "Copy",
         "howToUseText": "Enter the principal amount, interest rate, and time period. For compound interest, select the compounding frequency."

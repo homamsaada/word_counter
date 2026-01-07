@@ -250,6 +250,11 @@
 .age-calculator {
   max-width: 900px;
   margin: 0 auto;
+  font-family: inherit;
+}
+
+.age-calculator * {
+  font-family: inherit;
 }
 
 .calc-tabs {
@@ -736,8 +741,8 @@
       <div class="form-group" style="margin-bottom: 16px">
         <label>Operation</label>
         <div class="operation-toggle">
-          <button class="op-btn active" onclick="setOperation('add')">+ Add</button>
-          <button class="op-btn" onclick="setOperation('subtract')">− Subtract</button>
+          <button class="op-btn active" onclick="setOperation('add', this)">+ Add</button>
+          <button class="op-btn" onclick="setOperation('subtract', this)">− Subtract</button>
         </div>
       </div>
       <div class="form-row">
@@ -812,14 +817,19 @@ function switchAgeTab(tab) {
   document.querySelectorAll('.calc-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.calc-section').forEach(s => s.classList.remove('active'));
   
-  document.querySelector(`.calc-tab[onclick="switchAgeTab('${tab}')"]`).classList.add('active');
+  // Find the button that calls this tab
+  document.querySelectorAll('.calc-tab').forEach(t => {
+    if (t.getAttribute('onclick')?.includes(`'${tab}'`)) {
+      t.classList.add('active');
+    }
+  });
   document.getElementById(`${tab}-section`).classList.add('active');
 }
 
-function setOperation(op) {
+function setOperation(op, btn) {
   currentOperation = op;
   document.querySelectorAll('.op-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  btn.classList.add('active');
   calculateAdd();
 }
 

@@ -3,6 +3,11 @@
 .body-calculator {
   max-width: 900px;
   margin: 0 auto;
+  font-family: inherit;
+}
+
+.body-calculator * {
+  font-family: inherit;
 }
 
 .calc-tabs {
@@ -364,8 +369,8 @@
   <div class="calc-section active" id="bmi-section">
     <div class="input-form">
       <div class="unit-toggle">
-        <button class="unit-btn active" onclick="setUnit('metric', 'bmi')">{{tool.metric}}</button>
-        <button class="unit-btn" onclick="setUnit('imperial', 'bmi')">{{tool.imperial}}</button>
+        <button class="unit-btn active" onclick="setUnit('metric', 'bmi', this)">{{tool.metric}}</button>
+        <button class="unit-btn" onclick="setUnit('imperial', 'bmi', this)">{{tool.imperial}}</button>
       </div>
       <div class="form-row" id="bmi-inputs-metric">
         <div class="form-group">
@@ -444,10 +449,10 @@
       <div class="form-group" style="margin-bottom: 16px">
         <label>{{tool.gender}}</label>
         <div class="gender-selector">
-          <button class="gender-btn active" onclick="setGender('male', 'bmr')">
+          <button class="gender-btn active" onclick="setGender('male', 'bmr', this)">
             <span class="icon">👨</span> {{tool.male}}
           </button>
-          <button class="gender-btn" onclick="setGender('female', 'bmr')">
+          <button class="gender-btn" onclick="setGender('female', 'bmr', this)">
             <span class="icon">👩</span> {{tool.female}}
           </button>
         </div>
@@ -469,23 +474,23 @@
       <div class="form-group">
         <label>{{tool.activityLevel}}</label>
         <div class="activity-selector">
-          <button class="activity-btn active" onclick="setActivity(1.2)" data-level="1.2">
+          <button class="activity-btn active" onclick="setActivity(1.2, this)" data-level="1.2">
             <span class="level">{{tool.sedentary}}</span>
             {{tool.sedentaryDesc}}
           </button>
-          <button class="activity-btn" onclick="setActivity(1.375)" data-level="1.375">
+          <button class="activity-btn" onclick="setActivity(1.375, this)" data-level="1.375">
             <span class="level">{{tool.light}}</span>
             {{tool.lightDesc}}
           </button>
-          <button class="activity-btn" onclick="setActivity(1.55)" data-level="1.55">
+          <button class="activity-btn" onclick="setActivity(1.55, this)" data-level="1.55">
             <span class="level">{{tool.moderate}}</span>
             {{tool.moderateDesc}}
           </button>
-          <button class="activity-btn" onclick="setActivity(1.725)" data-level="1.725">
+          <button class="activity-btn" onclick="setActivity(1.725, this)" data-level="1.725">
             <span class="level">{{tool.active}}</span>
             {{tool.activeDesc}}
           </button>
-          <button class="activity-btn" onclick="setActivity(1.9)" data-level="1.9">
+          <button class="activity-btn" onclick="setActivity(1.9, this)" data-level="1.9">
             <span class="level">{{tool.veryActive}}</span>
             {{tool.veryActiveDesc}}
           </button>
@@ -527,10 +532,10 @@
       <div class="form-group" style="margin-bottom: 16px">
         <label>{{tool.gender}}</label>
         <div class="gender-selector">
-          <button class="gender-btn active" onclick="setGender('male', 'ibw')">
+          <button class="gender-btn active" onclick="setGender('male', 'ibw', this)">
             <span class="icon">👨</span> {{tool.male}}
           </button>
-          <button class="gender-btn" onclick="setGender('female', 'ibw')">
+          <button class="gender-btn" onclick="setGender('female', 'ibw', this)">
             <span class="icon">👩</span> {{tool.female}}
           </button>
         </div>
@@ -576,10 +581,10 @@
       <div class="form-group" style="margin-bottom: 16px">
         <label>{{tool.gender}}</label>
         <div class="gender-selector">
-          <button class="gender-btn active" onclick="setGender('male', 'bodyfat')">
+          <button class="gender-btn active" onclick="setGender('male', 'bodyfat', this)">
             <span class="icon">👨</span> {{tool.male}}
           </button>
-          <button class="gender-btn" onclick="setGender('female', 'bodyfat')">
+          <button class="gender-btn" onclick="setGender('female', 'bodyfat', this)">
             <span class="icon">👩</span> {{tool.female}}
           </button>
         </div>
@@ -635,10 +640,10 @@
       <div class="form-group" style="margin-bottom: 16px">
         <label>{{tool.gender}}</label>
         <div class="gender-selector">
-          <button class="gender-btn active" onclick="setGender('male', 'whr')">
+          <button class="gender-btn active" onclick="setGender('male', 'whr', this)">
             <span class="icon">👨</span> {{tool.male}}
           </button>
-          <button class="gender-btn" onclick="setGender('female', 'whr')">
+          <button class="gender-btn" onclick="setGender('female', 'whr', this)">
             <span class="icon">👩</span> {{tool.female}}
           </button>
         </div>
@@ -682,14 +687,19 @@ function switchTab(tab) {
   document.querySelectorAll('.calc-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.calc-section').forEach(s => s.classList.remove('active'));
   
-  document.querySelector(`.calc-tab[onclick="switchTab('${tab}')"]`).classList.add('active');
+  // Find the button that calls this tab
+  document.querySelectorAll('.calc-tab').forEach(t => {
+    if (t.getAttribute('onclick')?.includes(`'${tab}'`)) {
+      t.classList.add('active');
+    }
+  });
   document.getElementById(`${tab}-section`).classList.add('active');
 }
 
-function setUnit(unit, calc) {
+function setUnit(unit, calc, btn) {
   currentUnit[calc] = unit;
   document.querySelectorAll(`#${calc}-section .unit-btn`).forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  btn.classList.add('active');
   
   if (calc === 'bmi') {
     document.getElementById('bmi-inputs-metric').style.display = unit === 'metric' ? 'grid' : 'none';
@@ -698,10 +708,10 @@ function setUnit(unit, calc) {
   }
 }
 
-function setGender(gender, calc) {
+function setGender(gender, calc, btn) {
   currentGender[calc] = gender;
   document.querySelectorAll(`#${calc}-section .gender-btn`).forEach(b => b.classList.remove('active'));
-  event.target.closest('.gender-btn').classList.add('active');
+  btn.closest('.gender-btn').classList.add('active');
   
   if (calc === 'bodyfat') {
     document.getElementById('bf-hip-group').style.display = gender === 'female' ? 'block' : 'none';
@@ -713,10 +723,10 @@ function setGender(gender, calc) {
   if (calc === 'whr') calculateWHR();
 }
 
-function setActivity(level) {
+function setActivity(level, btn) {
   activityLevel = level;
   document.querySelectorAll('.activity-btn').forEach(b => b.classList.remove('active'));
-  event.target.closest('.activity-btn').classList.add('active');
+  btn.closest('.activity-btn').classList.add('active');
   calculateBMR();
 }
 

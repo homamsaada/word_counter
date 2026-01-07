@@ -893,17 +893,20 @@ function setNow(inputId) {
 
 // Set current time and start live mode
 function setNowAndLive(inputId) {
+  // Update input value first (always)
+  document.getElementById(inputId).value = formatDateTimeForInput(new Date());
+  
+  // Try to start live mode if birth date exists
   liveBirthDate = new Date(document.getElementById('birth-date').value);
   if (isNaN(liveBirthDate.getTime())) {
+    // No birth date, just update and calculate
+    calculateAge();
     return;
   }
   
   stopLiveMode();
   updateLiveAge();
   liveInterval = setInterval(updateLiveAge, 1000);
-  
-  // Update input value
-  document.getElementById(inputId).value = formatDateTimeForInput(new Date());
 }
 
 // Stop live mode
@@ -959,13 +962,15 @@ function formatDateMidnight(date) {
   return `${year}-${month}-${day}T00:00:00`;
 }
 
-// Initialize with today's date at midnight
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
-  const todayMidnight = formatDateMidnight(new Date());
+  const nowTime = formatDateTimeForInput(new Date());
   
-  document.getElementById('calc-to-date').value = todayMidnight;
-  document.getElementById('diff-to').value = todayMidnight;
-  document.getElementById('add-start').value = todayMidnight;
+  // "حساب حتى تاريخ" و "إلى تاريخ" → الوقت الحالي
+  document.getElementById('calc-to-date').value = nowTime;
+  document.getElementById('diff-to').value = nowTime;
+  
+  // باقي الحقول تبقى فارغة (المستخدم يدخلها)
 });
 
 function switchAgeTab(tab) {

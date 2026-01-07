@@ -346,12 +346,6 @@
   border-color: var(--primary);
 }
 
-.input-hint {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  margin-top: 4px;
-}
-
 /* Input with Button */
 .input-with-btn {
   display: flex;
@@ -667,16 +661,14 @@
       <div class="form-row">
         <div class="form-group">
           <label>Birth Date</label>
-          <input type="datetime-local" id="birth-date" onchange="calculateAge()" step="1">
-          <span class="input-hint">DD/MM/YYYY HH:MM:SS</span>
+          <input type="text" id="birth-date" placeholder="DD/MM/YYYY HH:MM:SS" oninput="calculateAge()">
         </div>
         <div class="form-group">
           <label>Calculate To</label>
           <div class="input-with-btn">
-            <input type="datetime-local" id="calc-to-date" onchange="stopLiveMode(); calculateAge()" step="1">
+            <input type="text" id="calc-to-date" placeholder="DD/MM/YYYY HH:MM:SS" oninput="stopLiveMode(); calculateAge()">
             <button type="button" class="now-btn" onclick="setNowAndLive('calc-to-date')">Now</button>
           </div>
-          <span class="input-hint">DD/MM/YYYY HH:MM:SS</span>
         </div>
       </div>
     </div>
@@ -760,18 +752,16 @@
         <div class="form-group">
           <label>From Date</label>
           <div class="input-with-btn">
-            <input type="datetime-local" id="diff-from" onchange="calculateDiff()" step="1">
+            <input type="text" id="diff-from" placeholder="DD/MM/YYYY HH:MM:SS" oninput="calculateDiff()">
             <button type="button" class="now-btn" onclick="setNow('diff-from')">Now</button>
           </div>
-          <span class="input-hint">DD/MM/YYYY HH:MM:SS</span>
         </div>
         <div class="form-group">
           <label>To Date</label>
           <div class="input-with-btn">
-            <input type="datetime-local" id="diff-to" onchange="calculateDiff()" step="1">
+            <input type="text" id="diff-to" placeholder="DD/MM/YYYY HH:MM:SS" oninput="calculateDiff()">
             <button type="button" class="now-btn" onclick="setNow('diff-to')">Now</button>
           </div>
-          <span class="input-hint">DD/MM/YYYY HH:MM:SS</span>
         </div>
       </div>
     </div>
@@ -814,8 +804,7 @@
       <div class="form-row">
         <div class="form-group">
           <label>Start Date</label>
-          <input type="datetime-local" id="add-start" onchange="calculateAdd()" step="1">
-          <span class="input-hint">DD/MM/YYYY HH:MM:SS</span>
+          <input type="text" id="add-start" placeholder="DD/MM/YYYY HH:MM:SS" oninput="calculateAdd()">
         </div>
       </div>
       <div class="form-row">
@@ -882,21 +871,49 @@ function formatDate(date) {
   return `${day}/${month}/${year}`;
 }
 
-// Format datetime for input
-function formatDateTimeForInput(date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
+// Format datetime as DD/MM/YYYY HH:MM:SS
+function formatDateTime(date) {
   const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
   const seconds = String(date.getSeconds()).padStart(2, '0');
-  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+}
+
+// Parse date from DD/MM/YYYY or DD/MM/YYYY HH:MM:SS format
+function parseDate(str) {
+  if (!str) return null;
+  
+  // Try DD/MM/YYYY HH:MM:SS format
+  const fullMatch = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{1,2}):(\d{1,2})$/);
+  if (fullMatch) {
+    const [_, day, month, year, hours, minutes, seconds] = fullMatch;
+    return new Date(year, month - 1, day, hours, minutes, seconds);
+  }
+  
+  // Try DD/MM/YYYY HH:MM format
+  const withTimeMatch = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{1,2})$/);
+  if (withTimeMatch) {
+    const [_, day, month, year, hours, minutes] = withTimeMatch;
+    return new Date(year, month - 1, day, hours, minutes, 0);
+  }
+  
+  // Try DD/MM/YYYY format
+  const dateMatch = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (dateMatch) {
+    const [_, day, month, year] = dateMatch;
+    return new Date(year, month - 1, day, 0, 0, 0);
+  }
+  
+  return null;
 }
 
 // Set current time
 function setNow(inputId) {
   const input = document.getElementById(inputId);
-  input.value = formatDateTimeForInput(new Date());
+  input.value = formatDateTime(new Date());
   if (inputId === 'diff-from' || inputId === 'diff-to') {
     calculateDiff();
   }
@@ -904,8 +921,8 @@ function setNow(inputId) {
 
 // Set current time and start live mode
 function setNowAndLive(inputId) {
-  liveBirthDate = new Date(document.getElementById('birth-date').value);
-  if (isNaN(liveBirthDate.getTime())) {
+  liveBirthDate = parseDate(document.getElementById('birth-date').value);
+  if (!liveBirthDate || isNaN(liveBirthDate.getTime())) {
     return;
   }
   
@@ -914,7 +931,7 @@ function setNowAndLive(inputId) {
   liveInterval = setInterval(updateLiveAge, 1000);
   
   // Update input value
-  document.getElementById(inputId).value = formatDateTimeForInput(new Date());
+  document.getElementById(inputId).value = formatDateTime(new Date());
 }
 
 // Stop live mode
@@ -931,7 +948,7 @@ function updateLiveAge() {
   if (!liveBirthDate) return;
   
   const now = new Date();
-  document.getElementById('calc-to-date').value = formatDateTimeForInput(now);
+  document.getElementById('calc-to-date').value = formatDateTime(now);
   
   // Calculate detailed age
   let years = now.getFullYear() - liveBirthDate.getFullYear();
@@ -964,14 +981,7 @@ function updateLiveAge() {
 
 // Initialize with today's date and time
 document.addEventListener('DOMContentLoaded', () => {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
-  const seconds = String(now.getSeconds()).padStart(2, '0');
-  const today = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  const today = formatDateTime(new Date());
   
   document.getElementById('calc-to-date').value = today;
   document.getElementById('diff-to').value = today;
@@ -999,10 +1009,10 @@ function setOperation(op, btn) {
 }
 
 function calculateAge(fromLive = false) {
-  const birthDate = new Date(document.getElementById('birth-date').value);
-  const toDate = new Date(document.getElementById('calc-to-date').value);
+  const birthDate = parseDate(document.getElementById('birth-date').value);
+  const toDate = parseDate(document.getElementById('calc-to-date').value);
   
-  if (isNaN(birthDate.getTime()) || isNaN(toDate.getTime())) {
+  if (!birthDate || !toDate || isNaN(birthDate.getTime()) || isNaN(toDate.getTime())) {
     document.getElementById('age-result').classList.remove('show');
     return;
   }
@@ -1103,10 +1113,10 @@ function getOrdinalSuffix(n) {
 }
 
 function calculateDiff() {
-  const fromDate = new Date(document.getElementById('diff-from').value);
-  const toDate = new Date(document.getElementById('diff-to').value);
+  const fromDate = parseDate(document.getElementById('diff-from').value);
+  const toDate = parseDate(document.getElementById('diff-to').value);
   
-  if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
+  if (!fromDate || !toDate || isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
     document.getElementById('diff-result').classList.remove('show');
     return;
   }
@@ -1150,12 +1160,12 @@ function calculateDiff() {
 }
 
 function calculateAdd() {
-  const startDate = new Date(document.getElementById('add-start').value);
+  const startDate = parseDate(document.getElementById('add-start').value);
   const addYears = parseInt(document.getElementById('add-years').value) || 0;
   const addMonths = parseInt(document.getElementById('add-months').value) || 0;
   const addDays = parseInt(document.getElementById('add-days').value) || 0;
   
-  if (isNaN(startDate.getTime())) {
+  if (!startDate || isNaN(startDate.getTime())) {
     document.getElementById('add-result').classList.remove('show');
     return;
   }

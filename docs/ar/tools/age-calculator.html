@@ -352,13 +352,10 @@
   gap: 8px;
 }
 
-.datetime-inputs input[type="date"] {
-  flex: 2;
-}
-
+.datetime-inputs input[type="date"],
 .datetime-inputs input[type="time"] {
   flex: 1;
-  min-width: 120px;
+  min-width: 0;
 }
 
 /* Live Age Counter */
@@ -565,28 +562,6 @@
   color: var(--primary);
 }
 
-.diff-stats {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  flex-wrap: wrap;
-}
-
-.diff-stat {
-  text-align: center;
-}
-
-.diff-stat-value {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.diff-stat-label {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
 /* Add/Subtract Result */
 .add-result {
   background: linear-gradient(135deg, #22c55e, #16a34a);
@@ -600,6 +575,13 @@
 .add-result-date {
   font-size: 2rem;
   font-weight: 700;
+}
+
+.add-result-time {
+  font-size: 1.5rem;
+  font-weight: 600;
+  opacity: 0.95;
+  margin-top: 8px;
 }
 
 .add-result-day {
@@ -761,22 +743,30 @@
       <div class="diff-result">
         <div class="diff-main" id="diff-main"></div>
         <div class="diff-live" id="diff-live"></div>
-        <div class="diff-stats">
-          <div class="diff-stat">
-            <div class="diff-stat-value" id="diff-months">0</div>
-            <div class="diff-stat-label">شهر</div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value" id="diff-months">0</div>
+            <div class="stat-label">شهر</div>
           </div>
-          <div class="diff-stat">
-            <div class="diff-stat-value" id="diff-weeks">0</div>
-            <div class="diff-stat-label">أسبوع</div>
+          <div class="stat-card">
+            <div class="stat-value" id="diff-weeks">0</div>
+            <div class="stat-label">أسبوع</div>
           </div>
-          <div class="diff-stat">
-            <div class="diff-stat-value" id="diff-days">0</div>
-            <div class="diff-stat-label">يوم</div>
+          <div class="stat-card">
+            <div class="stat-value" id="diff-days">0</div>
+            <div class="stat-label">يوم</div>
           </div>
-          <div class="diff-stat">
-            <div class="diff-stat-value" id="diff-hours">0</div>
-            <div class="diff-stat-label">ساعة</div>
+          <div class="stat-card">
+            <div class="stat-value" id="diff-hours">0</div>
+            <div class="stat-label">ساعة</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="diff-minutes">0</div>
+            <div class="stat-label">دقائق</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="diff-seconds">0</div>
+            <div class="stat-label">ثواني</div>
           </div>
         </div>
       </div>
@@ -796,7 +786,10 @@
       <div class="form-row">
         <div class="form-group">
           <label>تاريخ البداية</label>
-          <input type="datetime-local" id="add-start" onchange="calculateAdd()" step="1">
+          <div class="datetime-inputs">
+            <input type="date" id="add-start-date" onchange="calculateAdd()">
+            <input type="time" id="add-start-time" step="1" onchange="calculateAdd()">
+          </div>
         </div>
       </div>
       <div class="form-row">
@@ -813,11 +806,26 @@
           <input type="number" id="add-days" placeholder="0" oninput="calculateAdd()">
         </div>
       </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>ساعات</label>
+          <input type="number" id="add-hours" placeholder="0" oninput="calculateAdd()">
+        </div>
+        <div class="form-group">
+          <label>دقائق</label>
+          <input type="number" id="add-minutes" placeholder="0" oninput="calculateAdd()">
+        </div>
+        <div class="form-group">
+          <label>ثواني</label>
+          <input type="number" id="add-seconds" placeholder="0" oninput="calculateAdd()">
+        </div>
+      </div>
     </div>
 
     <div class="result-box" id="add-result">
       <div class="add-result">
         <div class="add-result-date" id="add-result-date"></div>
+        <div class="add-result-time" id="add-result-time"></div>
         <div class="add-result-day" id="add-result-day"></div>
       </div>
     </div>
@@ -1037,6 +1045,10 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('diff-to-date').value = formatDateForInput(now);
   document.getElementById('diff-to-time').value = formatTimeForInput(now);
   
+  // "تاريخ البداية" في إضافة/طرح → الوقت الحالي
+  document.getElementById('add-start-date').value = formatDateForInput(now);
+  document.getElementById('add-start-time').value = formatTimeForInput(now);
+  
   // Start auto modes
   startAgeAutoMode();
   startDiffAutoMode();
@@ -1177,6 +1189,9 @@ function calculateDiff() {
   
   const diffMs = Math.abs(toDate - fromDate);
   const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const totalHours = Math.floor(diffMs / (1000 * 60 * 60));
+  const totalMinutes = Math.floor(diffMs / (1000 * 60));
+  const totalSeconds = Math.floor(diffMs / 1000);
   
   // Calculate years, months, days
   let years = 0, months = 0, days = totalDays;
@@ -1208,18 +1223,23 @@ function calculateDiff() {
   document.getElementById('diff-months').textContent = (years * 12 + months).toLocaleString();
   document.getElementById('diff-weeks').textContent = Math.floor(totalDays / 7).toLocaleString();
   document.getElementById('diff-days').textContent = totalDays.toLocaleString();
-  document.getElementById('diff-hours').textContent = (totalDays * 24).toLocaleString();
+  document.getElementById('diff-hours').textContent = totalHours.toLocaleString();
+  document.getElementById('diff-minutes').textContent = totalMinutes.toLocaleString();
+  document.getElementById('diff-seconds').textContent = totalSeconds.toLocaleString();
   
   document.getElementById('diff-result').classList.add('show');
 }
 
 function calculateAdd() {
-  const startDate = new Date(document.getElementById('add-start').value);
+  const startDate = getDateTime('add-start-date', 'add-start-time');
   const addYears = parseInt(document.getElementById('add-years').value) || 0;
   const addMonths = parseInt(document.getElementById('add-months').value) || 0;
   const addDays = parseInt(document.getElementById('add-days').value) || 0;
+  const addHours = parseInt(document.getElementById('add-hours').value) || 0;
+  const addMinutes = parseInt(document.getElementById('add-minutes').value) || 0;
+  const addSeconds = parseInt(document.getElementById('add-seconds').value) || 0;
   
-  if (isNaN(startDate.getTime())) {
+  if (!startDate || isNaN(startDate.getTime())) {
     document.getElementById('add-result').classList.remove('show');
     return;
   }
@@ -1230,13 +1250,20 @@ function calculateAdd() {
     resultDate.setFullYear(resultDate.getFullYear() + addYears);
     resultDate.setMonth(resultDate.getMonth() + addMonths);
     resultDate.setDate(resultDate.getDate() + addDays);
+    resultDate.setHours(resultDate.getHours() + addHours);
+    resultDate.setMinutes(resultDate.getMinutes() + addMinutes);
+    resultDate.setSeconds(resultDate.getSeconds() + addSeconds);
   } else {
     resultDate.setFullYear(resultDate.getFullYear() - addYears);
     resultDate.setMonth(resultDate.getMonth() - addMonths);
     resultDate.setDate(resultDate.getDate() - addDays);
+    resultDate.setHours(resultDate.getHours() - addHours);
+    resultDate.setMinutes(resultDate.getMinutes() - addMinutes);
+    resultDate.setSeconds(resultDate.getSeconds() - addSeconds);
   }
   
   document.getElementById('add-result-date').textContent = formatDate(resultDate);
+  document.getElementById('add-result-time').textContent = formatTimeForInput(resultDate);
   document.getElementById('add-result-day').textContent = dayNames[resultDate.getDay()];
   
   document.getElementById('add-result').classList.add('show');

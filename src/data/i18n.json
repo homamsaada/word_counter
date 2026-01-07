@@ -569,6 +569,11 @@
         "yearsToAdd": "سنوات",
         "monthsToAdd": "أشهر",
         "daysToAdd": "أيام",
+        "hoursToAdd": "ساعات",
+        "minutesToAdd": "دقائق",
+        "secondsToAdd": "ثواني",
+        "minutes": "دقائق",
+        "seconds": "ثواني",
         "dateFormatHint": "يوم/شهر/سنة ساعة:دقيقة:ثانية",
         "now": "الآن",
         "howToUseText": "أدخل تاريخ ميلادك لمعرفة عمرك بالتفصيل، أو استخدم التبويبات الأخرى لحساب الفرق بين تاريخين أو إضافة/طرح أيام من تاريخ."
@@ -603,6 +608,11 @@
         "yearsToAdd": "Years",
         "monthsToAdd": "Months",
         "daysToAdd": "Days",
+        "hoursToAdd": "Hours",
+        "minutesToAdd": "Minutes",
+        "secondsToAdd": "Seconds",
+        "minutes": "Minutes",
+        "seconds": "Seconds",
         "dateFormatHint": "DD/MM/YYYY HH:MM:SS",
         "now": "Now",
         "howToUseText": "Enter your birth date to see your detailed age, or use other tabs to calculate the difference between two dates or add/subtract days from a date."

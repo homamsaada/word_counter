@@ -60,9 +60,19 @@
 
 .form-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
   margin-bottom: 16px;
+}
+
+.form-row.three-cols {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 768px) {
+  .form-row.three-cols {
+    grid-template-columns: 1fr;
+  }
 }
 
 .form-group {
@@ -91,6 +101,38 @@
 .form-group input:focus, .form-group select:focus {
   outline: none;
   border-color: var(--primary);
+}
+
+/* Input Toggle Buttons */
+.input-toggle {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.toggle-opt {
+  flex: 1;
+  padding: 6px 10px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-primary);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+.toggle-opt:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.toggle-opt.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
 }
 
 .input-with-suffix {
@@ -270,49 +312,6 @@
   color: white;
 }
 
-/* Rate Type Toggle */
-.rate-type-toggle {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.rate-type-btn {
-  flex: 1;
-  padding: 8px 12px;
-  border: 2px solid var(--border-color);
-  border-radius: 8px;
-  background: var(--bg-primary);
-  color: var(--text-secondary);
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  text-align: center;
-}
-
-.rate-type-btn:hover {
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-.rate-type-btn.active {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: white;
-}
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.toggle-btn.active {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: white;
-}
-
 .schedule-table-wrapper {
   max-height: 400px;
   overflow-y: auto;
@@ -438,7 +437,7 @@
 
   <!-- Input Form -->
   <div class="loan-form">
-    <div class="form-row">
+    <div class="form-row three-cols">
       <div class="form-group">
         <label>{{tool.loanAmount}}</label>
         <div class="input-with-suffix">
@@ -452,23 +451,18 @@
           <input type="number" id="interest-rate" placeholder="5" step="0.1" oninput="calculateLoan()">
           <span class="input-suffix">%</span>
         </div>
-        <div class="rate-type-toggle">
-          <button type="button" class="rate-type-btn active" onclick="setRateType('yearly', this)">{{tool.yearly}}</button>
-          <button type="button" class="rate-type-btn" onclick="setRateType('monthly', this)">{{tool.monthlyRate}}</button>
+        <div class="input-toggle">
+          <button type="button" class="toggle-opt active" onclick="setRateType('yearly', this)">{{tool.yearly}}</button>
+          <button type="button" class="toggle-opt" onclick="setRateType('monthly', this)">{{tool.monthlyRate}}</button>
         </div>
       </div>
-    </div>
-    <div class="form-row">
       <div class="form-group">
         <label>{{tool.loanTerm}}</label>
         <input type="number" id="loan-term" placeholder="5" oninput="calculateLoan()">
-      </div>
-      <div class="form-group">
-        <label>{{tool.termUnit}}</label>
-        <select id="term-unit" onchange="calculateLoan()">
-          <option value="years">{{tool.years}}</option>
-          <option value="months">{{tool.months}}</option>
-        </select>
+        <div class="input-toggle">
+          <button type="button" class="toggle-opt active" onclick="setTermUnit('years', this)">{{tool.years}}</button>
+          <button type="button" class="toggle-opt" onclick="setTermUnit('months', this)">{{tool.months}}</button>
+        </div>
       </div>
     </div>
   </div>
@@ -567,6 +561,7 @@ const t = {
 
 let currentLoanType = 'amortized';
 let rateType = 'yearly'; // 'yearly' or 'monthly'
+let termUnit = 'years'; // 'years' or 'months'
 let scheduleData = [];
 let pieChart = null;
 let balanceChart = null;
@@ -603,7 +598,14 @@ function updateTypeDescription() {
 
 function setRateType(type, btn) {
   rateType = type;
-  document.querySelectorAll('.rate-type-btn').forEach(b => b.classList.remove('active'));
+  btn.parentElement.querySelectorAll('.toggle-opt').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  calculateLoan();
+}
+
+function setTermUnit(unit, btn) {
+  termUnit = unit;
+  btn.parentElement.querySelectorAll('.toggle-opt').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   calculateLoan();
 }
@@ -612,7 +614,6 @@ function calculateLoan() {
   const principal = parseFloat(document.getElementById('loan-amount').value);
   const inputRate = parseFloat(document.getElementById('interest-rate').value);
   const term = parseFloat(document.getElementById('loan-term').value);
-  const termUnit = document.getElementById('term-unit').value;
 
   if (!principal || !inputRate || !term) {
     document.getElementById('loan-results').classList.remove('show');

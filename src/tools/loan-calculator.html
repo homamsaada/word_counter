@@ -504,7 +504,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
 <script>
-const isArabic = App.state.lang === 'ar';
+const isArabic = document.documentElement.lang === 'ar';
 
 // Translations
 const t = {
@@ -928,7 +928,9 @@ async function exportLoanToExcel() {
   link.download = isArabic ? 'جدول_سداد_القرض.xlsx' : 'loan_payment_schedule.xlsx';
   link.click();
 
-  App.showToast(isArabic ? 'تم التصدير!' : 'Exported!');
+  if (typeof App !== 'undefined' && App.showToast) {
+    App.showToast(isArabic ? 'تم التصدير!' : 'Exported!');
+  }
 }
 
 function copyLoanData() {
@@ -953,7 +955,9 @@ function copyLoanData() {
                      `Total Interest: ${document.getElementById('total-interest').textContent}\n`;
 
   navigator.clipboard.writeText(text);
-  App.showToast(isArabic ? 'تم النسخ!' : 'Copied!');
+  if (typeof App !== 'undefined' && App.showToast) {
+    App.showToast(isArabic ? 'تم النسخ!' : 'Copied!');
+  }
 }
 
 // Theme observer

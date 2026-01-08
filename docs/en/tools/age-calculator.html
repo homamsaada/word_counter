@@ -362,6 +362,41 @@
 .fact-icon { font-size: 1.3rem; }
 .fact-text { color: var(--text-secondary); font-size: 0.9rem; }
 
+/* New Age Section Styles */
+.main-label { font-weight: 700; color: var(--text-primary); font-size: 1rem; display: block; margin-bottom: 12px; }
+.compact-date-input { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.date-block { background: var(--bg-primary); border: 2px solid var(--border-color); border-radius: 10px; padding: 12px; }
+.date-block.gregorian { border-color: var(--primary); }
+.date-block.hijri { border-color: #22c55e; background: rgba(34, 197, 94, 0.05); }
+.date-block.time-block { border-color: rgba(99, 102, 241, 0.4); background: rgba(99, 102, 241, 0.05); }
+.block-label { display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 8px; color: var(--text-secondary); }
+.date-block.gregorian .block-label { color: var(--primary); }
+.date-block.hijri .block-label { color: #22c55e; }
+.date-block.time-block .block-label { color: var(--primary); }
+.block-fields { display: flex; align-items: flex-end; gap: 4px; justify-content: center; }
+
+/* Age Live Result */
+.age-live-result { text-align: center; padding: 24px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 16px; color: white; font-size: 1.4rem; font-weight: 700; margin-bottom: 20px; direction: ltr; font-family: 'Courier New', monospace; letter-spacing: 1px; }
+
+/* Birth Info Box */
+.birth-info-box { background: var(--bg-secondary); border-radius: 12px; padding: 16px 20px; margin-bottom: 16px; }
+.info-line { padding: 8px 0; color: var(--text-secondary); font-size: 0.95rem; border-bottom: 1px solid var(--border-color); }
+.info-line:last-child { border-bottom: none; }
+.info-line.highlight { color: var(--primary); font-weight: 600; }
+
+/* Zodiac Inline */
+.zodiac-inline { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 16px; background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1)); border-radius: 12px; margin-bottom: 16px; }
+.zodiac-inline .zodiac-icon { font-size: 2rem; }
+.zodiac-inline .zodiac-name { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+.zodiac-inline .zodiac-dates { font-size: 0.85rem; color: var(--text-muted); }
+
+/* Fun Facts Text */
+.fun-facts-text { background: var(--bg-secondary); border-radius: 12px; padding: 16px 20px; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8; }
+
+@media (max-width: 768px) {
+  .compact-date-input { grid-template-columns: 1fr; }
+}
+
 .diff-result { text-align: center; }
 .diff-main { font-size: 1.3rem; font-weight: 700; color: var(--text-primary); padding: 20px; background: var(--bg-secondary); border-radius: 12px; margin-bottom: 16px; }
 
@@ -409,128 +444,62 @@
     <!-- Age Calculator -->
     <div class="calc-section active" id="age-section">
       <div class="input-form">
-        <div class="form-row">
-          <div class="form-group">
-            <label>Birth Date</label>
-            <div class="date-input-container" id="birth-container">
-              <div class="dual-date-input">
-                <div class="date-row gregorian">
-                  <span class="date-row-label">Gregorian</span>
-                  <div class="date-fields">
-                    <div class="field-group"><span class="field-label">Year</span><input type="number" class="date-field year" id="birth-g-year" placeholder="YYYY" min="1" max="9999" oninput="validateField(this, 1, 9999); onGregorianChange('birth')"></div>
-                    <span class="date-sep">/</span>
-                    <div class="field-group"><span class="field-label">Month</span><input type="number" class="date-field month" id="birth-g-month" placeholder="MM" min="1" max="12" oninput="validateField(this, 1, 12); onGregorianChange('birth')"></div>
-                    <span class="date-sep">/</span>
-                    <div class="field-group"><span class="field-label">Day</span><input type="number" class="date-field day" id="birth-g-day" placeholder="DD" min="1" max="31" oninput="validateField(this, 1, 31); onGregorianChange('birth')"></div>
-                  </div>
+        <label class="main-label">Birth Date</label>
+        <div class="birth-input-row">
+          <div class="date-input-container" id="birth-container">
+            <div class="compact-date-input">
+              <div class="date-block gregorian">
+                <span class="block-label">📅 Gregorian</span>
+                <div class="block-fields">
+                  <div class="field-group"><span class="field-label">Year</span><input type="number" class="date-field year" id="birth-g-year" placeholder="YYYY" min="1" max="9999" oninput="validateField(this, 1, 9999); onGregorianChange('birth')"></div>
+                  <span class="date-sep">/</span>
+                  <div class="field-group"><span class="field-label">Month</span><input type="number" class="date-field month" id="birth-g-month" placeholder="MM" min="1" max="12" oninput="validateField(this, 1, 12); onGregorianChange('birth')"></div>
+                  <span class="date-sep">/</span>
+                  <div class="field-group"><span class="field-label">Day</span><input type="number" class="date-field day" id="birth-g-day" placeholder="DD" min="1" max="31" oninput="validateField(this, 1, 31); onGregorianChange('birth')"></div>
                   <button type="button" class="date-picker-btn" onclick="toggleCalendar('birth', 'gregorian')">📅</button>
                 </div>
-                <div class="date-row hijri">
-                  <span class="date-row-label">Hijri</span>
-                  <div class="date-fields">
-                    <div class="field-group"><span class="field-label">Year</span><input type="number" class="date-field year" id="birth-h-year" placeholder="YYYY" min="1" max="9999" oninput="validateField(this, 1, 9999); onHijriChange('birth')"></div>
-                    <span class="date-sep">/</span>
-                    <div class="field-group"><span class="field-label">Month</span><input type="number" class="date-field month" id="birth-h-month" placeholder="MM" min="1" max="12" oninput="validateField(this, 1, 12); onHijriChange('birth')"></div>
-                    <span class="date-sep">/</span>
-                    <div class="field-group"><span class="field-label">Day</span><input type="number" class="date-field day" id="birth-h-day" placeholder="DD" min="1" max="30" oninput="validateField(this, 1, 30); onHijriChange('birth')"></div>
-                  </div>
+              </div>
+              <div class="date-block hijri">
+                <span class="block-label">🌙 Hijri</span>
+                <div class="block-fields">
+                  <div class="field-group"><span class="field-label">Year</span><input type="number" class="date-field year" id="birth-h-year" placeholder="YYYY" min="1" max="9999" oninput="validateField(this, 1, 9999); onHijriChange('birth')"></div>
+                  <span class="date-sep">/</span>
+                  <div class="field-group"><span class="field-label">Month</span><input type="number" class="date-field month" id="birth-h-month" placeholder="MM" min="1" max="12" oninput="validateField(this, 1, 12); onHijriChange('birth')"></div>
+                  <span class="date-sep">/</span>
+                  <div class="field-group"><span class="field-label">Day</span><input type="number" class="date-field day" id="birth-h-day" placeholder="DD" min="1" max="30" oninput="validateField(this, 1, 30); onHijriChange('birth')"></div>
                   <button type="button" class="date-picker-btn" onclick="toggleCalendar('birth', 'hijri')">🌙</button>
                 </div>
-                <div class="date-row time-row">
-                  <span class="date-row-label">Time</span>
-                  <div class="date-fields">
-                    <div class="field-group"><span class="field-label">Hour</span><input type="number" class="date-field hour" id="birth-hour" placeholder="HH" min="0" max="23" value="0" oninput="validateField(this, 0, 23); calculateAge()"></div>
-                    <span class="time-sep">:</span>
-                    <div class="field-group"><span class="field-label">Min</span><input type="number" class="date-field minute" id="birth-minute" placeholder="MM" min="0" max="59" value="0" oninput="validateField(this, 0, 59); calculateAge()"></div>
-                    <span class="time-sep">:</span>
-                    <div class="field-group"><span class="field-label">Sec</span><input type="number" class="date-field second" id="birth-second" placeholder="SS" min="0" max="59" value="0" oninput="validateField(this, 0, 59); calculateAge()"></div>
-                  </div>
-                  <button type="button" class="date-picker-btn" onclick="toggleTimePicker('birth')">🕐</button>
+              </div>
+              <div class="date-block time-block">
+                <span class="block-label">🕐 Time</span>
+                <div class="block-fields">
+                  <div class="field-group"><span class="field-label">Hour</span><input type="number" class="date-field hour" id="birth-hour" placeholder="HH" min="0" max="23" value="0" oninput="validateField(this, 0, 23); calculateAge()"></div>
+                  <span class="time-sep">:</span>
+                  <div class="field-group"><span class="field-label">Min</span><input type="number" class="date-field minute" id="birth-minute" placeholder="MM" min="0" max="59" value="0" oninput="validateField(this, 0, 59); calculateAge()"></div>
                 </div>
               </div>
-              <div class="calendar-popup" id="birth-calendar"></div>
-              <div class="time-picker-popup" id="birth-time-picker"></div>
             </div>
-          </div>
-          
-          <div class="form-group">
-            <label>Calculate To</label>
-            <div class="date-input-container" id="calc-container">
-              <div class="dual-date-input">
-                <div class="date-row gregorian">
-                  <span class="date-row-label">Gregorian</span>
-                  <div class="date-fields">
-                    <div class="field-group"><span class="field-label">Year</span><input type="number" class="date-field year" id="calc-g-year" placeholder="YYYY" min="1" max="9999" oninput="validateField(this, 1, 9999); onGregorianChange('calc'); stopAutoMode()"></div>
-                    <span class="date-sep">/</span>
-                    <div class="field-group"><span class="field-label">Month</span><input type="number" class="date-field month" id="calc-g-month" placeholder="MM" min="1" max="12" oninput="validateField(this, 1, 12); onGregorianChange('calc'); stopAutoMode()"></div>
-                    <span class="date-sep">/</span>
-                    <div class="field-group"><span class="field-label">Day</span><input type="number" class="date-field day" id="calc-g-day" placeholder="DD" min="1" max="31" oninput="validateField(this, 1, 31); onGregorianChange('calc'); stopAutoMode()"></div>
-                  </div>
-                  <button type="button" class="date-picker-btn" onclick="toggleCalendar('calc', 'gregorian'); stopAutoMode()">📅</button>
-                </div>
-                <div class="date-row hijri">
-                  <span class="date-row-label">Hijri</span>
-                  <div class="date-fields">
-                    <div class="field-group"><span class="field-label">Year</span><input type="number" class="date-field year" id="calc-h-year" placeholder="YYYY" min="1" max="9999" oninput="validateField(this, 1, 9999); onHijriChange('calc'); stopAutoMode()"></div>
-                    <span class="date-sep">/</span>
-                    <div class="field-group"><span class="field-label">Month</span><input type="number" class="date-field month" id="calc-h-month" placeholder="MM" min="1" max="12" oninput="validateField(this, 1, 12); onHijriChange('calc'); stopAutoMode()"></div>
-                    <span class="date-sep">/</span>
-                    <div class="field-group"><span class="field-label">Day</span><input type="number" class="date-field day" id="calc-h-day" placeholder="DD" min="1" max="30" oninput="validateField(this, 1, 30); onHijriChange('calc'); stopAutoMode()"></div>
-                  </div>
-                  <button type="button" class="date-picker-btn" onclick="toggleCalendar('calc', 'hijri'); stopAutoMode()">🌙</button>
-                </div>
-                <div class="date-row time-row">
-                  <span class="date-row-label">Time</span>
-                  <div class="date-fields">
-                    <div class="field-group"><span class="field-label">Hour</span><input type="number" class="date-field hour" id="calc-hour" placeholder="HH" min="0" max="23" oninput="validateField(this, 0, 23); stopAutoMode(); calculateAge()"></div>
-                    <span class="time-sep">:</span>
-                    <div class="field-group"><span class="field-label">Min</span><input type="number" class="date-field minute" id="calc-minute" placeholder="MM" min="0" max="59" oninput="validateField(this, 0, 59); stopAutoMode(); calculateAge()"></div>
-                    <span class="time-sep">:</span>
-                    <div class="field-group"><span class="field-label">Sec</span><input type="number" class="date-field second" id="calc-second" placeholder="SS" min="0" max="59" oninput="validateField(this, 0, 59); stopAutoMode(); calculateAge()"></div>
-                  </div>
-                  <button type="button" class="date-picker-btn" onclick="setNowTime('calc')">⏱️</button>
-                </div>
-              </div>
-              <div class="calendar-popup" id="calc-calendar"></div>
-              <div class="time-picker-popup" id="calc-time-picker"></div>
-            </div>
+            <div class="calendar-popup" id="birth-calendar"></div>
           </div>
         </div>
       </div>
 
       <div class="result-box" id="age-result">
-        <div class="age-main-result">
-          <div>
-            <span class="age-big" id="age-years">0</span>
-            <span class="age-unit">years old</span>
-          </div>
-          <div class="age-full" id="age-full"></div>
-          <div class="age-live" id="age-live"></div>
+        <div class="age-live-result" id="age-live"></div>
+        
+        <div class="birth-info-box">
+          <div class="info-line" id="born-on-line"></div>
+          <div class="info-line" id="next-birthday-line"></div>
+          <div class="info-line highlight" id="days-until-line"></div>
         </div>
-        <div class="stats-grid">
-          <div class="stat-card"><div class="stat-value" id="total-months">0</div><div class="stat-label">Months</div></div>
-          <div class="stat-card"><div class="stat-value" id="total-weeks">0</div><div class="stat-label">Weeks</div></div>
-          <div class="stat-card"><div class="stat-value" id="total-days">0</div><div class="stat-label">Days</div></div>
-          <div class="stat-card"><div class="stat-value" id="total-hours">0</div><div class="stat-label">Hours</div></div>
+
+        <div class="zodiac-inline">
+          <span class="zodiac-icon" id="zodiac-icon">♈</span>
+          <span class="zodiac-name" id="zodiac-name"></span>
+          <span class="zodiac-dates" id="zodiac-dates"></span>
         </div>
-        <div class="birthday-info">
-          <div class="birthday-row"><span class="birthday-label">Born on</span><span class="birthday-value" id="birth-day-name"></span></div>
-          <div class="birthday-row"><span class="birthday-label">🌙 Hijri Birth Date</span><span class="birthday-value hijri" id="birth-hijri-full"></span></div>
-          <div class="birthday-row"><span class="birthday-label">Next Birthday</span><span class="birthday-value highlight" id="next-birthday"></span></div>
-          <div class="birthday-row"><span class="birthday-label" id="days-until-label">Days Until</span><span class="birthday-value" id="days-until"></span></div>
-        </div>
-        <div class="zodiac-card">
-          <div class="zodiac-icon" id="zodiac-icon">♈</div>
-          <div class="zodiac-name" id="zodiac-name"></div>
-          <div class="zodiac-dates" id="zodiac-dates"></div>
-        </div>
-        <div class="fun-facts">
-          <h3>Fun Facts</h3>
-          <div class="fact-item"><span class="fact-icon">💓</span><span class="fact-text" id="heartbeats"></span></div>
-          <div class="fact-item"><span class="fact-icon">🌬️</span><span class="fact-text" id="breaths"></span></div>
-          <div class="fact-item"><span class="fact-icon">😴</span><span class="fact-text" id="sleep-time"></span></div>
-          <div class="fact-item"><span class="fact-icon">🌙</span><span class="fact-text" id="full-moons"></span></div>
-        </div>
+
+        <div class="fun-facts-text" id="fun-facts-text"></div>
       </div>
     </div>
 
@@ -776,7 +745,7 @@ function setTime(p, h, m, s) { setVal(`${p}-hour`, h); setVal(`${p}-minute`, m);
 
 function onGregorianChange(p) { const v = getDateValues(p); if (v.gY >= 1 && v.gM >= 1 && v.gM <= 12 && v.gD >= 1 && v.gD <= 31) { const h = gregorianToHijri(v.gY, v.gM, v.gD); setHijri(p, h.year, h.month, h.day); } triggerCalc(p); }
 function onHijriChange(p) { const v = getDateValues(p); if (v.hY >= 1 && v.hM >= 1 && v.hM <= 12 && v.hD >= 1 && v.hD <= 30) { const g = hijriToGregorian(v.hY, v.hM, v.hD); setGregorian(p, g.year, g.month, g.day); } triggerCalc(p); }
-function triggerCalc(p) { if (p === 'birth' || p === 'calc') { if (p === 'birth') startAgeAutoMode(); calculateAge(); } else if (p.startsWith('diff')) calculateDiff(); else if (p === 'add') calculateAdd(); }
+function triggerCalc(p) { if (p === 'birth') { startAgeAutoMode(); calculateAge(); } else if (p.startsWith('diff')) calculateDiff(); else if (p === 'add') calculateAdd(); }
 
 function getDateTime(p) { const v = getDateValues(p); if (v.gY < 1 || v.gM < 1 || v.gD < 1) return null; return new Date(v.gY, v.gM - 1, v.gD, v.hr, v.mn, v.sc); }
 function setDateTimeFromDate(p, d) { setGregorian(p, d.getFullYear(), d.getMonth() + 1, d.getDate()); setTime(p, d.getHours(), d.getMinutes(), d.getSeconds()); const h = gregorianToHijri(d.getFullYear(), d.getMonth() + 1, d.getDate()); setHijri(p, h.year, h.month, h.day); }
@@ -904,22 +873,79 @@ function switchAgeTab(tab) { document.querySelectorAll('.calc-tab').forEach(t =>
 function setOperation(op, btn) { currentOperation = op; document.querySelectorAll('.op-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); calculateAdd(); }
 
 // Auto Mode
-function startAgeAutoMode() { if (ageAutoInterval) return; const bd = getDateTime('birth'); if (!bd) return; ageAutoInterval = setInterval(() => { const now = new Date(); setDateTimeFromDate('calc', now); calculateAge(); }, 1000); }
 function stopAutoMode() { if (ageAutoInterval) { clearInterval(ageAutoInterval); ageAutoInterval = null; } }
 function startDiffAutoMode() { if (diffAutoInterval) return; const fd = getDateTime('diff-from'); if (!fd) return; diffAutoInterval = setInterval(() => { const now = new Date(); setDateTimeFromDate('diff-to', now); calculateDiff(); }, 1000); }
 function stopDiffAutoMode() { if (diffAutoInterval) { clearInterval(diffAutoInterval); diffAutoInterval = null; } }
 
 // Age Calculator
-function calculateAge() { const bd = getDateTime('birth'), td = getDateTime('calc'); if (!bd || !td) { document.getElementById('age-result').classList.remove('show'); return; }
-let yrs = td.getFullYear() - bd.getFullYear(), mos = td.getMonth() - bd.getMonth(), dys = td.getDate() - bd.getDate(); if (dys < 0) { mos--; dys += new Date(td.getFullYear(), td.getMonth(), 0).getDate(); } if (mos < 0) { yrs--; mos += 12; }
-let hrs = td.getHours() - bd.getHours(), mns = td.getMinutes() - bd.getMinutes(), scs = td.getSeconds() - bd.getSeconds(); if (scs < 0) { mns--; scs += 60; } if (mns < 0) { hrs--; mns += 60; } if (hrs < 0) { dys--; hrs += 24; if (dys < 0) { mos--; dys += 30; } if (mos < 0) { yrs--; mos += 12; } }
-document.getElementById('age-years').textContent = yrs; document.getElementById('age-full').textContent = isArabic ? `${yrs} سنة و ${mos} شهر و ${dys} يوم` : `${yrs} years, ${mos} months, ${dys} days`; document.getElementById('age-live').textContent = isArabic ? `${yrs} سنة ${mos} شهر ${dys} يوم ${hrs} ساعة ${mns} دقيقة ${scs} ثانية` : `${yrs}y ${mos}m ${dys}d ${hrs}h ${mns}m ${scs}s`;
-const diffMs = td - bd, totD = Math.floor(diffMs / 864e5), totH = Math.floor(diffMs / 36e5), totW = Math.floor(totD / 7), totM = yrs * 12 + mos; document.getElementById('total-months').textContent = totM.toLocaleString(); document.getElementById('total-weeks').textContent = totW.toLocaleString(); document.getElementById('total-days').textContent = totD.toLocaleString(); document.getElementById('total-hours').textContent = totH.toLocaleString();
-const bdStr = isArabic ? `${dayNames[bd.getDay()]}، ${bd.getDate()} ${monthNames[bd.getMonth()]} ${bd.getFullYear()}` : `${dayNames[bd.getDay()]}, ${monthNames[bd.getMonth()]} ${bd.getDate()}, ${bd.getFullYear()}`; document.getElementById('birth-day-name').textContent = bdStr;
-const hBd = gregorianToHijri(bd.getFullYear(), bd.getMonth() + 1, bd.getDate()); document.getElementById('birth-hijri-full').textContent = formatHijri(hBd);
-let nb = new Date(td.getFullYear(), bd.getMonth(), bd.getDate()); if (nb <= td) nb.setFullYear(nb.getFullYear() + 1); const nbStr = isArabic ? `${dayNames[nb.getDay()]}، ${nb.getDate()} ${monthNames[nb.getMonth()]} ${nb.getFullYear()}` : `${dayNames[nb.getDay()]}, ${monthNames[nb.getMonth()]} ${nb.getDate()}, ${nb.getFullYear()}`; document.getElementById('next-birthday').textContent = nbStr;
-const daysUntil = Math.ceil((nb - td) / 864e5), nextAge = yrs + 1; if (daysUntil === 0 || (td.getMonth() === bd.getMonth() && td.getDate() === bd.getDate())) { document.getElementById('days-until-label').textContent = isArabic ? '🎉 اليوم عيد ميلادك!' : '🎉 Today is your birthday!'; document.getElementById('days-until').textContent = ''; } else { document.getElementById('days-until-label').textContent = isArabic ? `أيام حتى عيد ميلادك الـ ${nextAge}` : `Days until birthday #${nextAge}`; document.getElementById('days-until').textContent = isArabic ? `${daysUntil} يوم` : `${daysUntil} days`; }
-updateZodiac(bd.getMonth() + 1, bd.getDate()); updateFunFacts(totD, totH); document.getElementById('age-result').classList.add('show'); }
+function calculateAge() { 
+  const bd = getDateTime('birth');
+  if (!bd) { document.getElementById('age-result').classList.remove('show'); return; }
+  
+  const td = new Date(); // Always calculate to NOW
+  
+  let yrs = td.getFullYear() - bd.getFullYear(), mos = td.getMonth() - bd.getMonth(), dys = td.getDate() - bd.getDate(); 
+  if (dys < 0) { mos--; dys += new Date(td.getFullYear(), td.getMonth(), 0).getDate(); } 
+  if (mos < 0) { yrs--; mos += 12; }
+  
+  let hrs = td.getHours() - bd.getHours(), mns = td.getMinutes() - bd.getMinutes(), scs = td.getSeconds() - bd.getSeconds(); 
+  if (scs < 0) { mns--; scs += 60; } 
+  if (mns < 0) { hrs--; mns += 60; } 
+  if (hrs < 0) { dys--; hrs += 24; if (dys < 0) { mos--; dys += 30; } if (mos < 0) { yrs--; mos += 12; } }
+  
+  // Live result in one line
+  const liveText = isArabic ? 
+    `${yrs} سنة · ${mos} شهر · ${dys} يوم · ${hrs} ساعة · ${mns} دقيقة · ${scs} ثانية` : 
+    `${yrs}y · ${mos}m · ${dys}d · ${hrs}h · ${mns}m · ${scs}s`;
+  document.getElementById('age-live').textContent = liveText;
+  
+  // Birth date with Hijri
+  const hBd = gregorianToHijri(bd.getFullYear(), bd.getMonth() + 1, bd.getDate());
+  const bornText = isArabic ? 
+    `🎂 ولدت ${dayNames[bd.getDay()]}، ${bd.getDate()} ${monthNames[bd.getMonth()]} ${bd.getFullYear())} الموافق لـ ${hBd.day} ${hijriMonthNames[hBd.month - 1]} ${hBd.year} هـ` :
+    `🎂 Born on ${dayNames[bd.getDay()]}, ${monthNames[bd.getMonth()]} ${bd.getDate()}, ${bd.getFullYear()} (${hBd.day} ${hijriMonthNames[hBd.month - 1]} ${hBd.year} AH)`;
+  document.getElementById('born-on-line').textContent = bornText;
+  
+  // Next birthday with Hijri
+  let nb = new Date(td.getFullYear(), bd.getMonth(), bd.getDate()); 
+  if (nb <= td) nb.setFullYear(nb.getFullYear() + 1);
+  const hNb = gregorianToHijri(nb.getFullYear(), nb.getMonth() + 1, nb.getDate());
+  const nbText = isArabic ?
+    `🎁 عيد ميلادك القادم ${dayNames[nb.getDay()]}، ${nb.getDate()} ${monthNames[nb.getMonth()]} ${nb.getFullYear()} الموافق لـ ${hNb.day} ${hijriMonthNames[hNb.month - 1]} ${hNb.year} هـ` :
+    `🎁 Next birthday: ${dayNames[nb.getDay()]}, ${monthNames[nb.getMonth()]} ${nb.getDate()}, ${nb.getFullYear()} (${hNb.day} ${hijriMonthNames[hNb.month - 1]} ${hNb.year} AH)`;
+  document.getElementById('next-birthday-line').textContent = nbText;
+  
+  // Days until birthday
+  const daysUntil = Math.ceil((nb - td) / 864e5), nextAge = yrs + 1;
+  let daysText;
+  if (daysUntil === 0 || (td.getMonth() === bd.getMonth() && td.getDate() === bd.getDate())) {
+    daysText = isArabic ? '🎉 اليوم عيد ميلادك! كل عام وأنت بخير!' : '🎉 Today is your birthday! Happy Birthday!';
+  } else {
+    daysText = isArabic ? 
+      `⏳ الأيام المتبقية حتى عيد ميلادك الـ ${nextAge}: ${daysUntil} يوم` :
+      `⏳ Days until birthday #${nextAge}: ${daysUntil} days`;
+  }
+  document.getElementById('days-until-line').textContent = daysText;
+  
+  // Zodiac
+  updateZodiac(bd.getMonth() + 1, bd.getDate());
+  
+  // Fun facts in one paragraph
+  const diffMs = td - bd, totD = Math.floor(diffMs / 864e5), totH = Math.floor(diffMs / 36e5);
+  const hb = totD * 100000, br = totD * 20000, sl = Math.floor(totH / 3), slDays = Math.floor(sl / 24), fm = Math.floor(totD / 29.5);
+  const funText = isArabic ?
+    `💓 لقد نبض قلبك حوالي ${hb.toLocaleString()} نبضة، 🌬️ وتنفست أكثر من ${br.toLocaleString()} مرة، 😴 ونمت ${sl.toLocaleString()} ساعة تقريباً (بما يعادل ${slDays.toLocaleString()} يوماً من النوم المستمر 😅)، 🌕 وشهدت ${fm.toLocaleString()} بدراً.` :
+    `💓 Your heart has beaten ~${hb.toLocaleString()} times, 🌬️ you've breathed ${br.toLocaleString()}+ times, 😴 slept ~${sl.toLocaleString()} hours (that's ${slDays.toLocaleString()} days of continuous sleep! 😅), 🌕 and witnessed ${fm.toLocaleString()} full moons.`;
+  document.getElementById('fun-facts-text').textContent = funText;
+  
+  document.getElementById('age-result').classList.add('show');
+}
+
+// Start age auto update
+function startAgeAutoMode() {
+  if (ageAutoInterval) return;
+  ageAutoInterval = setInterval(() => { calculateAge(); }, 1000);
+}
 
 // Diff Calculator
 function calculateDiff() { const fd = getDateTime('diff-from'), td = getDateTime('diff-to'); if (!fd || !td) { document.getElementById('diff-result').classList.remove('show'); return; }
@@ -940,9 +966,6 @@ document.getElementById('add-result-time').textContent = `${String(r.getHours())
 // Zodiac
 const zodiacSigns = [ { n: isArabic ? 'الجدي' : 'Capricorn', i: '♑', s: [12, 22], e: [1, 19] }, { n: isArabic ? 'الدلو' : 'Aquarius', i: '♒', s: [1, 20], e: [2, 18] }, { n: isArabic ? 'الحوت' : 'Pisces', i: '♓', s: [2, 19], e: [3, 20] }, { n: isArabic ? 'الحمل' : 'Aries', i: '♈', s: [3, 21], e: [4, 19] }, { n: isArabic ? 'الثور' : 'Taurus', i: '♉', s: [4, 20], e: [5, 20] }, { n: isArabic ? 'الجوزاء' : 'Gemini', i: '♊', s: [5, 21], e: [6, 20] }, { n: isArabic ? 'السرطان' : 'Cancer', i: '♋', s: [6, 21], e: [7, 22] }, { n: isArabic ? 'الأسد' : 'Leo', i: '♌', s: [7, 23], e: [8, 22] }, { n: isArabic ? 'العذراء' : 'Virgo', i: '♍', s: [8, 23], e: [9, 22] }, { n: isArabic ? 'الميزان' : 'Libra', i: '♎', s: [9, 23], e: [10, 22] }, { n: isArabic ? 'العقرب' : 'Scorpio', i: '♏', s: [10, 23], e: [11, 21] }, { n: isArabic ? 'القوس' : 'Sagittarius', i: '♐', s: [11, 22], e: [12, 21] } ];
 function updateZodiac(m, d) { for (const z of zodiacSigns) { const [sm, sd] = z.s, [em, ed] = z.e; let match = false; if (sm === em) match = m === sm && d >= sd && d <= ed; else if (sm > em) match = (m === sm && d >= sd) || (m === em && d <= ed); else match = (m === sm && d >= sd) || (m === em && d <= ed); if (match) { document.getElementById('zodiac-icon').textContent = z.i; document.getElementById('zodiac-name').textContent = z.n; document.getElementById('zodiac-dates').textContent = `${monthNames[sm - 1]} ${sd} - ${monthNames[em - 1]} ${ed}`; return; } } }
-
-// Fun Facts
-function updateFunFacts(totD, totH) { const hb = totD * 100000, br = totD * 20000, sl = Math.floor(totH / 3), fm = Math.floor(totD / 29.5); document.getElementById('heartbeats').textContent = isArabic ? `قلبك نبض حوالي ${hb.toLocaleString()} مرة` : `Your heart has beaten about ${hb.toLocaleString()} times`; document.getElementById('breaths').textContent = isArabic ? `تنفست حوالي ${br.toLocaleString()} مرة` : `You've breathed about ${br.toLocaleString()} times`; document.getElementById('sleep-time').textContent = isArabic ? `نمت حوالي ${sl.toLocaleString()} ساعة` : `You've slept about ${sl.toLocaleString()} hours`; document.getElementById('full-moons').textContent = isArabic ? `شهدت ${fm.toLocaleString()} بدراً` : `You've seen ${fm.toLocaleString()} full moons`; }
 
 // Init
 // Add custom spinners to all number inputs
@@ -978,7 +1001,6 @@ function spinValue(btn, delta) {
 document.addEventListener('DOMContentLoaded', () => { 
   addCustomSpinners();
   const now = new Date(); 
-  setDateTimeFromDate('calc', now); 
   setDateTimeFromDate('diff-to', now); 
   setDateTimeFromDate('add', now); 
   startDiffAutoMode(); 

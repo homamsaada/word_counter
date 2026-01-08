@@ -270,17 +270,20 @@
 .date-row:focus-within { border-color: var(--primary); }
 .date-row.hijri { border-color: rgba(34, 197, 94, 0.4); background: rgba(34, 197, 94, 0.05); }
 .date-row.hijri:focus-within { border-color: #22c55e; }
+.date-row.time-row { border-color: rgba(99, 102, 241, 0.3); background: rgba(99, 102, 241, 0.05); }
+.date-row.time-row:focus-within { border-color: var(--primary); }
+.date-row.time-row .date-row-label { color: var(--primary); }
 
 .date-row-label { font-size: 0.75rem; font-weight: 700; min-width: 24px; display: flex; align-items: center; gap: 4px; }
 .date-row.gregorian .date-row-label { color: var(--primary); }
 .date-row.hijri .date-row-label { color: #22c55e; }
 
 .date-fields { display: flex; align-items: center; gap: 4px; flex: 1; }
-.date-field { width: 100%; border: none; background: transparent; text-align: center; font-size: 0.95rem; font-weight: 500; color: var(--text-primary); padding: 4px 2px; font-family: inherit; }
+.date-field { width: 100%; border: none; background: transparent; text-align: center; font-size: 1.05rem; font-weight: 600; color: var(--text-primary); padding: 6px 4px; font-family: inherit; }
 .date-field:focus { outline: none; background: rgba(99, 102, 241, 0.1); border-radius: 4px; }
 .date-field::placeholder { color: var(--text-muted); opacity: 0.5; }
-.date-field.year { width: 50px; }
-.date-field.month, .date-field.day, .date-field.hour, .date-field.minute, .date-field.second { width: 32px; }
+.date-field.year { width: 60px; }
+.date-field.month, .date-field.day, .date-field.hour, .date-field.minute, .date-field.second { width: 40px; }
 
 .date-sep, .time-sep { color: var(--text-muted); font-weight: 600; font-size: 0.9rem; }
 .date-time-divider { width: 1px; height: 24px; background: var(--border-color); margin: 0 8px; }
@@ -403,12 +406,6 @@
                     <input type="number" class="date-field month" id="birth-g-month" placeholder="MM" oninput="onGregorianChange('birth')">
                     <span class="date-sep">/</span>
                     <input type="number" class="date-field day" id="birth-g-day" placeholder="DD" oninput="onGregorianChange('birth')">
-                    <span class="date-time-divider"></span>
-                    <input type="number" class="date-field hour" id="birth-hour" placeholder="HH" value="0" oninput="calculateAge()">
-                    <span class="time-sep">:</span>
-                    <input type="number" class="date-field minute" id="birth-minute" placeholder="MM" value="0" oninput="calculateAge()">
-                    <span class="time-sep">:</span>
-                    <input type="number" class="date-field second" id="birth-second" placeholder="SS" value="0" oninput="calculateAge()">
                   </div>
                   <button type="button" class="date-picker-btn" onclick="toggleCalendar('birth', 'gregorian')">📅</button>
                 </div>
@@ -422,6 +419,16 @@
                     <input type="number" class="date-field day" id="birth-h-day" placeholder="DD" oninput="onHijriChange('birth')">
                   </div>
                   <button type="button" class="date-picker-btn" onclick="toggleCalendar('birth', 'hijri')">🌙</button>
+                </div>
+                <div class="date-row time-row">
+                  <span class="date-row-label">🕐</span>
+                  <div class="date-fields">
+                    <input type="number" class="date-field hour" id="birth-hour" placeholder="HH" value="0" oninput="calculateAge()">
+                    <span class="time-sep">:</span>
+                    <input type="number" class="date-field minute" id="birth-minute" placeholder="MM" value="0" oninput="calculateAge()">
+                    <span class="time-sep">:</span>
+                    <input type="number" class="date-field second" id="birth-second" placeholder="SS" value="0" oninput="calculateAge()">
+                  </div>
                 </div>
               </div>
               <div class="calendar-popup" id="birth-calendar"></div>
@@ -440,12 +447,6 @@
                     <input type="number" class="date-field month" id="calc-g-month" placeholder="MM" oninput="onGregorianChange('calc'); stopAutoMode()">
                     <span class="date-sep">/</span>
                     <input type="number" class="date-field day" id="calc-g-day" placeholder="DD" oninput="onGregorianChange('calc'); stopAutoMode()">
-                    <span class="date-time-divider"></span>
-                    <input type="number" class="date-field hour" id="calc-hour" placeholder="HH" oninput="stopAutoMode(); calculateAge()">
-                    <span class="time-sep">:</span>
-                    <input type="number" class="date-field minute" id="calc-minute" placeholder="MM" oninput="stopAutoMode(); calculateAge()">
-                    <span class="time-sep">:</span>
-                    <input type="number" class="date-field second" id="calc-second" placeholder="SS" oninput="stopAutoMode(); calculateAge()">
                   </div>
                   <button type="button" class="date-picker-btn" onclick="toggleCalendar('calc', 'gregorian'); stopAutoMode()">📅</button>
                 </div>
@@ -459,6 +460,16 @@
                     <input type="number" class="date-field day" id="calc-h-day" placeholder="DD" oninput="onHijriChange('calc'); stopAutoMode()">
                   </div>
                   <button type="button" class="date-picker-btn" onclick="toggleCalendar('calc', 'hijri'); stopAutoMode()">🌙</button>
+                </div>
+                <div class="date-row time-row">
+                  <span class="date-row-label">🕐</span>
+                  <div class="date-fields">
+                    <input type="number" class="date-field hour" id="calc-hour" placeholder="HH" oninput="stopAutoMode(); calculateAge()">
+                    <span class="time-sep">:</span>
+                    <input type="number" class="date-field minute" id="calc-minute" placeholder="MM" oninput="stopAutoMode(); calculateAge()">
+                    <span class="time-sep">:</span>
+                    <input type="number" class="date-field second" id="calc-second" placeholder="SS" oninput="stopAutoMode(); calculateAge()">
+                  </div>
                 </div>
               </div>
               <div class="calendar-popup" id="calc-calendar"></div>
@@ -519,12 +530,6 @@
                     <input type="number" class="date-field month" id="diff-from-g-month" placeholder="MM" oninput="onGregorianChange('diff-from')">
                     <span class="date-sep">/</span>
                     <input type="number" class="date-field day" id="diff-from-g-day" placeholder="DD" oninput="onGregorianChange('diff-from')">
-                    <span class="date-time-divider"></span>
-                    <input type="number" class="date-field hour" id="diff-from-hour" placeholder="HH" value="0" oninput="calculateDiff()">
-                    <span class="time-sep">:</span>
-                    <input type="number" class="date-field minute" id="diff-from-minute" placeholder="MM" value="0" oninput="calculateDiff()">
-                    <span class="time-sep">:</span>
-                    <input type="number" class="date-field second" id="diff-from-second" placeholder="SS" value="0" oninput="calculateDiff()">
                   </div>
                   <button type="button" class="date-picker-btn" onclick="toggleCalendar('diff-from', 'gregorian')">📅</button>
                 </div>
@@ -538,6 +543,16 @@
                     <input type="number" class="date-field day" id="diff-from-h-day" placeholder="DD" oninput="onHijriChange('diff-from')">
                   </div>
                   <button type="button" class="date-picker-btn" onclick="toggleCalendar('diff-from', 'hijri')">🌙</button>
+                </div>
+                <div class="date-row time-row">
+                  <span class="date-row-label">🕐</span>
+                  <div class="date-fields">
+                    <input type="number" class="date-field hour" id="diff-from-hour" placeholder="HH" value="0" oninput="calculateDiff()">
+                    <span class="time-sep">:</span>
+                    <input type="number" class="date-field minute" id="diff-from-minute" placeholder="MM" value="0" oninput="calculateDiff()">
+                    <span class="time-sep">:</span>
+                    <input type="number" class="date-field second" id="diff-from-second" placeholder="SS" value="0" oninput="calculateDiff()">
+                  </div>
                 </div>
               </div>
               <div class="calendar-popup" id="diff-from-calendar"></div>
@@ -555,12 +570,6 @@
                     <input type="number" class="date-field month" id="diff-to-g-month" placeholder="MM" oninput="onGregorianChange('diff-to'); stopDiffAutoMode()">
                     <span class="date-sep">/</span>
                     <input type="number" class="date-field day" id="diff-to-g-day" placeholder="DD" oninput="onGregorianChange('diff-to'); stopDiffAutoMode()">
-                    <span class="date-time-divider"></span>
-                    <input type="number" class="date-field hour" id="diff-to-hour" placeholder="HH" oninput="stopDiffAutoMode(); calculateDiff()">
-                    <span class="time-sep">:</span>
-                    <input type="number" class="date-field minute" id="diff-to-minute" placeholder="MM" oninput="stopDiffAutoMode(); calculateDiff()">
-                    <span class="time-sep">:</span>
-                    <input type="number" class="date-field second" id="diff-to-second" placeholder="SS" oninput="stopDiffAutoMode(); calculateDiff()">
                   </div>
                   <button type="button" class="date-picker-btn" onclick="toggleCalendar('diff-to', 'gregorian'); stopDiffAutoMode()">📅</button>
                 </div>
@@ -574,6 +583,16 @@
                     <input type="number" class="date-field day" id="diff-to-h-day" placeholder="DD" oninput="onHijriChange('diff-to'); stopDiffAutoMode()">
                   </div>
                   <button type="button" class="date-picker-btn" onclick="toggleCalendar('diff-to', 'hijri'); stopDiffAutoMode()">🌙</button>
+                </div>
+                <div class="date-row time-row">
+                  <span class="date-row-label">🕐</span>
+                  <div class="date-fields">
+                    <input type="number" class="date-field hour" id="diff-to-hour" placeholder="HH" oninput="stopDiffAutoMode(); calculateDiff()">
+                    <span class="time-sep">:</span>
+                    <input type="number" class="date-field minute" id="diff-to-minute" placeholder="MM" oninput="stopDiffAutoMode(); calculateDiff()">
+                    <span class="time-sep">:</span>
+                    <input type="number" class="date-field second" id="diff-to-second" placeholder="SS" oninput="stopDiffAutoMode(); calculateDiff()">
+                  </div>
                 </div>
               </div>
               <div class="calendar-popup" id="diff-to-calendar"></div>
@@ -620,12 +639,6 @@
                     <input type="number" class="date-field month" id="add-g-month" placeholder="MM" oninput="onGregorianChange('add')">
                     <span class="date-sep">/</span>
                     <input type="number" class="date-field day" id="add-g-day" placeholder="DD" oninput="onGregorianChange('add')">
-                    <span class="date-time-divider"></span>
-                    <input type="number" class="date-field hour" id="add-hour" placeholder="HH" oninput="calculateAdd()">
-                    <span class="time-sep">:</span>
-                    <input type="number" class="date-field minute" id="add-minute" placeholder="MM" oninput="calculateAdd()">
-                    <span class="time-sep">:</span>
-                    <input type="number" class="date-field second" id="add-second" placeholder="SS" oninput="calculateAdd()">
                   </div>
                   <button type="button" class="date-picker-btn" onclick="toggleCalendar('add', 'gregorian')">📅</button>
                 </div>
@@ -639,6 +652,16 @@
                     <input type="number" class="date-field day" id="add-h-day" placeholder="DD" oninput="onHijriChange('add')">
                   </div>
                   <button type="button" class="date-picker-btn" onclick="toggleCalendar('add', 'hijri')">🌙</button>
+                </div>
+                <div class="date-row time-row">
+                  <span class="date-row-label">🕐</span>
+                  <div class="date-fields">
+                    <input type="number" class="date-field hour" id="add-hour" placeholder="HH" oninput="calculateAdd()">
+                    <span class="time-sep">:</span>
+                    <input type="number" class="date-field minute" id="add-minute" placeholder="MM" oninput="calculateAdd()">
+                    <span class="time-sep">:</span>
+                    <input type="number" class="date-field second" id="add-second" placeholder="SS" oninput="calculateAdd()">
+                  </div>
                 </div>
               </div>
               <div class="calendar-popup" id="add-calendar"></div>

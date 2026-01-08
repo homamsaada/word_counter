@@ -279,24 +279,12 @@
 .date-row.hijri .date-row-label { color: #22c55e; }
 
 .date-fields { display: flex; align-items: center; gap: 4px; flex: 1; }
-.date-field { width: 100%; border: none; background: transparent; text-align: center; font-size: 1.05rem; font-weight: 600; color: var(--text-primary); padding: 6px 4px; font-family: inherit; }
+.date-field { width: 100%; border: none; background: transparent; text-align: center; font-size: 1.05rem; font-weight: 600; color: var(--text-primary); padding: 6px 4px; font-family: inherit; -moz-appearance: textfield; }
+.date-field::-webkit-outer-spin-button, .date-field::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .date-field:focus { outline: none; background: rgba(99, 102, 241, 0.1); border-radius: 4px; }
 .date-field::placeholder { color: var(--text-muted); opacity: 0.5; }
 .date-field.year { width: 60px; }
 .date-field.month, .date-field.day, .date-field.hour, .date-field.minute, .date-field.second { width: 40px; }
-
-/* Custom Number Input Wrapper */
-.number-input-wrapper { position: relative; display: inline-flex; flex-direction: column; align-items: center; }
-.number-input-wrapper input { -moz-appearance: textfield; }
-.number-input-wrapper input::-webkit-outer-spin-button,
-.number-input-wrapper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-.number-spinner { display: flex; flex-direction: column; position: absolute; right: -2px; top: 50%; transform: translateY(-50%); gap: 0; opacity: 0; transition: opacity 0.2s; }
-.number-input-wrapper:hover .number-spinner,
-.number-input-wrapper:focus-within .number-spinner { opacity: 1; }
-.spin-btn { width: 16px; height: 12px; padding: 0; border: none; background: var(--bg-secondary); color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 8px; line-height: 1; transition: all 0.15s; }
-.spin-btn:hover { background: var(--primary); color: white; }
-.spin-btn.up { border-radius: 3px 3px 0 0; }
-.spin-btn.down { border-radius: 0 0 3px 3px; }
 
 .field-group { display: flex; flex-direction: column; align-items: center; gap: 2px; }
 .field-label { font-size: 0.65rem; color: var(--text-muted); font-weight: 500; text-transform: uppercase; }
@@ -902,7 +890,7 @@ function calculateAge() {
   // Birth date with Hijri
   const hBd = gregorianToHijri(bd.getFullYear(), bd.getMonth() + 1, bd.getDate());
   const bornText = isArabic ? 
-    `🎂 ولدت ${dayNames[bd.getDay()]}، ${bd.getDate()} ${monthNames[bd.getMonth()]} ${bd.getFullYear())} الموافق لـ ${hBd.day} ${hijriMonthNames[hBd.month - 1]} ${hBd.year} هـ` :
+    `🎂 ولدت ${dayNames[bd.getDay()]}، ${bd.getDate()} ${monthNames[bd.getMonth()]} ${bd.getFullYear()} الموافق لـ ${hBd.day} ${hijriMonthNames[hBd.month - 1]} ${hBd.year} هـ` :
     `🎂 Born on ${dayNames[bd.getDay()]}, ${monthNames[bd.getMonth()]} ${bd.getDate()}, ${bd.getFullYear()} (${hBd.day} ${hijriMonthNames[hBd.month - 1]} ${hBd.year} AH)`;
   document.getElementById('born-on-line').textContent = bornText;
   
@@ -968,38 +956,7 @@ const zodiacSigns = [ { n: isArabic ? 'الجدي' : 'Capricorn', i: '♑', s: [
 function updateZodiac(m, d) { for (const z of zodiacSigns) { const [sm, sd] = z.s, [em, ed] = z.e; let match = false; if (sm === em) match = m === sm && d >= sd && d <= ed; else if (sm > em) match = (m === sm && d >= sd) || (m === em && d <= ed); else match = (m === sm && d >= sd) || (m === em && d <= ed); if (match) { document.getElementById('zodiac-icon').textContent = z.i; document.getElementById('zodiac-name').textContent = z.n; document.getElementById('zodiac-dates').textContent = `${monthNames[sm - 1]} ${sd} - ${monthNames[em - 1]} ${ed}`; return; } } }
 
 // Init
-// Add custom spinners to all number inputs
-function addCustomSpinners() {
-  document.querySelectorAll('.date-field').forEach(input => {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'number-input-wrapper';
-    input.parentNode.insertBefore(wrapper, input);
-    wrapper.appendChild(input);
-    
-    const spinner = document.createElement('div');
-    spinner.className = 'number-spinner';
-    spinner.innerHTML = `
-      <button type="button" class="spin-btn up" onclick="spinValue(this, 1)">▲</button>
-      <button type="button" class="spin-btn down" onclick="spinValue(this, -1)">▼</button>
-    `;
-    wrapper.appendChild(spinner);
-  });
-}
-
-function spinValue(btn, delta) {
-  const input = btn.closest('.number-input-wrapper').querySelector('input');
-  const min = parseInt(input.min) || 0;
-  const max = parseInt(input.max) || 9999;
-  let val = parseInt(input.value) || min;
-  val += delta;
-  if (val < min) val = max;
-  if (val > max) val = min;
-  input.value = val;
-  input.dispatchEvent(new Event('input', { bubbles: true }));
-}
-
 document.addEventListener('DOMContentLoaded', () => { 
-  addCustomSpinners();
   const now = new Date(); 
   setDateTimeFromDate('diff-to', now); 
   setDateTimeFromDate('add', now); 

@@ -308,9 +308,9 @@
 .date-input.year:focus { outline: none; border-color: var(--primary); }
 
 /* Time Block Row */
-.time-block-row { display: flex; align-items: center; gap: 12px; margin-top: 12px; padding: 12px; background: rgba(99, 102, 241, 0.05); border: 2px solid rgba(99, 102, 241, 0.2); border-radius: 10px; flex-wrap: wrap; }
-.time-block-row .block-label { color: var(--primary); font-weight: 700; font-size: 0.85rem; }
-.time-fields-12 { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.time-block-row { display: flex; align-items: center; gap: 12px; margin-top: 12px; padding: 12px 12px 12px 0; background: rgba(99, 102, 241, 0.05); border: 2px solid rgba(99, 102, 241, 0.2); border-radius: 10px; }
+.time-block-row .block-label { color: var(--primary); font-weight: 700; font-size: 0.85rem; min-width: 80px; }
+.time-fields-12 { display: flex; align-items: center; gap: 6px; }
 
 /* Calendar Popup */
 .date-input-container { position: relative; }
@@ -370,31 +370,31 @@
 
 /* New Age Section Styles */
 .main-label { font-weight: 700; color: var(--text-primary); font-size: 1rem; display: block; margin-bottom: 12px; }
-.compact-date-input { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.compact-date-input { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .date-block { background: var(--bg-primary); border: 2px solid var(--border-color); border-radius: 10px; padding: 12px; }
 .date-block.gregorian { border-color: var(--primary); }
 .date-block.hijri { border-color: #22c55e; background: rgba(34, 197, 94, 0.05); }
-.date-block.time-block { border-color: rgba(99, 102, 241, 0.4); background: rgba(99, 102, 241, 0.05); }
 .block-label { display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 8px; color: var(--text-secondary); }
 .date-block.gregorian .block-label { color: var(--primary); }
 .date-block.hijri .block-label { color: #22c55e; }
-.date-block.time-block .block-label { color: var(--primary); }
-.block-fields { display: flex; align-items: flex-end; gap: 4px; justify-content: center; }
+.block-fields { display: flex; align-items: center; gap: 4px; justify-content: flex-start; }
 
 /* Age Live Result */
 .age-live-result { text-align: center; padding: 24px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 16px; color: white; margin-bottom: 20px; }
 .age-years-line { font-size: 3rem; font-weight: 800; display: block; margin-bottom: 8px; }
 .age-details-line { font-size: 1.1rem; font-weight: 600; opacity: 0.95; }
 
-/* Birth Info Box */
-.birth-info-box { background: var(--bg-secondary); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
-.info-line { padding: 12px 0; color: var(--text-secondary); font-size: 1rem; border-bottom: 1px solid var(--border-color); line-height: 1.6; }
-.info-line:last-child { border-bottom: none; }
-.info-line .label { color: var(--text-muted); font-size: 0.85rem; display: block; margin-bottom: 4px; }
-.info-line .value { color: var(--text-primary); font-weight: 600; }
-.info-line .value.hijri { color: #22c55e; }
-.info-line.highlight { background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1)); margin: 0 -20px; padding: 16px 20px; border-radius: 0; }
-.info-line.highlight .value { color: var(--primary); font-size: 1.1rem; }
+/* Birth Info Box - Improved */
+.birth-info-box { background: var(--bg-secondary); border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
+.info-card { padding: 20px; border-bottom: 1px solid var(--border-color); }
+.info-card:last-child { border-bottom: none; }
+.info-card .info-label { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 8px; }
+.info-card .info-label .emoji { font-size: 1.2rem; }
+.info-card .info-main { font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+.info-card .info-hijri { font-size: 1rem; color: #22c55e; font-weight: 600; }
+.info-card.highlight { background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1)); }
+.info-card.highlight .info-label { color: var(--primary); font-weight: 600; }
+.info-card.highlight .info-main { font-size: 1.5rem; color: var(--primary); }
 
 /* Zodiac Inline */
 .zodiac-inline { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 16px; background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1)); border-radius: 12px; margin-bottom: 16px; }
@@ -402,8 +402,14 @@
 .zodiac-inline .zodiac-name { font-size: 1.2rem; font-weight: 700; color: var(--primary); }
 .zodiac-inline .zodiac-dates { font-size: 0.85rem; color: var(--text-muted); }
 
-/* Fun Facts Text */
-.fun-facts-text { background: var(--bg-secondary); border-radius: 12px; padding: 16px 20px; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8; }
+/* Fun Facts - Improved */
+.fun-facts-box { background: var(--bg-secondary); border-radius: 12px; padding: 20px; }
+.fun-facts-box h3 { margin: 0 0 16px 0; font-size: 1.1rem; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+.fact-item { padding: 12px 0; border-bottom: 1px solid var(--border-color); font-size: 1rem; color: var(--text-secondary); line-height: 1.7; }
+.fact-item:last-child { border-bottom: none; }
+.fact-item .emoji { font-size: 1.2rem; margin-left: 4px; }
+.fact-item .highlight-num { color: var(--primary); font-weight: 700; }
+
 
 @media (max-width: 768px) {
   .compact-date-input { grid-template-columns: 1fr; }
@@ -509,19 +515,19 @@
         </div>
         
         <div class="birth-info-box">
-          <div class="info-line">
-            <span class="label">🎂 Born on</span>
-            <span class="value" id="born-gregorian"></span>
-            <span class="value hijri" id="born-hijri"></span>
+          <div class="info-card">
+            <div class="info-label"><span class="emoji">🎂</span> Born on</div>
+            <div class="info-main" id="born-gregorian"></div>
+            <div class="info-hijri" id="born-hijri"></div>
           </div>
-          <div class="info-line">
-            <span class="label">🎁 Next Birthday</span>
-            <span class="value" id="next-birthday-gregorian"></span>
-            <span class="value hijri" id="next-birthday-hijri"></span>
+          <div class="info-card">
+            <div class="info-label"><span class="emoji">🎁</span> Next Birthday</div>
+            <div class="info-main" id="next-birthday-gregorian"></div>
+            <div class="info-hijri" id="next-birthday-hijri"></div>
           </div>
-          <div class="info-line highlight">
-            <span class="label" id="days-until-label"></span>
-            <span class="value" id="days-until-value"></span>
+          <div class="info-card highlight">
+            <div class="info-label" id="days-until-label"></div>
+            <div class="info-main" id="days-until-value"></div>
           </div>
         </div>
 
@@ -531,7 +537,10 @@
           <span class="zodiac-dates" id="zodiac-dates"></span>
         </div>
 
-        <div class="fun-facts-text" id="fun-facts-text"></div>
+        <div class="fun-facts-box">
+          <h3>✨ Fun Facts</h3>
+          <div id="fun-facts-content"></div>
+        </div>
       </div>
     </div>
 
@@ -1015,13 +1024,48 @@ function calculateAge() {
   // Zodiac
   updateZodiac(bd.getMonth() + 1, bd.getDate());
   
-  // Fun facts in one paragraph
+  // Fun facts - New and improved!
   const diffMs = td - bd, totD = Math.floor(diffMs / 864e5), totH = Math.floor(diffMs / 36e5);
-  const hb = totD * 100000, br = totD * 20000, sl = Math.floor(totH / 3), slDays = Math.floor(sl / 24), fm = Math.floor(totD / 29.5);
-  const funText = isArabic ?
-    `💓 لقد نبض قلبك حوالي ${hb.toLocaleString()} نبضة، 🌬️ وتنفست أكثر من ${br.toLocaleString()} مرة، 😴 ونمت ${sl.toLocaleString()} ساعة تقريباً (بما يعادل ${slDays.toLocaleString()} يوماً من النوم المستمر 😅)، 🌕 وشهدت ${fm.toLocaleString()} بدراً.` :
-    `💓 Your heart has beaten ~${hb.toLocaleString()} times, 🌬️ you've breathed ${br.toLocaleString()}+ times, 😴 slept ~${sl.toLocaleString()} hours (that's ${slDays.toLocaleString()} days of continuous sleep! 😅), 🌕 and witnessed ${fm.toLocaleString()} full moons.`;
-  document.getElementById('fun-facts-text').textContent = funText;
+  
+  // Calculations
+  const heartbeats = totD * 100000; // ~100,000 heartbeats per day
+  const fullMoons = Math.floor(totD / 29.5);
+  const blinks = totD * 16320; // ~17 blinks/min * 60 * 16 waking hours
+  const steps = totD * 7500; // average daily steps
+  const earthCircumference = 40075; // km
+  const distanceWalked = (steps * 0.0007); // km (0.7m per step)
+  const timesAroundEarth = (distanceWalked / earthCircumference).toFixed(1);
+  const orbitsAroundSun = yrs;
+  const sleepHours = Math.floor(totH / 3); // ~8 hours sleep per 24
+  const sleepYears = (sleepHours / 24 / 365).toFixed(1);
+  const kahfSleepHours = 309 * 365 * 24; // أهل الكهف - 309 سنة
+  const yearsToKahf = ((kahfSleepHours - sleepHours) / 24 / 365).toFixed(0);
+  const turtleAge = 190; // أكبر سلحفاة
+  const yearsToTurtle = turtleAge - yrs;
+  
+  let factsHtml = '';
+  if (isArabic) {
+    factsHtml = `
+      <div class="fact-item"><span class="emoji">💓</span> نبض قلبك حوالي <span class="highlight-num">${heartbeats.toLocaleString()}</span> نبضة</div>
+      <div class="fact-item"><span class="emoji">👀</span> طرفت عيناك أكثر من <span class="highlight-num">${blinks.toLocaleString()}</span> طرفة</div>
+      <div class="fact-item"><span class="emoji">🚶</span> مشيت ما يعادل <span class="highlight-num">${distanceWalked.toLocaleString()}</span> كم، أي كأنك درت حول الأرض <span class="highlight-num">${timesAroundEarth}</span> مرة!</div>
+      <div class="fact-item"><span class="emoji">🌍</span> دارت بك الأرض حول الشمس <span class="highlight-num">${orbitsAroundSun}</span> دورة كاملة بسرعة 107,000 كم/ساعة</div>
+      <div class="fact-item"><span class="emoji">🌕</span> شهدت <span class="highlight-num">${fullMoons.toLocaleString()}</span> بدراً مكتملاً</div>
+      <div class="fact-item"><span class="emoji">😴</span> نمت حوالي <span class="highlight-num">${sleepHours.toLocaleString()}</span> ساعة (${sleepYears} سنة من النوم المتواصل!)، ${yearsToKahf > 0 ? `نَم <span class="highlight-num">${yearsToKahf}</span> سنة أخرى متواصلة لتلحق بأهل الكهف 😅` : 'لقد تجاوزت أهل الكهف! 😱'}</div>
+      <div class="fact-item"><span class="emoji">🐢</span> ${yearsToTurtle > 0 ? `أمامك <span class="highlight-num">${yearsToTurtle}</span> سنة لتصل لعمر أكبر سلحفاة معروفة (190 سنة)` : 'لقد تجاوزت عمر أكبر سلحفاة معروفة! أنت أسطورة! 🎉'}</div>
+    `;
+  } else {
+    factsHtml = `
+      <div class="fact-item"><span class="emoji">💓</span> Your heart has beaten ~<span class="highlight-num">${heartbeats.toLocaleString()}</span> times</div>
+      <div class="fact-item"><span class="emoji">👀</span> You've blinked over <span class="highlight-num">${blinks.toLocaleString()}</span> times</div>
+      <div class="fact-item"><span class="emoji">🚶</span> You've walked ~<span class="highlight-num">${distanceWalked.toLocaleString()}</span> km, circling Earth <span class="highlight-num">${timesAroundEarth}</span> times!</div>
+      <div class="fact-item"><span class="emoji">🌍</span> Earth carried you around the Sun <span class="highlight-num">${orbitsAroundSun}</span> times at 107,000 km/h</div>
+      <div class="fact-item"><span class="emoji">🌕</span> You've witnessed <span class="highlight-num">${fullMoons.toLocaleString()}</span> full moons</div>
+      <div class="fact-item"><span class="emoji">😴</span> You've slept ~<span class="highlight-num">${sleepHours.toLocaleString()}</span> hours (${sleepYears} years!), ${yearsToKahf > 0 ? `sleep <span class="highlight-num">${yearsToKahf}</span> more years straight to catch up with the Sleepers of the Cave 😅` : 'You beat the Sleepers of the Cave! 😱'}</div>
+      <div class="fact-item"><span class="emoji">🐢</span> ${yearsToTurtle > 0 ? `<span class="highlight-num">${yearsToTurtle}</span> years to go to match the oldest known tortoise (190 years)` : 'You outlived the oldest known tortoise! Legend! 🎉'}</div>
+    `;
+  }
+  document.getElementById('fun-facts-content').innerHTML = factsHtml;
   
   document.getElementById('age-result').classList.add('show');
 }

@@ -298,9 +298,19 @@
 .date-select { padding: 6px 8px; border: 2px solid var(--border-color); border-radius: 8px; background: var(--bg-primary); color: var(--text-primary); font-size: 0.95rem; font-weight: 600; font-family: inherit; cursor: pointer; transition: border-color 0.2s; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236366f1' d='M6 8L2 4h8z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: left 8px center; padding-left: 24px; }
 .date-select:focus { outline: none; border-color: var(--primary); }
 .date-select:hover { border-color: var(--primary); }
-.date-select.year { min-width: 85px; }
 .date-select.month { min-width: 130px; }
-.date-select.day, .date-select.hour, .date-select.minute { min-width: 65px; }
+.date-select.day, .date-select.hour12, .date-select.minute, .date-select.second { min-width: 60px; }
+.date-select.ampm { min-width: 70px; }
+
+/* Year Input */
+.date-input.year { width: 75px; padding: 6px 8px; border: 2px solid var(--border-color); border-radius: 8px; background: var(--bg-primary); color: var(--text-primary); font-size: 0.95rem; font-weight: 600; font-family: inherit; text-align: center; -moz-appearance: textfield; }
+.date-input.year::-webkit-outer-spin-button, .date-input.year::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.date-input.year:focus { outline: none; border-color: var(--primary); }
+
+/* Time Block Row */
+.time-block-row { display: flex; align-items: center; gap: 12px; margin-top: 12px; padding: 12px; background: rgba(99, 102, 241, 0.05); border: 2px solid rgba(99, 102, 241, 0.2); border-radius: 10px; flex-wrap: wrap; }
+.time-block-row .block-label { color: var(--primary); font-weight: 700; font-size: 0.85rem; }
+.time-fields-12 { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 
 /* Calendar Popup */
 .date-input-container { position: relative; }
@@ -372,18 +382,24 @@
 .block-fields { display: flex; align-items: flex-end; gap: 4px; justify-content: center; }
 
 /* Age Live Result */
-.age-live-result { text-align: center; padding: 24px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 16px; color: white; font-size: 1.4rem; font-weight: 700; margin-bottom: 20px; direction: ltr; font-family: 'Courier New', monospace; letter-spacing: 1px; }
+.age-live-result { text-align: center; padding: 24px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 16px; color: white; margin-bottom: 20px; }
+.age-years-line { font-size: 3rem; font-weight: 800; display: block; margin-bottom: 8px; }
+.age-details-line { font-size: 1.1rem; font-weight: 600; opacity: 0.95; }
 
 /* Birth Info Box */
-.birth-info-box { background: var(--bg-secondary); border-radius: 12px; padding: 16px 20px; margin-bottom: 16px; }
-.info-line { padding: 8px 0; color: var(--text-secondary); font-size: 0.95rem; border-bottom: 1px solid var(--border-color); }
+.birth-info-box { background: var(--bg-secondary); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+.info-line { padding: 12px 0; color: var(--text-secondary); font-size: 1rem; border-bottom: 1px solid var(--border-color); line-height: 1.6; }
 .info-line:last-child { border-bottom: none; }
-.info-line.highlight { color: var(--primary); font-weight: 600; }
+.info-line .label { color: var(--text-muted); font-size: 0.85rem; display: block; margin-bottom: 4px; }
+.info-line .value { color: var(--text-primary); font-weight: 600; }
+.info-line .value.hijri { color: #22c55e; }
+.info-line.highlight { background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1)); margin: 0 -20px; padding: 16px 20px; border-radius: 0; }
+.info-line.highlight .value { color: var(--primary); font-size: 1.1rem; }
 
 /* Zodiac Inline */
 .zodiac-inline { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 16px; background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1)); border-radius: 12px; margin-bottom: 16px; }
-.zodiac-inline .zodiac-icon { font-size: 2rem; }
-.zodiac-inline .zodiac-name { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+.zodiac-inline .zodiac-icon { font-size: 2.5rem; }
+.zodiac-inline .zodiac-name { font-size: 1.2rem; font-weight: 700; color: var(--primary); }
 .zodiac-inline .zodiac-dates { font-size: 0.85rem; color: var(--text-muted); }
 
 /* Fun Facts Text */
@@ -451,7 +467,7 @@
                   <span class="date-sep">/</span>
                   <select class="date-select month" id="birth-g-month" onchange="updateDays('birth', 'g'); onGregorianChange('birth')"></select>
                   <span class="date-sep">/</span>
-                  <select class="date-select year" id="birth-g-year" onchange="updateDays('birth', 'g'); onGregorianChange('birth')"></select>
+                  <input type="number" class="date-input year" id="birth-g-year" placeholder="Year" min="1" max="9999" oninput="updateDays('birth', 'g'); onGregorianChange('birth')">
                   <button type="button" class="date-picker-btn" onclick="toggleCalendar('birth', 'gregorian')">📅</button>
                 </div>
               </div>
@@ -462,17 +478,23 @@
                   <span class="date-sep">/</span>
                   <select class="date-select month hijri-month" id="birth-h-month" onchange="updateDays('birth', 'h'); onHijriChange('birth')"></select>
                   <span class="date-sep">/</span>
-                  <select class="date-select year" id="birth-h-year" onchange="updateDays('birth', 'h'); onHijriChange('birth')"></select>
+                  <input type="number" class="date-input year" id="birth-h-year" placeholder="Year" min="1" max="9999" oninput="updateDays('birth', 'h'); onHijriChange('birth')">
                   <button type="button" class="date-picker-btn" onclick="toggleCalendar('birth', 'hijri')">🌙</button>
                 </div>
               </div>
-              <div class="date-block time-block">
-                <span class="block-label">🕐 Time</span>
-                <div class="block-fields">
-                  <select class="date-select hour" id="birth-hour" onchange="calculateAge()"></select>
-                  <span class="time-sep">:</span>
-                  <select class="date-select minute" id="birth-minute" onchange="calculateAge()"></select>
-                </div>
+            </div>
+            <div class="time-block-row">
+              <span class="block-label">🕐 Time</span>
+              <div class="time-fields-12">
+                <select class="date-select hour12" id="birth-hour12" onchange="calculateAge()"></select>
+                <span class="time-sep">:</span>
+                <select class="date-select minute" id="birth-minute" onchange="calculateAge()"></select>
+                <span class="time-sep">:</span>
+                <select class="date-select second" id="birth-second" onchange="calculateAge()"></select>
+                <select class="date-select ampm" id="birth-ampm" onchange="calculateAge()">
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
               </div>
             </div>
             <div class="calendar-popup" id="birth-calendar"></div>
@@ -481,12 +503,26 @@
       </div>
 
       <div class="result-box" id="age-result">
-        <div class="age-live-result" id="age-live"></div>
+        <div class="age-live-result">
+          <span class="age-years-line" id="age-years-text"></span>
+          <span class="age-details-line" id="age-details-text"></span>
+        </div>
         
         <div class="birth-info-box">
-          <div class="info-line" id="born-on-line"></div>
-          <div class="info-line" id="next-birthday-line"></div>
-          <div class="info-line highlight" id="days-until-line"></div>
+          <div class="info-line">
+            <span class="label">🎂 Born on</span>
+            <span class="value" id="born-gregorian"></span>
+            <span class="value hijri" id="born-hijri"></span>
+          </div>
+          <div class="info-line">
+            <span class="label">🎁 Next Birthday</span>
+            <span class="value" id="next-birthday-gregorian"></span>
+            <span class="value hijri" id="next-birthday-hijri"></span>
+          </div>
+          <div class="info-line highlight">
+            <span class="label" id="days-until-label"></span>
+            <span class="value" id="days-until-value"></span>
+          </div>
         </div>
 
         <div class="zodiac-inline">
@@ -734,7 +770,25 @@ function toggleTimePicker(prefix) {
 // Date Input Helpers
 function getVal(id) { return parseInt(document.getElementById(id)?.value) || 0; }
 function setVal(id, v) { const el = document.getElementById(id); if (el) el.value = v; }
-function getDateValues(p) { return { gY: getVal(`${p}-g-year`), gM: getVal(`${p}-g-month`), gD: getVal(`${p}-g-day`), hY: getVal(`${p}-h-year`), hM: getVal(`${p}-h-month`), hD: getVal(`${p}-h-day`), hr: getVal(`${p}-hour`), mn: getVal(`${p}-minute`), sc: getVal(`${p}-second`) }; }
+function getDateValues(p) { 
+  const gY = getVal(`${p}-g-year`), gM = getVal(`${p}-g-month`), gD = getVal(`${p}-g-day`);
+  const hY = getVal(`${p}-h-year`), hM = getVal(`${p}-h-month`), hD = getVal(`${p}-h-day`);
+  let hr, mn, sc;
+  // Check if 12-hour format (for birth)
+  const hour12El = document.getElementById(`${p}-hour12`);
+  if (hour12El) {
+    const h12 = getVal(`${p}-hour12`);
+    const ampm = document.getElementById(`${p}-ampm`)?.value || 'AM';
+    hr = ampm === 'PM' ? (h12 === 12 ? 12 : h12 + 12) : (h12 === 12 ? 0 : h12);
+    mn = getVal(`${p}-minute`);
+    sc = getVal(`${p}-second`);
+  } else {
+    hr = getVal(`${p}-hour`);
+    mn = getVal(`${p}-minute`);
+    sc = getVal(`${p}-second`);
+  }
+  return { gY, gM, gD, hY, hM, hD, hr, mn, sc }; 
+}
 function setGregorian(p, y, m, d) { setVal(`${p}-g-year`, y); setVal(`${p}-g-month`, m); setVal(`${p}-g-day`, d); }
 function setHijri(p, y, m, d) { setVal(`${p}-h-year`, y); setVal(`${p}-h-month`, m); setVal(`${p}-h-day`, d); }
 function setTime(p, h, m, s) { setVal(`${p}-hour`, h); setVal(`${p}-minute`, m); setVal(`${p}-second`, s); }
@@ -861,12 +915,36 @@ function renderCalendarDirect(p, t, y, m) {
   cal.innerHTML = html;
 }
 
-function selDay(p, t, y, m, d) { if (t === 'gregorian') { setGregorian(p, y, m, d); const h = gregorianToHijri(y, m, d); setHijri(p, h.year, h.month, h.day); } else { setHijri(p, y, m, d); const g = hijriToGregorian(y, m, d); setGregorian(p, g.year, g.month, g.day); } document.getElementById(`${p}-calendar`).classList.remove('show'); openCalendar = null; triggerCalc(p); }
-document.addEventListener('click', e => { 
-  if (openCalendar && !e.target.closest('.date-input-container') && !e.target.closest('.calendar-popup')) { 
-    document.getElementById(openCalendar)?.classList.remove('show'); 
-    openCalendar = null; 
+function selDay(p, t, y, m, d) { 
+  if (t === 'gregorian') { 
+    setGregorian(p, y, m, d); 
+    const h = gregorianToHijri(y, m, d); 
+    setHijri(p, h.year, h.month, h.day); 
+  } else { 
+    setHijri(p, y, m, d); 
+    const g = hijriToGregorian(y, m, d); 
+    setGregorian(p, g.year, g.month, g.day); 
   } 
+  closeCalendar();
+  triggerCalc(p); 
+}
+
+function closeCalendar() {
+  if (openCalendar) {
+    document.getElementById(openCalendar)?.classList.remove('show'); 
+    openCalendar = null;
+  }
+}
+
+document.addEventListener('mousedown', e => { 
+  if (openCalendar) {
+    const calEl = document.getElementById(openCalendar);
+    const clickedInside = calEl && calEl.contains(e.target);
+    const clickedBtn = e.target.closest('.date-picker-btn');
+    if (!clickedInside && !clickedBtn) {
+      closeCalendar();
+    }
+  }
 });
 
 // Tabs & Operation
@@ -894,39 +972,45 @@ function calculateAge() {
   if (mns < 0) { hrs--; mns += 60; } 
   if (hrs < 0) { dys--; hrs += 24; if (dys < 0) { mos--; dys += 30; } if (mos < 0) { yrs--; mos += 12; } }
   
-  // Live result in one line
-  const liveText = isArabic ? 
-    `${yrs} سنة · ${mos} شهر · ${dys} يوم · ${hrs} ساعة · ${mns} دقيقة · ${scs} ثانية` : 
-    `${yrs}y · ${mos}m · ${dys}d · ${hrs}h · ${mns}m · ${scs}s`;
-  document.getElementById('age-live').textContent = liveText;
+  // Live result - years on one line, details on another
+  const yearsText = isArabic ? `${yrs} سنة` : `${yrs} years`;
+  const detailsText = isArabic ? 
+    `و ${mos} شهر و ${dys} يوم و ${hrs} ساعة و ${mns} دقيقة و ${scs} ثانية` : 
+    `${mos} months, ${dys} days, ${hrs} hours, ${mns} minutes, ${scs} seconds`;
+  document.getElementById('age-years-text').textContent = yearsText;
+  document.getElementById('age-details-text').textContent = detailsText;
   
-  // Birth date with Hijri
+  // Birth date
   const hBd = gregorianToHijri(bd.getFullYear(), bd.getMonth() + 1, bd.getDate());
-  const bornText = isArabic ? 
-    `🎂 ولدت ${dayNames[bd.getDay()]}، ${bd.getDate()} ${monthNames[bd.getMonth()]} ${bd.getFullYear()} الموافق لـ ${hBd.day} ${hijriMonthNames[hBd.month - 1]} ${hBd.year} هـ` :
-    `🎂 Born on ${dayNames[bd.getDay()]}, ${monthNames[bd.getMonth()]} ${bd.getDate()}, ${bd.getFullYear()} (${hBd.day} ${hijriMonthNames[hBd.month - 1]} ${hBd.year} AH)`;
-  document.getElementById('born-on-line').textContent = bornText;
+  document.getElementById('born-gregorian').textContent = isArabic ? 
+    `${dayNames[bd.getDay()]}، ${bd.getDate()} ${monthNames[bd.getMonth()]} ${bd.getFullYear()}` :
+    `${dayNames[bd.getDay()]}, ${monthNames[bd.getMonth()]} ${bd.getDate()}, ${bd.getFullYear()}`;
+  document.getElementById('born-hijri').textContent = isArabic ?
+    `الموافق لـ ${hBd.day} ${hijriMonthNames[hBd.month - 1]} ${hBd.year} هـ` :
+    `(${hBd.day} ${hijriMonthNames[hBd.month - 1]} ${hBd.year} AH)`;
   
-  // Next birthday with Hijri
+  // Next birthday
   let nb = new Date(td.getFullYear(), bd.getMonth(), bd.getDate()); 
   if (nb <= td) nb.setFullYear(nb.getFullYear() + 1);
   const hNb = gregorianToHijri(nb.getFullYear(), nb.getMonth() + 1, nb.getDate());
-  const nbText = isArabic ?
-    `🎁 عيد ميلادك القادم ${dayNames[nb.getDay()]}، ${nb.getDate()} ${monthNames[nb.getMonth()]} ${nb.getFullYear()} الموافق لـ ${hNb.day} ${hijriMonthNames[hNb.month - 1]} ${hNb.year} هـ` :
-    `🎁 Next birthday: ${dayNames[nb.getDay()]}, ${monthNames[nb.getMonth()]} ${nb.getDate()}, ${nb.getFullYear()} (${hNb.day} ${hijriMonthNames[hNb.month - 1]} ${hNb.year} AH)`;
-  document.getElementById('next-birthday-line').textContent = nbText;
+  document.getElementById('next-birthday-gregorian').textContent = isArabic ?
+    `${dayNames[nb.getDay()]}، ${nb.getDate()} ${monthNames[nb.getMonth()]} ${nb.getFullYear()}` :
+    `${dayNames[nb.getDay()]}, ${monthNames[nb.getMonth()]} ${nb.getDate()}, ${nb.getFullYear()}`;
+  document.getElementById('next-birthday-hijri').textContent = isArabic ?
+    `الموافق لـ ${hNb.day} ${hijriMonthNames[hNb.month - 1]} ${hNb.year} هـ` :
+    `(${hNb.day} ${hijriMonthNames[hNb.month - 1]} ${hNb.year} AH)`;
   
   // Days until birthday
   const daysUntil = Math.ceil((nb - td) / 864e5), nextAge = yrs + 1;
-  let daysText;
   if (daysUntil === 0 || (td.getMonth() === bd.getMonth() && td.getDate() === bd.getDate())) {
-    daysText = isArabic ? '🎉 اليوم عيد ميلادك! كل عام وأنت بخير!' : '🎉 Today is your birthday! Happy Birthday!';
+    document.getElementById('days-until-label').textContent = isArabic ? '🎉 اليوم عيد ميلادك!' : '🎉 Today is your birthday!';
+    document.getElementById('days-until-value').textContent = isArabic ? 'كل عام وأنت بخير!' : 'Happy Birthday!';
   } else {
-    daysText = isArabic ? 
-      `⏳ الأيام المتبقية حتى عيد ميلادك الـ ${nextAge}: ${daysUntil} يوم` :
-      `⏳ Days until birthday #${nextAge}: ${daysUntil} days`;
+    document.getElementById('days-until-label').textContent = isArabic ? 
+      `⏳ الأيام المتبقية حتى عيد ميلادك الـ ${nextAge}` :
+      `⏳ Days until birthday #${nextAge}`;
+    document.getElementById('days-until-value').textContent = isArabic ? `${daysUntil} يوم` : `${daysUntil} days`;
   }
-  document.getElementById('days-until-line').textContent = daysText;
   
   // Zodiac
   updateZodiac(bd.getMonth() + 1, bd.getDate());
@@ -970,20 +1054,7 @@ function updateZodiac(m, d) { for (const z of zodiacSigns) { const [sm, sd] = z.
 
 // Init Dropdowns
 function initDropdowns() {
-  const currentYear = new Date().getFullYear();
-  const currentHYear = gregorianToHijri(currentYear, 1, 1).year;
-  
-  // Birth dropdowns only (others use input fields)
   const prefix = 'birth';
-  
-  // Gregorian Year (1900 - current)
-  const gYearSel = document.getElementById(`${prefix}-g-year`);
-  if (gYearSel) {
-    gYearSel.innerHTML = '<option value="">--</option>';
-    for (let y = currentYear; y >= 1900; y--) {
-      gYearSel.innerHTML += `<option value="${y}">${y}</option>`;
-    }
-  }
   
   // Gregorian Month
   const gMonthSel = document.getElementById(`${prefix}-g-month`);
@@ -1000,15 +1071,6 @@ function initDropdowns() {
     gDaySel.innerHTML = '<option value="">--</option>';
     for (let d = 1; d <= 31; d++) {
       gDaySel.innerHTML += `<option value="${d}">${d}</option>`;
-    }
-  }
-  
-  // Hijri Year (1300 - current)
-  const hYearSel = document.getElementById(`${prefix}-h-year`);
-  if (hYearSel) {
-    hYearSel.innerHTML = '<option value="">--</option>';
-    for (let y = currentHYear; y >= 1300; y--) {
-      hYearSel.innerHTML += `<option value="${y}">${y}</option>`;
     }
   }
   
@@ -1030,12 +1092,12 @@ function initDropdowns() {
     }
   }
   
-  // Hour
-  const hourSel = document.getElementById(`${prefix}-hour`);
-  if (hourSel) {
-    hourSel.innerHTML = '';
-    for (let h = 0; h <= 23; h++) {
-      hourSel.innerHTML += `<option value="${h}" ${h===0?'selected':''}>${String(h).padStart(2,'0')}</option>`;
+  // Hour (12-hour format)
+  const hour12Sel = document.getElementById(`${prefix}-hour12`);
+  if (hour12Sel) {
+    hour12Sel.innerHTML = '';
+    for (let h = 1; h <= 12; h++) {
+      hour12Sel.innerHTML += `<option value="${h}" ${h===12?'selected':''}>${h}</option>`;
     }
   }
   
@@ -1045,6 +1107,15 @@ function initDropdowns() {
     minSel.innerHTML = '';
     for (let m = 0; m <= 59; m++) {
       minSel.innerHTML += `<option value="${m}" ${m===0?'selected':''}>${String(m).padStart(2,'0')}</option>`;
+    }
+  }
+  
+  // Second
+  const secSel = document.getElementById(`${prefix}-second`);
+  if (secSel) {
+    secSel.innerHTML = '';
+    for (let s = 0; s <= 59; s++) {
+      secSel.innerHTML += `<option value="${s}" ${s===0?'selected':''}>${String(s).padStart(2,'0')}</option>`;
     }
   }
 }

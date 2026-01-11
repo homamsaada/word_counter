@@ -258,7 +258,7 @@
   --male-light: #dbeafe;
   --female-color: #ec4899;
   --female-light: #fce7f3;
-  --deceased-color: #6b7280;
+  --spouse-color: #f59e0b;
   --bg-primary: #0f172a;
   --bg-secondary: #1e293b;
   --bg-card: #334155;
@@ -266,13 +266,13 @@
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
   --border-color: #475569;
-  --shadow: 0 10px 40px rgba(0,0,0,0.3);
 }
 
 .family-tree-app {
   min-height: 80vh;
   display: flex;
   flex-direction: column;
+  font-family: inherit;
 }
 
 /* Toolbar */
@@ -291,12 +291,11 @@
   display: flex;
   gap: 4px;
   padding: 0 12px;
-  border-left: 2px solid var(--border-color);
+  border-right: 2px solid var(--border-color);
 }
 
-.toolbar-group:first-child {
-  border-left: none;
-  padding-right: 12px;
+.toolbar-group:last-child {
+  border-right: none;
 }
 
 .tool-btn {
@@ -313,6 +312,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  font-family: inherit;
 }
 
 .tool-btn:hover {
@@ -329,9 +329,7 @@
   background: var(--primary-dark);
 }
 
-.tool-btn .icon {
-  font-size: 1.1rem;
-}
+.tool-btn .icon { font-size: 1.1rem; }
 
 /* Canvas Container */
 .canvas-container {
@@ -349,15 +347,10 @@
   height: 100%;
   min-height: 500px;
   cursor: grab;
+  font-family: inherit;
 }
 
-.tree-canvas:active {
-  cursor: grabbing;
-}
-
-.tree-canvas.dragging-person {
-  cursor: grabbing;
-}
+.tree-canvas:active { cursor: grabbing; }
 
 /* Empty State */
 .empty-state {
@@ -369,21 +362,9 @@
   color: var(--text-muted);
 }
 
-.empty-state .icon {
-  font-size: 4rem;
-  margin-bottom: 16px;
-  opacity: 0.5;
-}
-
-.empty-state h3 {
-  font-size: 1.5rem;
-  margin-bottom: 8px;
-  color: var(--text-secondary);
-}
-
-.empty-state p {
-  margin-bottom: 20px;
-}
+.empty-state .icon { font-size: 4rem; margin-bottom: 16px; opacity: 0.5; }
+.empty-state h3 { font-size: 1.5rem; margin-bottom: 8px; color: var(--text-secondary); }
+.empty-state p { margin-bottom: 20px; }
 
 .empty-state .start-btn {
   display: inline-flex;
@@ -398,6 +379,7 @@
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
+  font-family: inherit;
 }
 
 .empty-state .start-btn:hover {
@@ -405,88 +387,15 @@
   transform: scale(1.05);
 }
 
-/* Person Card in SVG */
-.person-node {
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.person-node:hover {
-  filter: brightness(1.1);
-}
-
-.person-card {
-  fill: var(--bg-card);
-  stroke: var(--border-color);
-  stroke-width: 2;
-  rx: 12;
-}
-
-.person-card.male {
-  stroke: var(--male-color);
-}
-
-.person-card.female {
-  stroke: var(--female-color);
-}
-
-.person-card.deceased {
-  stroke-dasharray: 5,3;
-  opacity: 0.8;
-}
-
-.person-card.selected {
-  stroke-width: 3;
-  filter: drop-shadow(0 0 10px var(--primary));
-}
-
-/* Add Buttons */
-.add-btn-group {
-  cursor: pointer;
-}
-
-.add-btn-circle {
-  fill: var(--bg-secondary);
-  stroke: var(--primary);
-  stroke-width: 2;
-  transition: all 0.2s;
-}
-
-.add-btn-group:hover .add-btn-circle {
-  fill: var(--primary);
-}
-
-.add-btn-text {
-  fill: var(--primary);
-  font-size: 16px;
-  font-weight: bold;
-  text-anchor: middle;
-  dominant-baseline: central;
-}
-
-.add-btn-group:hover .add-btn-text {
-  fill: white;
-}
-
-/* Connection Lines */
-.connection-line {
-  stroke: var(--border-color);
-  stroke-width: 2;
-  fill: none;
-}
-
-.connection-line.spouse {
-  stroke: var(--female-color);
-  stroke-dasharray: 5,5;
+/* SVG Text */
+.tree-canvas text {
+  font-family: inherit;
 }
 
 /* Modal */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(0,0,0,0.7);
   display: flex;
   align-items: center;
@@ -497,10 +406,7 @@
   transition: all 0.3s;
 }
 
-.modal-overlay.show {
-  opacity: 1;
-  visibility: visible;
-}
+.modal-overlay.show { opacity: 1; visibility: visible; }
 
 .modal-content {
   background: var(--bg-secondary);
@@ -513,9 +419,7 @@
   transition: transform 0.3s;
 }
 
-.modal-overlay.show .modal-content {
-  transform: scale(1);
-}
+.modal-overlay.show .modal-content { transform: scale(1); }
 
 .modal-header {
   display: flex;
@@ -541,21 +445,13 @@
   cursor: pointer;
   padding: 8px;
   border-radius: 8px;
-  transition: all 0.2s;
 }
 
-.modal-close:hover {
-  background: var(--bg-card);
-  color: var(--text-primary);
-}
+.modal-close:hover { background: var(--bg-card); color: var(--text-primary); }
 
-.modal-body {
-  padding: 24px;
-}
+.modal-body { padding: 24px; }
 
-.form-group {
-  margin-bottom: 20px;
-}
+.form-group { margin-bottom: 20px; }
 
 .form-group label {
   display: block;
@@ -586,16 +482,10 @@
   border-color: var(--primary);
 }
 
-.form-group textarea {
-  min-height: 80px;
-  resize: vertical;
-}
+.form-group textarea { min-height: 80px; resize: vertical; }
 
 /* Gender Toggle */
-.gender-toggle {
-  display: flex;
-  gap: 12px;
-}
+.gender-toggle { display: flex; gap: 12px; }
 
 .gender-option {
   flex: 1;
@@ -611,36 +501,23 @@
   transition: all 0.2s;
 }
 
-.gender-option input {
-  display: none;
-}
+.gender-option input { display: none; }
 
 .gender-option.male:has(input:checked) {
   border-color: var(--male-color);
-  background: var(--male-light);
-  color: var(--male-color);
+  background: rgba(59, 130, 246, 0.2);
 }
 
 .gender-option.female:has(input:checked) {
   border-color: var(--female-color);
-  background: var(--female-light);
-  color: var(--female-color);
+  background: rgba(236, 72, 153, 0.2);
 }
 
-.gender-option .icon {
-  font-size: 1.3rem;
-}
-
-.gender-option span {
-  font-weight: 600;
-}
+.gender-option .icon { font-size: 1.3rem; }
+.gender-option span { font-weight: 600; }
 
 /* Photo Upload */
-.photo-upload {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
+.photo-upload { display: flex; align-items: center; gap: 16px; }
 
 .photo-preview {
   width: 80px;
@@ -654,22 +531,10 @@
   overflow: hidden;
 }
 
-.photo-preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+.photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+.photo-preview .placeholder { font-size: 2rem; color: var(--text-muted); }
 
-.photo-preview .placeholder {
-  font-size: 2rem;
-  color: var(--text-muted);
-}
-
-.photo-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+.photo-buttons { display: flex; flex-direction: column; gap: 8px; }
 
 .photo-btn {
   padding: 8px 16px;
@@ -679,19 +544,13 @@
   color: var(--text-primary);
   font-size: 0.85rem;
   cursor: pointer;
-  transition: all 0.2s;
+  font-family: inherit;
 }
 
-.photo-btn:hover {
-  border-color: var(--primary);
-}
+.photo-btn:hover { border-color: var(--primary); }
+.photo-btn.remove { border-color: #ef4444; color: #ef4444; }
 
-.photo-btn.remove {
-  border-color: #ef4444;
-  color: #ef4444;
-}
-
-/* Relation Select */
+/* Relation Grid */
 .relation-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -711,24 +570,20 @@
   transition: all 0.2s;
 }
 
-.relation-option:hover {
-  border-color: var(--primary);
-}
+.relation-option:hover { border-color: var(--primary); }
 
 .relation-option.selected {
   border-color: var(--primary);
   background: rgba(5, 150, 105, 0.2);
 }
 
-.relation-option .icon {
-  font-size: 1.5rem;
+.relation-option.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
-.relation-option span {
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-align: center;
-}
+.relation-option .icon { font-size: 1.5rem; }
+.relation-option span { font-size: 0.8rem; font-weight: 600; text-align: center; }
 
 /* Modal Footer */
 .modal-footer {
@@ -745,7 +600,7 @@
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  font-family: inherit;
 }
 
 .btn-cancel {
@@ -754,30 +609,11 @@
   color: var(--text-primary);
 }
 
-.btn-cancel:hover {
-  border-color: var(--text-muted);
-}
+.btn-save { background: var(--primary); border: none; color: white; }
+.btn-save:hover { background: var(--primary-dark); }
 
-.btn-save {
-  background: var(--primary);
-  border: none;
-  color: white;
-}
-
-.btn-save:hover {
-  background: var(--primary-dark);
-}
-
-.btn-delete {
-  background: #ef4444;
-  border: none;
-  color: white;
-  flex: 0.5;
-}
-
-.btn-delete:hover {
-  background: #dc2626;
-}
+.btn-delete { background: #ef4444; border: none; color: white; flex: 0.5; }
+.btn-delete:hover { background: #dc2626; }
 
 /* Zoom Controls */
 .zoom-controls {
@@ -805,12 +641,9 @@
   color: var(--text-primary);
   font-size: 1.2rem;
   cursor: pointer;
-  transition: all 0.2s;
 }
 
-.zoom-btn:hover {
-  background: var(--primary);
-}
+.zoom-btn:hover { background: var(--primary); }
 
 .zoom-level {
   text-align: center;
@@ -827,6 +660,8 @@
   background: var(--bg-card);
   border-radius: 10px;
   margin-top: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .stat-item {
@@ -836,20 +671,11 @@
   font-size: 0.9rem;
 }
 
-.stat-item .icon {
-  font-size: 1.1rem;
-}
+.stat-item .icon { font-size: 1.1rem; }
+.stat-item .label { color: var(--text-muted); }
+.stat-item .value { font-weight: 700; color: var(--text-primary); }
 
-.stat-item .label {
-  color: var(--text-muted);
-}
-
-.stat-item .value {
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-/* Toast Notification */
+/* Toast */
 .toast {
   position: fixed;
   bottom: 30px;
@@ -866,20 +692,15 @@
   transition: all 0.3s;
 }
 
-.toast.show {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
-}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-/* Dropdown Menu */
-.dropdown {
-  position: relative;
-}
+/* Dropdown */
+.dropdown { position: relative; }
 
 .dropdown-menu {
   position: absolute;
   top: 100%;
-  right: 0;
+  left: 0;
   margin-top: 8px;
   background: var(--bg-card);
   border: 2px solid var(--border-color);
@@ -906,57 +727,21 @@
   color: var(--text-primary);
   font-size: 0.9rem;
   cursor: pointer;
-  transition: background 0.2s;
 }
 
-.dropdown-item:first-child {
-  border-radius: 10px 10px 0 0;
-}
+.dropdown-item:first-child { border-radius: 10px 10px 0 0; }
+.dropdown-item:last-child { border-radius: 0 0 10px 10px; }
+.dropdown-item:hover { background: var(--bg-secondary); }
 
-.dropdown-item:last-child {
-  border-radius: 0 0 10px 10px;
-}
+.dropdown-divider { height: 1px; background: var(--border-color); margin: 4px 0; }
 
-.dropdown-item:hover {
-  background: var(--bg-secondary);
-}
+.hidden-input { display: none; }
 
-.dropdown-divider {
-  height: 1px;
-  background: var(--border-color);
-  margin: 4px 0;
-}
-
-/* Hidden file input */
-.hidden-input {
-  display: none;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
-  .tree-toolbar {
-    justify-content: center;
-  }
-  
-  .toolbar-group {
-    border-left: none;
-    padding: 8px 0;
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .tool-btn span:not(.icon) {
-    display: none;
-  }
-  
-  .relation-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .stats-bar {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+  .tree-toolbar { justify-content: center; }
+  .toolbar-group { border-right: none; padding: 8px 0; width: 100%; justify-content: center; flex-wrap: wrap; }
+  .tool-btn span:not(.icon) { display: none; }
+  .relation-grid { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 
@@ -997,16 +782,10 @@
             <span>Export</span>
           </button>
           <div class="dropdown-menu">
-            <div class="dropdown-item" onclick="exportAsPNG()">
-              <span>🖼️</span> Export as PNG
-            </div>
-            <div class="dropdown-item" onclick="exportAsSVG()">
-              <span>📐</span> Export as SVG
-            </div>
+            <div class="dropdown-item" onclick="exportAsPNG()">🖼️ Export as PNG</div>
+            <div class="dropdown-item" onclick="exportAsSVG()">📐 Export as SVG</div>
             <div class="dropdown-divider"></div>
-            <div class="dropdown-item" onclick="exportAsJSON()">
-              <span>📄</span> Export Data
-            </div>
+            <div class="dropdown-item" onclick="exportAsJSON()">📄 Export Data</div>
           </div>
         </div>
         <button class="tool-btn" onclick="importJSON()">
@@ -1028,17 +807,15 @@
       <svg class="tree-canvas" id="tree-canvas">
         <defs>
           <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.3"/>
+            <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.3"/>
           </filter>
-          <clipPath id="photo-clip">
-            <circle cx="30" cy="30" r="28"/>
-          </clipPath>
         </defs>
-        <g id="connections-layer"></g>
-        <g id="persons-layer"></g>
+        <g id="tree-content">
+          <g id="connections-layer"></g>
+          <g id="persons-layer"></g>
+        </g>
       </svg>
       
-      <!-- Empty State -->
       <div class="empty-state" id="empty-state">
         <div class="icon">🌳</div>
         <h3>Start by adding the first person</h3>
@@ -1048,7 +825,6 @@
         </button>
       </div>
       
-      <!-- Zoom Controls -->
       <div class="zoom-controls">
         <button class="zoom-btn" onclick="zoomIn()">➕</button>
         <div class="zoom-level" id="zoom-level">100%</div>
@@ -1083,7 +859,7 @@
   </div>
 </div>
 
-<!-- Add/Edit Person Modal -->
+<!-- Person Modal -->
 <div class="modal-overlay" id="person-modal">
   <div class="modal-content">
     <div class="modal-header">
@@ -1091,19 +867,16 @@
       <button class="modal-close" onclick="closeModal()">&times;</button>
     </div>
     <div class="modal-body">
-      <!-- Relation Selection (shown when adding) -->
       <div class="form-group" id="relation-group" style="display: none;">
         <label>Relation</label>
         <div class="relation-grid" id="relation-grid"></div>
       </div>
       
-      <!-- Name -->
       <div class="form-group">
         <label>Name *</label>
-        <input type="text" id="person-name" placeholder="Name" required>
+        <input type="text" id="person-name" required>
       </div>
       
-      <!-- Gender -->
       <div class="form-group">
         <label>Gender</label>
         <div class="gender-toggle">
@@ -1120,7 +893,6 @@
         </div>
       </div>
       
-      <!-- Photo -->
       <div class="form-group">
         <label>Photo</label>
         <div class="photo-upload">
@@ -1128,10 +900,10 @@
             <span class="placeholder">👤</span>
           </div>
           <div class="photo-buttons">
-            <button class="photo-btn" onclick="document.getElementById('photo-input').click()">
+            <button type="button" class="photo-btn" onclick="document.getElementById('photo-input').click()">
               📷 Upload Photo
             </button>
-            <button class="photo-btn remove" onclick="removePhoto()" id="remove-photo-btn" style="display: none;">
+            <button type="button" class="photo-btn remove" onclick="removePhoto()" id="remove-photo-btn" style="display: none;">
               🗑️ Remove Photo
             </button>
           </div>
@@ -1139,22 +911,19 @@
         <input type="file" id="photo-input" class="hidden-input" accept="image/*" onchange="handlePhotoUpload(event)">
       </div>
       
-      <!-- Birth Date -->
       <div class="form-group">
         <label>Birth Date</label>
         <input type="date" id="person-birth">
       </div>
       
-      <!-- Death Date -->
       <div class="form-group">
         <label>Death Date</label>
         <input type="date" id="person-death">
       </div>
       
-      <!-- Notes -->
       <div class="form-group">
         <label>Notes</label>
-        <textarea id="person-notes" placeholder="Notes"></textarea>
+        <textarea id="person-notes"></textarea>
       </div>
     </div>
     <div class="modal-footer">
@@ -1167,18 +936,16 @@
   </div>
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
-
-<!-- Hidden inputs -->
 <input type="file" id="import-input" class="hidden-input" accept=".json" onchange="handleImport(event)">
 
 <script>
 const isArabic = document.documentElement.lang === 'ar';
 
 // ==================== DATA STRUCTURE ====================
+// بنية جديدة: كل شخص له أب وأم محددين (أو null)
+// الأبناء يُستنتجون من fatherId/motherId
 let familyData = {
-  title: isArabic ? 'شجرة عائلة' : 'Family Tree',
   persons: {},
   rootId: null
 };
@@ -1197,24 +964,21 @@ let isDragging = false;
 let dragStartX = 0;
 let dragStartY = 0;
 
-// Card dimensions
-const CARD_WIDTH = 160;
-const CARD_HEIGHT = 100;
-const CARD_GAP_H = 60;
-const CARD_GAP_V = 80;
+const CARD_W = 140;
+const CARD_H = 90;
+const GAP_H = 50;
+const GAP_V = 70;
 
-// Relations config
+// Relations
 const relations = [
-  { id: 'father', icon: '👨', label: isArabic ? 'أب' : 'Father', gender: 'male', position: 'parent' },
-  { id: 'mother', icon: '👩', label: isArabic ? 'أم' : 'Mother', gender: 'female', position: 'parent' },
-  { id: 'spouse', icon: '💑', label: isArabic ? 'زوج/ة' : 'Spouse', gender: null, position: 'spouse' },
-  { id: 'son', icon: '👦', label: isArabic ? 'ابن' : 'Son', gender: 'male', position: 'child' },
-  { id: 'daughter', icon: '👧', label: isArabic ? 'ابنة' : 'Daughter', gender: 'female', position: 'child' },
-  { id: 'brother', icon: '👨‍🦱', label: isArabic ? 'أخ' : 'Brother', gender: 'male', position: 'sibling' },
-  { id: 'sister', icon: '👩‍🦱', label: isArabic ? 'أخت' : 'Sister', gender: 'female', position: 'sibling' }
+  { id: 'father', icon: '👨', labelAr: 'أب', labelEn: 'Father', gender: 'male' },
+  { id: 'mother', icon: '👩', labelAr: 'أم', labelEn: 'Mother', gender: 'female' },
+  { id: 'spouse', icon: '💑', labelAr: 'زوج/ة', labelEn: 'Spouse', gender: null },
+  { id: 'child', icon: '👶', labelAr: 'ابن/ة', labelEn: 'Child', gender: null },
+  { id: 'sibling', icon: '👫', labelAr: 'أخ/أخت', labelEn: 'Sibling', gender: null }
 ];
 
-// ==================== INITIALIZATION ====================
+// ==================== INIT ====================
 function init() {
   setupCanvas();
   buildRelationGrid();
@@ -1225,18 +989,14 @@ function setupCanvas() {
   const canvas = document.getElementById('tree-canvas');
   const container = document.getElementById('canvas-container');
   
-  // Pan with mouse drag
   canvas.addEventListener('mousedown', startPan);
   canvas.addEventListener('mousemove', doPan);
   canvas.addEventListener('mouseup', endPan);
   canvas.addEventListener('mouseleave', endPan);
-  
-  // Zoom with wheel
   container.addEventListener('wheel', handleZoom);
   
-  // Touch support
-  canvas.addEventListener('touchstart', handleTouchStart);
-  canvas.addEventListener('touchmove', handleTouchMove);
+  canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+  canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
   canvas.addEventListener('touchend', handleTouchEnd);
 }
 
@@ -1245,16 +1005,41 @@ function buildRelationGrid() {
   grid.innerHTML = relations.map(r => `
     <div class="relation-option" data-relation="${r.id}" onclick="selectRelation('${r.id}')">
       <span class="icon">${r.icon}</span>
-      <span>${r.label}</span>
+      <span>${isArabic ? r.labelAr : r.labelEn}</span>
     </div>
   `).join('');
 }
 
-// ==================== PERSON MANAGEMENT ====================
+// ==================== HELPERS ====================
 function generateId() {
-  return 'person-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+  return 'p' + Date.now() + Math.random().toString(36).substr(2, 5);
 }
 
+function getChildren(personId) {
+  return Object.values(familyData.persons).filter(p => 
+    p.fatherId === personId || p.motherId === personId
+  );
+}
+
+function getSiblings(personId) {
+  const person = familyData.persons[personId];
+  if (!person) return [];
+  
+  return Object.values(familyData.persons).filter(p => 
+    p.id !== personId && (
+      (person.fatherId && p.fatherId === person.fatherId) ||
+      (person.motherId && p.motherId === person.motherId)
+    )
+  );
+}
+
+function getSpouses(personId) {
+  const person = familyData.persons[personId];
+  if (!person) return [];
+  return person.spouseIds.map(id => familyData.persons[id]).filter(Boolean);
+}
+
+// ==================== PERSON MANAGEMENT ====================
 function addFirstPerson() {
   editMode = false;
   addingRelativeTo = null;
@@ -1276,13 +1061,27 @@ function addRelativeTo(personId) {
   selectedRelation = null;
   currentPhoto = null;
   
+  const person = familyData.persons[personId];
+  
   document.getElementById('relation-group').style.display = 'block';
   document.getElementById('delete-btn').style.display = 'none';
   document.getElementById('modal-title').textContent = isArabic ? 'إضافة قريب' : 'Add Relative';
   document.getElementById('modal-icon').textContent = '➕';
   
-  // Reset relation selection
-  document.querySelectorAll('.relation-option').forEach(el => el.classList.remove('selected'));
+  // تحديث الخيارات المتاحة
+  document.querySelectorAll('.relation-option').forEach(el => {
+    el.classList.remove('selected', 'disabled');
+    const rel = el.dataset.relation;
+    
+    // تعطيل الأب إذا موجود
+    if (rel === 'father' && person.fatherId) {
+      el.classList.add('disabled');
+    }
+    // تعطيل الأم إذا موجودة
+    if (rel === 'mother' && person.motherId) {
+      el.classList.add('disabled');
+    }
+  });
   
   resetForm();
   openModal();
@@ -1301,14 +1100,12 @@ function editPerson(personId) {
   document.getElementById('modal-title').textContent = isArabic ? 'تعديل' : 'Edit';
   document.getElementById('modal-icon').textContent = '✏️';
   
-  // Fill form
   document.getElementById('person-name').value = person.name || '';
   document.querySelector(`input[name="gender"][value="${person.gender}"]`).checked = true;
   document.getElementById('person-birth').value = person.birthDate || '';
   document.getElementById('person-death').value = person.deathDate || '';
   document.getElementById('person-notes').value = person.notes || '';
   
-  // Photo
   currentPhoto = person.photo || null;
   updatePhotoPreview();
   
@@ -1328,18 +1125,16 @@ function savePerson() {
   const notes = document.getElementById('person-notes').value.trim();
   
   if (editMode && currentPersonId) {
-    // Update existing
-    familyData.persons[currentPersonId] = {
-      ...familyData.persons[currentPersonId],
-      name,
-      gender,
-      birthDate,
-      deathDate,
-      notes,
-      photo: currentPhoto
-    };
+    // تعديل موجود
+    const person = familyData.persons[currentPersonId];
+    person.name = name;
+    person.gender = gender;
+    person.birthDate = birthDate;
+    person.deathDate = deathDate;
+    person.notes = notes;
+    person.photo = currentPhoto;
   } else {
-    // Create new
+    // إضافة جديد
     const newId = generateId();
     const newPerson = {
       id: newId,
@@ -1349,103 +1144,107 @@ function savePerson() {
       deathDate,
       notes,
       photo: currentPhoto,
-      x: 0,
-      y: 0,
-      relations: {
-        father: null,
-        mother: null,
-        spouse: [],
-        children: [],
-        siblings: []
-      }
+      fatherId: null,
+      motherId: null,
+      spouseIds: []
     };
     
     if (addingRelativeTo && selectedRelation) {
-      // Link to existing person
       const relative = familyData.persons[addingRelativeTo];
-      const rel = relations.find(r => r.id === selectedRelation);
       
-      if (rel.position === 'parent') {
-        if (selectedRelation === 'father') {
-          newPerson.relations.children.push(addingRelativeTo);
-          relative.relations.father = newId;
-        } else {
-          newPerson.relations.children.push(addingRelativeTo);
-          relative.relations.mother = newId;
-        }
-      } else if (rel.position === 'child') {
-        newPerson.relations.father = relative.gender === 'male' ? addingRelativeTo : null;
-        newPerson.relations.mother = relative.gender === 'female' ? addingRelativeTo : null;
-        relative.relations.children.push(newId);
-      } else if (rel.position === 'spouse') {
-        newPerson.relations.spouse.push(addingRelativeTo);
-        relative.relations.spouse.push(newId);
-      } else if (rel.position === 'sibling') {
-        newPerson.relations.siblings.push(addingRelativeTo);
-        relative.relations.siblings.push(newId);
-        // Share parents
-        if (relative.relations.father) newPerson.relations.father = relative.relations.father;
-        if (relative.relations.mother) newPerson.relations.mother = relative.relations.mother;
+      switch (selectedRelation) {
+        case 'father':
+          newPerson.gender = 'male';
+          relative.fatherId = newId;
+          break;
+          
+        case 'mother':
+          newPerson.gender = 'female';
+          relative.motherId = newId;
+          break;
+          
+        case 'spouse':
+          newPerson.spouseIds.push(addingRelativeTo);
+          relative.spouseIds.push(newId);
+          break;
+          
+        case 'child':
+          // الابن/البنت: نربطه بالشخص الحالي كأب أو أم
+          if (relative.gender === 'male') {
+            newPerson.fatherId = addingRelativeTo;
+          } else {
+            newPerson.motherId = addingRelativeTo;
+          }
+          break;
+          
+        case 'sibling':
+          // الأخ/الأخت: نشارك نفس الأب والأم
+          newPerson.fatherId = relative.fatherId;
+          newPerson.motherId = relative.motherId;
+          break;
       }
-    } else {
-      familyData.rootId = newId;
     }
     
     familyData.persons[newId] = newPerson;
+    
+    if (!familyData.rootId) {
+      familyData.rootId = newId;
+    }
   }
   
   closeModal();
   layoutTree();
   renderTree();
-  updateUI();
-  showToast(isArabic ? 'تم الحفظ' : 'Saved');
+  updateStats();
 }
 
 function deletePerson() {
   if (!currentPersonId) return;
   
-  const confirmMsg = isArabic ? 'هل أنت متأكد من حذف هذا الشخص؟' : 'Are you sure you want to delete this person?';
-  if (!confirm(confirmMsg)) return;
+  const msg = isArabic ? 'هل أنت متأكد من حذف هذا الشخص؟' : 'Delete this person?';
+  if (!confirm(msg)) return;
   
   const person = familyData.persons[currentPersonId];
   
-  // Remove relations
+  // إزالة الروابط
   Object.values(familyData.persons).forEach(p => {
-    if (p.relations.father === currentPersonId) p.relations.father = null;
-    if (p.relations.mother === currentPersonId) p.relations.mother = null;
-    p.relations.spouse = p.relations.spouse.filter(id => id !== currentPersonId);
-    p.relations.children = p.relations.children.filter(id => id !== currentPersonId);
-    p.relations.siblings = p.relations.siblings.filter(id => id !== currentPersonId);
+    if (p.fatherId === currentPersonId) p.fatherId = null;
+    if (p.motherId === currentPersonId) p.motherId = null;
+    p.spouseIds = p.spouseIds.filter(id => id !== currentPersonId);
   });
   
   delete familyData.persons[currentPersonId];
   
+  // تحديث الجذر
+  const remaining = Object.keys(familyData.persons);
   if (familyData.rootId === currentPersonId) {
-    const remaining = Object.keys(familyData.persons);
     familyData.rootId = remaining.length > 0 ? remaining[0] : null;
   }
   
   closeModal();
   layoutTree();
   renderTree();
-  updateUI();
+  updateStats();
   showToast(isArabic ? 'تم الحذف' : 'Deleted');
 }
 
 function selectRelation(relationId) {
+  const option = document.querySelector(`.relation-option[data-relation="${relationId}"]`);
+  if (option.classList.contains('disabled')) return;
+  
   selectedRelation = relationId;
   document.querySelectorAll('.relation-option').forEach(el => {
     el.classList.toggle('selected', el.dataset.relation === relationId);
   });
   
-  // Auto-select gender based on relation
+  // تحديد الجنس تلقائياً
   const rel = relations.find(r => r.id === relationId);
   if (rel && rel.gender) {
     document.querySelector(`input[name="gender"][value="${rel.gender}"]`).checked = true;
   }
 }
 
-// ==================== PHOTO HANDLING ====================
+// ==================== PHOTO ====================
 function handlePhotoUpload(event) {
   const file = event.target.files[0];
   if (!file) return;
@@ -1469,7 +1268,7 @@ function updatePhotoPreview() {
   const removeBtn = document.getElementById('remove-photo-btn');
   
   if (currentPhoto) {
-    preview.innerHTML = `<img src="${currentPhoto}" alt="Photo">`;
+    preview.innerHTML = `<img src="${currentPhoto}" alt="">`;
     removeBtn.style.display = 'block';
   } else {
     preview.innerHTML = '<span class="placeholder">👤</span>';
@@ -1479,262 +1278,300 @@ function updatePhotoPreview() {
 
 // ==================== LAYOUT ====================
 function layoutTree() {
-  if (!familyData.rootId || Object.keys(familyData.persons).length === 0) return;
-  
-  const canvas = document.getElementById('tree-canvas');
-  const containerWidth = canvas.clientWidth || 800;
-  const containerHeight = canvas.clientHeight || 500;
-  
-  // Simple layout - center root and position others around it
   const persons = Object.values(familyData.persons);
+  if (persons.length === 0) return;
+  
+  // حساب المستويات (الأجيال)
   const levels = {};
+  const positioned = new Set();
   
-  // BFS to assign levels
-  const visited = new Set();
-  const queue = [{ id: familyData.rootId, level: 0 }];
-  
-  while (queue.length > 0) {
-    const { id, level } = queue.shift();
-    if (visited.has(id)) continue;
-    visited.add(id);
+  // BFS من الجذر
+  function assignLevel(personId, level) {
+    if (positioned.has(personId)) return;
+    positioned.add(personId);
     
-    const person = familyData.persons[id];
-    if (!person) continue;
+    const person = familyData.persons[personId];
+    if (!person) return;
     
     if (!levels[level]) levels[level] = [];
-    levels[level].push(id);
+    levels[level].push(personId);
+    person._level = level;
     
-    // Parents go up
-    if (person.relations.father && !visited.has(person.relations.father)) {
-      queue.push({ id: person.relations.father, level: level - 1 });
-    }
-    if (person.relations.mother && !visited.has(person.relations.mother)) {
-      queue.push({ id: person.relations.mother, level: level - 1 });
-    }
+    // الآباء في المستوى الأعلى
+    if (person.fatherId) assignLevel(person.fatherId, level - 1);
+    if (person.motherId) assignLevel(person.motherId, level - 1);
     
-    // Children go down
-    person.relations.children.forEach(childId => {
-      if (!visited.has(childId)) {
-        queue.push({ id: childId, level: level + 1 });
+    // الأبناء في المستوى الأدنى
+    getChildren(personId).forEach(child => {
+      assignLevel(child.id, level + 1);
+    });
+    
+    // الأزواج في نفس المستوى
+    person.spouseIds.forEach(spouseId => {
+      if (!positioned.has(spouseId)) {
+        assignLevel(spouseId, level);
       }
     });
     
-    // Spouse same level
-    person.relations.spouse.forEach(spouseId => {
-      if (!visited.has(spouseId)) {
-        queue.push({ id: spouseId, level: level });
-      }
-    });
-    
-    // Siblings same level
-    person.relations.siblings.forEach(sibId => {
-      if (!visited.has(sibId)) {
-        queue.push({ id: sibId, level: level });
+    // الإخوة في نفس المستوى
+    getSiblings(personId).forEach(sib => {
+      if (!positioned.has(sib.id)) {
+        assignLevel(sib.id, level);
       }
     });
   }
   
-  // Position by level
-  const levelNumbers = Object.keys(levels).map(Number).sort((a, b) => a - b);
-  const minLevel = Math.min(...levelNumbers);
-  const maxLevel = Math.max(...levelNumbers);
-  const totalLevels = maxLevel - minLevel + 1;
+  assignLevel(familyData.rootId, 0);
   
-  const startY = 100;
+  // ترتيب أفقي
+  const levelNums = Object.keys(levels).map(Number).sort((a, b) => a - b);
+  const minLevel = Math.min(...levelNums);
   
-  levelNumbers.forEach(level => {
-    const personsInLevel = levels[level];
-    const levelY = startY + (level - minLevel) * (CARD_HEIGHT + CARD_GAP_V);
-    const totalWidth = personsInLevel.length * CARD_WIDTH + (personsInLevel.length - 1) * CARD_GAP_H;
-    const startX = (containerWidth - totalWidth) / 2;
+  const canvasW = document.getElementById('tree-canvas').clientWidth || 800;
+  
+  levelNums.forEach(lvl => {
+    const personsInLevel = levels[lvl];
+    const totalW = personsInLevel.length * CARD_W + (personsInLevel.length - 1) * GAP_H;
+    const startX = (canvasW - totalW) / 2;
+    const y = 80 + (lvl - minLevel) * (CARD_H + GAP_V);
     
-    personsInLevel.forEach((personId, index) => {
-      const person = familyData.persons[personId];
-      person.x = startX + index * (CARD_WIDTH + CARD_GAP_H);
-      person.y = levelY;
+    personsInLevel.forEach((pid, idx) => {
+      const p = familyData.persons[pid];
+      p._x = startX + idx * (CARD_W + GAP_H);
+      p._y = y;
     });
   });
 }
 
-// ==================== RENDERING ====================
+// ==================== RENDER ====================
 function renderTree() {
-  const connectionsLayer = document.getElementById('connections-layer');
-  const personsLayer = document.getElementById('persons-layer');
+  const connLayer = document.getElementById('connections-layer');
+  const persLayer = document.getElementById('persons-layer');
   
-  connectionsLayer.innerHTML = '';
-  personsLayer.innerHTML = '';
+  connLayer.innerHTML = '';
+  persLayer.innerHTML = '';
   
   const persons = Object.values(familyData.persons);
   if (persons.length === 0) return;
   
-  // Draw connections first
+  // رسم الخطوط
   persons.forEach(person => {
-    // Connect to father
-    if (person.relations.father) {
-      const father = familyData.persons[person.relations.father];
-      if (father) drawConnection(father, person);
+    // خط للأب
+    if (person.fatherId) {
+      const father = familyData.persons[person.fatherId];
+      if (father) drawLine(father, person, connLayer);
     }
-    // Connect to mother
-    if (person.relations.mother) {
-      const mother = familyData.persons[person.relations.mother];
-      if (mother) drawConnection(mother, person);
+    // خط للأم
+    if (person.motherId) {
+      const mother = familyData.persons[person.motherId];
+      if (mother) drawLine(mother, person, connLayer);
     }
-    // Connect to spouse
-    person.relations.spouse.forEach(spouseId => {
-      const spouse = familyData.persons[spouseId];
-      if (spouse && person.id < spouseId) { // Avoid duplicate lines
-        drawConnection(person, spouse, true);
+    // خط للأزواج
+    person.spouseIds.forEach(spId => {
+      const spouse = familyData.persons[spId];
+      if (spouse && person.id < spId) {
+        drawSpouseLine(person, spouse, connLayer);
       }
     });
   });
   
-  // Draw person cards
+  // رسم البطاقات
   persons.forEach(person => {
-    drawPersonCard(person);
+    drawCard(person, persLayer);
   });
   
-  // Apply transform
   updateTransform();
+  updateUI();
 }
 
-function drawConnection(from, to, isSpouse = false) {
-  const layer = document.getElementById('connections-layer');
+function drawLine(parent, child, layer) {
+  const x1 = parent._x + CARD_W / 2;
+  const y1 = parent._y + CARD_H;
+  const x2 = child._x + CARD_W / 2;
+  const y2 = child._y;
   
-  const x1 = from.x + CARD_WIDTH / 2;
-  const y1 = from.y + CARD_HEIGHT / 2;
-  const x2 = to.x + CARD_WIDTH / 2;
-  const y2 = to.y + CARD_HEIGHT / 2;
+  const midY = (y1 + y2) / 2;
   
-  let path;
-  if (isSpouse) {
-    // Horizontal line for spouse
-    path = `M ${x1} ${y1} L ${x2} ${y2}`;
-  } else {
-    // Curved line for parent-child
-    const midY = (y1 + y2) / 2;
-    path = `M ${x1} ${y1 + CARD_HEIGHT/2} L ${x1} ${midY} L ${x2} ${midY} L ${x2} ${y2 - CARD_HEIGHT/2}`;
-  }
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('d', `M ${x1} ${y1} L ${x1} ${midY} L ${x2} ${midY} L ${x2} ${y2}`);
+  path.setAttribute('stroke', '#475569');
+  path.setAttribute('stroke-width', '2');
+  path.setAttribute('fill', 'none');
+  layer.appendChild(path);
+}
+
+function drawSpouseLine(p1, p2, layer) {
+  const x1 = p1._x + CARD_W;
+  const y1 = p1._y + CARD_H / 2;
+  const x2 = p2._x;
+  const y2 = p2._y + CARD_H / 2;
   
-  const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-  line.setAttribute('d', path);
-  line.setAttribute('class', `connection-line ${isSpouse ? 'spouse' : ''}`);
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  line.setAttribute('x1', x1);
+  line.setAttribute('y1', y1);
+  line.setAttribute('x2', x2);
+  line.setAttribute('y2', y2);
+  line.setAttribute('stroke', '#f59e0b');
+  line.setAttribute('stroke-width', '2');
+  line.setAttribute('stroke-dasharray', '5,5');
   layer.appendChild(line);
+  
+  // زر + على خط الزواج لإضافة أبناء مشتركين
+  const midX = (x1 + x2) / 2;
+  const midY = (y1 + y2) / 2 + 20;
+  drawAddButton(midX, midY, () => addChildToCouple(p1.id, p2.id), layer);
 }
 
-function drawPersonCard(person) {
-  const layer = document.getElementById('persons-layer');
-  const isDeceased = !!person.deathDate;
-  
+function drawCard(person, layer) {
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-  g.setAttribute('class', 'person-node');
-  g.setAttribute('transform', `translate(${person.x}, ${person.y})`);
-  g.setAttribute('data-id', person.id);
+  g.setAttribute('transform', `translate(${person._x}, ${person._y})`);
+  g.style.cursor = 'pointer';
   
-  // Card background
+  // الخلفية
   const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-  rect.setAttribute('width', CARD_WIDTH);
-  rect.setAttribute('height', CARD_HEIGHT);
-  rect.setAttribute('class', `person-card ${person.gender} ${isDeceased ? 'deceased' : ''}`);
+  rect.setAttribute('width', CARD_W);
+  rect.setAttribute('height', CARD_H);
+  rect.setAttribute('rx', '10');
+  rect.setAttribute('fill', '#334155');
+  rect.setAttribute('stroke', person.gender === 'female' ? '#ec4899' : '#3b82f6');
+  rect.setAttribute('stroke-width', person.deathDate ? '2' : '3');
+  if (person.deathDate) rect.setAttribute('stroke-dasharray', '5,3');
   rect.setAttribute('filter', 'url(#shadow)');
   g.appendChild(rect);
   
-  // Photo or icon
+  // الأيقونة أو الصورة
   if (person.photo) {
     const img = document.createElementNS('http://www.w3.org/2000/svg', 'image');
-    img.setAttribute('x', CARD_WIDTH/2 - 25);
-    img.setAttribute('y', 10);
-    img.setAttribute('width', 50);
-    img.setAttribute('height', 50);
+    img.setAttribute('x', CARD_W/2 - 20);
+    img.setAttribute('y', 8);
+    img.setAttribute('width', 40);
+    img.setAttribute('height', 40);
     img.setAttribute('href', person.photo);
-    img.setAttribute('clip-path', 'circle(25px at 25px 25px)');
-    img.style.borderRadius = '50%';
+    img.setAttribute('clip-path', 'circle(20px at 20px 20px)');
     g.appendChild(img);
   } else {
     const icon = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    icon.setAttribute('x', CARD_WIDTH/2);
-    icon.setAttribute('y', 42);
+    icon.setAttribute('x', CARD_W/2);
+    icon.setAttribute('y', 35);
     icon.setAttribute('text-anchor', 'middle');
-    icon.setAttribute('font-size', '30');
+    icon.setAttribute('font-size', '28');
     icon.textContent = person.gender === 'female' ? '👩' : '👨';
-    if (isDeceased) icon.style.opacity = '0.6';
     g.appendChild(icon);
   }
   
-  // Name
+  // الاسم
   const name = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-  name.setAttribute('x', CARD_WIDTH/2);
-  name.setAttribute('y', 75);
+  name.setAttribute('x', CARD_W/2);
+  name.setAttribute('y', 65);
   name.setAttribute('text-anchor', 'middle');
   name.setAttribute('fill', '#f8fafc');
-  name.setAttribute('font-size', '14');
+  name.setAttribute('font-size', '13');
   name.setAttribute('font-weight', '600');
-  name.textContent = person.name.length > 15 ? person.name.substring(0, 15) + '...' : person.name;
+  name.textContent = person.name.length > 12 ? person.name.substring(0, 12) + '..' : person.name;
   g.appendChild(name);
   
-  // Age/dates
+  // العمر
   if (person.birthDate) {
-    const age = calculateAge(person.birthDate, person.deathDate);
+    const age = calcAge(person.birthDate, person.deathDate);
     const ageText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    ageText.setAttribute('x', CARD_WIDTH/2);
-    ageText.setAttribute('y', 92);
+    ageText.setAttribute('x', CARD_W/2);
+    ageText.setAttribute('y', 80);
     ageText.setAttribute('text-anchor', 'middle');
     ageText.setAttribute('fill', '#94a3b8');
-    ageText.setAttribute('font-size', '11');
-    ageText.textContent = age + (isArabic ? ' سنة' : ' yrs');
-    if (isDeceased) ageText.textContent += ' ✝';
+    ageText.setAttribute('font-size', '10');
+    ageText.textContent = age + (isArabic ? ' سنة' : ' yrs') + (person.deathDate ? ' ✝' : '');
     g.appendChild(ageText);
   }
   
-  // Click to edit
-  g.addEventListener('click', () => editPerson(person.id));
+  g.addEventListener('click', (e) => {
+    e.stopPropagation();
+    editPerson(person.id);
+  });
   
-  // Add buttons
-  drawAddButtons(g, person);
+  layer.appendChild(g);
+  
+  // أزرار الإضافة
+  // أعلى - الوالدين
+  drawAddButton(person._x + CARD_W/2, person._y - 15, () => addRelativeTo(person.id), layer);
+  // يمين - زوج/ة
+  drawAddButton(person._x + CARD_W + 15, person._y + CARD_H/2, () => addRelativeTo(person.id), layer);
+  // أسفل - أبناء
+  drawAddButton(person._x + CARD_W/2, person._y + CARD_H + 15, () => addRelativeTo(person.id), layer);
+}
+
+function drawAddButton(x, y, onClick, layer) {
+  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  g.setAttribute('transform', `translate(${x - 12}, ${y - 12})`);
+  g.style.cursor = 'pointer';
+  
+  const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  circle.setAttribute('cx', 12);
+  circle.setAttribute('cy', 12);
+  circle.setAttribute('r', 12);
+  circle.setAttribute('fill', '#1e293b');
+  circle.setAttribute('stroke', '#059669');
+  circle.setAttribute('stroke-width', '2');
+  g.appendChild(circle);
+  
+  const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  text.setAttribute('x', 12);
+  text.setAttribute('y', 12);
+  text.setAttribute('text-anchor', 'middle');
+  text.setAttribute('dominant-baseline', 'central');
+  text.setAttribute('fill', '#059669');
+  text.setAttribute('font-size', '16');
+  text.setAttribute('font-weight', 'bold');
+  text.textContent = '+';
+  g.appendChild(text);
+  
+  g.addEventListener('click', (e) => {
+    e.stopPropagation();
+    onClick();
+  });
+  
+  g.addEventListener('mouseenter', () => {
+    circle.setAttribute('fill', '#059669');
+    text.setAttribute('fill', 'white');
+  });
+  
+  g.addEventListener('mouseleave', () => {
+    circle.setAttribute('fill', '#1e293b');
+    text.setAttribute('fill', '#059669');
+  });
   
   layer.appendChild(g);
 }
 
-function drawAddButtons(group, person) {
-  const positions = [
-    { x: CARD_WIDTH/2, y: -25, rel: 'parent' },    // Top - parents
-    { x: CARD_WIDTH + 15, y: CARD_HEIGHT/2 - 12, rel: 'spouse' },  // Right - spouse
-    { x: CARD_WIDTH/2, y: CARD_HEIGHT + 15, rel: 'child' },   // Bottom - children
-  ];
+function addChildToCouple(parent1Id, parent2Id) {
+  const p1 = familyData.persons[parent1Id];
+  const p2 = familyData.persons[parent2Id];
   
-  positions.forEach(pos => {
-    const btn = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    btn.setAttribute('class', 'add-btn-group');
-    btn.setAttribute('transform', `translate(${pos.x - 12}, ${pos.y})`);
-    
-    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    circle.setAttribute('cx', 12);
-    circle.setAttribute('cy', 12);
-    circle.setAttribute('r', 12);
-    circle.setAttribute('class', 'add-btn-circle');
-    btn.appendChild(circle);
-    
-    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    text.setAttribute('x', 12);
-    text.setAttribute('y', 12);
-    text.setAttribute('class', 'add-btn-text');
-    text.textContent = '+';
-    btn.appendChild(text);
-    
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      addRelativeTo(person.id);
-    });
-    
-    group.appendChild(btn);
-  });
+  // تحديد الأب والأم
+  const father = p1.gender === 'male' ? p1 : p2;
+  const mother = p1.gender === 'female' ? p1 : p2;
+  
+  editMode = false;
+  addingRelativeTo = null;
+  selectedRelation = 'child_of_couple';
+  currentPhoto = null;
+  
+  // حفظ مؤقت
+  window._coupleChild = { fatherId: father.id, motherId: mother.id };
+  
+  document.getElementById('relation-group').style.display = 'none';
+  document.getElementById('delete-btn').style.display = 'none';
+  document.getElementById('modal-title').textContent = isArabic ? 'إضافة ابن/ابنة' : 'Add Child';
+  document.getElementById('modal-icon').textContent = '👶';
+  
+  resetForm();
+  openModal();
 }
 
-function calculateAge(birthDate, deathDate) {
-  const birth = new Date(birthDate);
-  const end = deathDate ? new Date(deathDate) : new Date();
-  let age = end.getFullYear() - birth.getFullYear();
-  const m = end.getMonth() - birth.getMonth();
-  if (m < 0 || (m === 0 && end.getDate() < birth.getDate())) {
+function calcAge(birth, death) {
+  const b = new Date(birth);
+  const e = death ? new Date(death) : new Date();
+  let age = e.getFullYear() - b.getFullYear();
+  if (e.getMonth() < b.getMonth() || (e.getMonth() === b.getMonth() && e.getDate() < b.getDate())) {
     age--;
   }
   return age;
@@ -1742,11 +1579,10 @@ function calculateAge(birthDate, deathDate) {
 
 // ==================== PAN & ZOOM ====================
 function startPan(e) {
-  if (e.target.closest('.person-node') || e.target.closest('.add-btn-group')) return;
+  if (e.target.closest('g[style*="cursor: pointer"]')) return;
   isDragging = true;
   dragStartX = e.clientX - panX;
   dragStartY = e.clientY - panY;
-  document.getElementById('tree-canvas').classList.add('dragging-person');
 }
 
 function doPan(e) {
@@ -1756,15 +1592,11 @@ function doPan(e) {
   updateTransform();
 }
 
-function endPan() {
-  isDragging = false;
-  document.getElementById('tree-canvas').classList.remove('dragging-person');
-}
+function endPan() { isDragging = false; }
 
 function handleZoom(e) {
   e.preventDefault();
-  const delta = e.deltaY > 0 ? -0.1 : 0.1;
-  zoom = Math.max(0.3, Math.min(2, zoom + delta));
+  zoom = Math.max(0.3, Math.min(2, zoom + (e.deltaY > 0 ? -0.1 : 0.1)));
   updateTransform();
   document.getElementById('zoom-level').textContent = Math.round(zoom * 100) + '%';
 }
@@ -1782,22 +1614,16 @@ function zoomOut() {
 }
 
 function fitToScreen() {
-  zoom = 1;
-  panX = 0;
-  panY = 0;
+  zoom = 1; panX = 0; panY = 0;
   updateTransform();
   document.getElementById('zoom-level').textContent = '100%';
 }
 
 function updateTransform() {
-  const connections = document.getElementById('connections-layer');
-  const persons = document.getElementById('persons-layer');
-  const transform = `translate(${panX}, ${panY}) scale(${zoom})`;
-  connections.setAttribute('transform', transform);
-  persons.setAttribute('transform', transform);
+  const content = document.getElementById('tree-content');
+  content.setAttribute('transform', `translate(${panX}, ${panY}) scale(${zoom})`);
 }
 
-// Touch support
 let touchStartX, touchStartY;
 function handleTouchStart(e) {
   if (e.touches.length === 1) {
@@ -1805,62 +1631,57 @@ function handleTouchStart(e) {
     touchStartY = e.touches[0].clientY - panY;
   }
 }
-
 function handleTouchMove(e) {
   if (e.touches.length === 1) {
+    e.preventDefault();
     panX = e.touches[0].clientX - touchStartX;
     panY = e.touches[0].clientY - touchStartY;
     updateTransform();
   }
 }
-
 function handleTouchEnd() {}
 
 // ==================== SAVE/LOAD ====================
 function saveToLocal() {
   localStorage.setItem('familyTree', JSON.stringify(familyData));
-  showToast(isArabic ? 'تم الحفظ بنجاح' : 'Saved successfully');
+  showToast(isArabic ? 'تم الحفظ' : 'Saved');
 }
 
 function loadFromLocal() {
   const saved = localStorage.getItem('familyTree');
   if (saved) {
-    try {
-      familyData = JSON.parse(saved);
-      layoutTree();
-      renderTree();
-      updateUI();
-      showToast(isArabic ? 'تم التحميل بنجاح' : 'Loaded successfully');
-    } catch (e) {
-      showToast(isArabic ? 'خطأ في التحميل' : 'Load error');
-    }
+    familyData = JSON.parse(saved);
+    layoutTree();
+    renderTree();
+    updateStats();
+    showToast(isArabic ? 'تم التحميل' : 'Loaded');
   } else {
-    showToast(isArabic ? 'لا توجد بيانات محفوظة' : 'No saved data');
+    showToast(isArabic ? 'لا توجد بيانات' : 'No data');
   }
 }
 
 function exportAsJSON() {
   const data = JSON.stringify(familyData, null, 2);
-  downloadFile(data, 'family-tree.json', 'application/json');
+  download(data, 'family-tree.json', 'application/json');
 }
 
 function importJSON() {
   document.getElementById('import-input').click();
 }
 
-function handleImport(event) {
-  const file = event.target.files[0];
+function handleImport(e) {
+  const file = e.target.files[0];
   if (!file) return;
   
   const reader = new FileReader();
-  reader.onload = function(e) {
+  reader.onload = function(ev) {
     try {
-      familyData = JSON.parse(e.target.result);
+      familyData = JSON.parse(ev.target.result);
       layoutTree();
       renderTree();
-      updateUI();
-      showToast(isArabic ? 'تم الاستيراد بنجاح' : 'Imported successfully');
-    } catch (err) {
+      updateStats();
+      showToast(isArabic ? 'تم الاستيراد' : 'Imported');
+    } catch {
       showToast(isArabic ? 'ملف غير صالح' : 'Invalid file');
     }
   };
@@ -1894,50 +1715,47 @@ function exportAsPNG() {
 function exportAsSVG() {
   const svg = document.getElementById('tree-canvas');
   const svgData = new XMLSerializer().serializeToString(svg);
-  downloadFile(svgData, 'family-tree.svg', 'image/svg+xml');
+  download(svgData, 'family-tree.svg', 'image/svg+xml');
 }
 
-function downloadFile(content, filename, type) {
+function download(content, filename, type) {
   const blob = new Blob([content], { type });
   const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  link.click();
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
   URL.revokeObjectURL(url);
 }
 
 function clearAll() {
-  const confirmMsg = isArabic ? 'هل أنت متأكد من مسح الشجرة بالكامل؟' : 'Are you sure you want to clear the entire tree?';
-  if (!confirm(confirmMsg)) return;
-  
-  familyData = {
-    title: isArabic ? 'شجرة عائلة' : 'Family Tree',
-    persons: {},
-    rootId: null
-  };
-  
+  if (!confirm(isArabic ? 'مسح الشجرة بالكامل؟' : 'Clear entire tree?')) return;
+  familyData = { persons: {}, rootId: null };
   renderTree();
   updateUI();
+  updateStats();
   showToast(isArabic ? 'تم المسح' : 'Cleared');
 }
 
 // ==================== UI ====================
 function updateUI() {
+  const count = Object.keys(familyData.persons).length;
+  document.getElementById('empty-state').style.display = count === 0 ? 'flex' : 'none';
+  document.getElementById('stats-bar').style.display = count === 0 ? 'none' : 'flex';
+}
+
+function updateStats() {
   const persons = Object.values(familyData.persons);
-  const isEmpty = persons.length === 0;
+  const males = persons.filter(p => p.gender === 'male').length;
+  const females = persons.filter(p => p.gender === 'female').length;
   
-  document.getElementById('empty-state').style.display = isEmpty ? 'flex' : 'none';
-  document.getElementById('stats-bar').style.display = isEmpty ? 'none' : 'flex';
+  // حساب الأجيال
+  const levels = new Set(persons.map(p => p._level).filter(l => l !== undefined));
   
-  if (!isEmpty) {
-    const males = persons.filter(p => p.gender === 'male').length;
-    const females = persons.filter(p => p.gender === 'female').length;
-    
-    document.getElementById('stat-total').textContent = persons.length;
-    document.getElementById('stat-males').textContent = males;
-    document.getElementById('stat-females').textContent = females;
-  }
+  document.getElementById('stat-total').textContent = persons.length;
+  document.getElementById('stat-males').textContent = males;
+  document.getElementById('stat-females').textContent = females;
+  document.getElementById('stat-generations').textContent = levels.size || 0;
 }
 
 function openModal() {
@@ -1949,6 +1767,7 @@ function closeModal() {
   currentPersonId = null;
   addingRelativeTo = null;
   selectedRelation = null;
+  window._coupleChild = null;
 }
 
 function resetForm() {
@@ -1961,34 +1780,65 @@ function resetForm() {
   updatePhotoPreview();
 }
 
-function showToast(message) {
+function showToast(msg) {
   const toast = document.getElementById('toast');
-  toast.textContent = message;
+  toast.textContent = msg;
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 2000);
 }
 
 function toggleDropdown(id) {
-  const dropdown = document.getElementById(id);
-  dropdown.classList.toggle('open');
+  const dd = document.getElementById(id);
+  dd.classList.toggle('open');
   
-  // Close when clicking outside
-  const closeDropdown = (e) => {
-    if (!dropdown.contains(e.target)) {
-      dropdown.classList.remove('open');
-      document.removeEventListener('click', closeDropdown);
-    }
-  };
-  
-  setTimeout(() => document.addEventListener('click', closeDropdown), 0);
+  setTimeout(() => {
+    document.addEventListener('click', function close(e) {
+      if (!dd.contains(e.target)) {
+        dd.classList.remove('open');
+        document.removeEventListener('click', close);
+      }
+    });
+  }, 0);
 }
 
-// Close modal on Escape
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeModal();
 });
 
-// Initialize
+// Override savePerson for couple children
+const originalSavePerson = savePerson;
+savePerson = function() {
+  if (window._coupleChild) {
+    const name = document.getElementById('person-name').value.trim();
+    if (!name) {
+      showToast(isArabic ? 'الرجاء إدخال الاسم' : 'Please enter name');
+      return;
+    }
+    
+    const newId = generateId();
+    familyData.persons[newId] = {
+      id: newId,
+      name,
+      gender: document.querySelector('input[name="gender"]:checked').value,
+      birthDate: document.getElementById('person-birth').value,
+      deathDate: document.getElementById('person-death').value,
+      notes: document.getElementById('person-notes').value.trim(),
+      photo: currentPhoto,
+      fatherId: window._coupleChild.fatherId,
+      motherId: window._coupleChild.motherId,
+      spouseIds: []
+    };
+    
+    closeModal();
+    layoutTree();
+    renderTree();
+    updateStats();
+    return;
+  }
+  
+  originalSavePerson.call(this);
+};
+
 init();
 </script>
 

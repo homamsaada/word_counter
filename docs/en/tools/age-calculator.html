@@ -384,6 +384,35 @@
 .diff-date-col { }
 @media (max-width: 768px) { .diff-dates-row { grid-template-columns: 1fr; } }
 
+/* Date Section Box */
+.date-section-box { background: var(--bg-secondary); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+
+/* Add/Subtract Layout */
+.add-main-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.add-date-col { }
+.add-values-col { }
+.add-values-grid { }
+.add-value-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 12px; }
+.add-value-row:last-child { margin-bottom: 0; }
+.add-value-item { }
+.add-value-item label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; }
+.add-value-item input { width: 100%; padding: 10px 12px; border: 2px solid var(--border-color); border-radius: 8px; background: var(--bg-primary); color: var(--text-primary); font-size: 1rem; font-weight: 600; text-align: center; }
+.add-value-item input:focus { border-color: var(--primary); outline: none; }
+
+@media (max-width: 768px) { 
+  .add-main-row { grid-template-columns: 1fr; } 
+  .add-value-row { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Add Result */
+.add-result { position: relative; text-align: center; padding: 20px; }
+.add-result-main { margin-bottom: 12px; }
+.add-result-date { font-size: 1.8rem; font-weight: 800; color: var(--primary); }
+.add-result-hijri { font-size: 1.2rem; font-weight: 600; color: #22c55e; margin-top: 8px; }
+.add-result-details { display: flex; justify-content: center; gap: 20px; font-size: 1rem; color: var(--text-secondary); }
+.add-result-day { font-weight: 600; }
+.add-result-time { font-family: 'Courier New', monospace; direction: ltr; }
+
 /* Now Button */
 .now-btn { background: var(--primary); color: white; border: none; border-radius: 8px; padding: 6px 12px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
 .now-btn:hover { background: var(--primary-dark); }
@@ -553,11 +582,11 @@
     <!-- Date Difference -->
     <div class="calc-section" id="diff-section">
       <div class="input-form">
-        <div class="diff-dates-row">
-          <!-- From Date -->
-          <div class="diff-date-col">
-            <label class="main-label">From Date</label>
-            <div class="date-input-container" id="diff-from-container">
+        <!-- From Date -->
+        <div class="date-section-box">
+          <label class="main-label">From Date</label>
+          <div class="date-input-container" id="diff-from-container">
+            <div class="compact-date-input">
               <div class="date-block gregorian">
                 <span class="block-label">📅 Gregorian</span>
                 <div class="block-fields">
@@ -580,28 +609,30 @@
                   <button type="button" class="date-picker-btn" onclick="toggleCalendar('diff-from', 'hijri')">🌙</button>
                 </div>
               </div>
-              <div class="time-block-row">
-                <span class="block-label">🕐 Time</span>
-                <div class="time-fields-12">
-                  <select class="date-select hour12" id="diff-from-hour12" onchange="calculateDiff()"></select>
-                  <span class="time-sep">:</span>
-                  <select class="date-select minute" id="diff-from-minute" onchange="calculateDiff()"></select>
-                  <span class="time-sep">:</span>
-                  <select class="date-select second" id="diff-from-second" onchange="calculateDiff()"></select>
-                  <select class="date-select ampm" id="diff-from-ampm" onchange="calculateDiff()">
-                    <option value="AM">AM</option>
-                    <option value="PM">PM</option>
-                  </select>
-                </div>
-              </div>
-              <div class="calendar-popup" id="diff-from-calendar"></div>
             </div>
+            <div class="time-block-row">
+              <span class="block-label">🕐 Time</span>
+              <div class="time-fields-12">
+                <select class="date-select hour12" id="diff-from-hour12" onchange="calculateDiff()"></select>
+                <span class="time-sep">:</span>
+                <select class="date-select minute" id="diff-from-minute" onchange="calculateDiff()"></select>
+                <span class="time-sep">:</span>
+                <select class="date-select second" id="diff-from-second" onchange="calculateDiff()"></select>
+                <select class="date-select ampm" id="diff-from-ampm" onchange="calculateDiff()">
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
+            </div>
+            <div class="calendar-popup" id="diff-from-calendar"></div>
           </div>
-          
-          <!-- To Date -->
-          <div class="diff-date-col">
-            <label class="main-label">To Date</label>
-            <div class="date-input-container" id="diff-to-container">
+        </div>
+        
+        <!-- To Date -->
+        <div class="date-section-box">
+          <label class="main-label">To Date</label>
+          <div class="date-input-container" id="diff-to-container">
+            <div class="compact-date-input">
               <div class="date-block gregorian">
                 <span class="block-label">📅 Gregorian</span>
                 <div class="block-fields">
@@ -624,23 +655,23 @@
                   <button type="button" class="date-picker-btn" onclick="toggleCalendar('diff-to', 'hijri'); stopDiffAutoMode()">🌙</button>
                 </div>
               </div>
-              <div class="time-block-row">
-                <span class="block-label">🕐 Time</span>
-                <div class="time-fields-12">
-                  <select class="date-select hour12" id="diff-to-hour12" onchange="stopDiffAutoMode(); calculateDiff()"></select>
-                  <span class="time-sep">:</span>
-                  <select class="date-select minute" id="diff-to-minute" onchange="stopDiffAutoMode(); calculateDiff()"></select>
-                  <span class="time-sep">:</span>
-                  <select class="date-select second" id="diff-to-second" onchange="stopDiffAutoMode(); calculateDiff()"></select>
-                  <select class="date-select ampm" id="diff-to-ampm" onchange="stopDiffAutoMode(); calculateDiff()">
-                    <option value="AM">AM</option>
-                    <option value="PM">PM</option>
-                  </select>
-                  <button type="button" class="now-btn" onclick="setNowDiff()">Now</button>
-                </div>
-              </div>
-              <div class="calendar-popup" id="diff-to-calendar"></div>
             </div>
+            <div class="time-block-row">
+              <span class="block-label">🕐 Time</span>
+              <div class="time-fields-12">
+                <select class="date-select hour12" id="diff-to-hour12" onchange="stopDiffAutoMode(); calculateDiff()"></select>
+                <span class="time-sep">:</span>
+                <select class="date-select minute" id="diff-to-minute" onchange="stopDiffAutoMode(); calculateDiff()"></select>
+                <span class="time-sep">:</span>
+                <select class="date-select second" id="diff-to-second" onchange="stopDiffAutoMode(); calculateDiff()"></select>
+                <select class="date-select ampm" id="diff-to-ampm" onchange="stopDiffAutoMode(); calculateDiff()">
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+                <button type="button" class="now-btn" onclick="setNowDiff()">Now</button>
+              </div>
+            </div>
+            <div class="calendar-popup" id="diff-to-calendar"></div>
           </div>
         </div>
       </div>
@@ -672,67 +703,103 @@
             <button class="op-btn" onclick="setOperation('subtract', this)">− Subtract</button>
           </div>
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Start Date</label>
+        
+        <!-- Date Input Row: Date on right, Values on left -->
+        <div class="add-main-row">
+          <!-- Start Date -->
+          <div class="add-date-col">
+            <label class="main-label">Start Date</label>
             <div class="date-input-container" id="add-container">
-              <div class="dual-date-input">
-                <div class="date-row gregorian">
-                  <span class="date-row-label">Gregorian</span>
-                  <div class="date-fields">
-                    <div class="field-group"><span class="field-label">Year</span><input type="number" class="date-field year" id="add-g-year" placeholder="YYYY" min="1" max="9999" oninput="validateField(this, 1, 9999); onGregorianChange('add')"></div>
+              <div class="compact-date-input">
+                <div class="date-block gregorian">
+                  <span class="block-label">📅 Gregorian</span>
+                  <div class="block-fields">
+                    <select class="date-select day" id="add-g-day" onchange="onGregorianChange('add')"></select>
                     <span class="date-sep">/</span>
-                    <div class="field-group"><span class="field-label">Month</span><input type="number" class="date-field month" id="add-g-month" placeholder="MM" min="1" max="12" oninput="validateField(this, 1, 12); onGregorianChange('add')"></div>
+                    <select class="date-select month" id="add-g-month" onchange="updateDays('add', 'g'); onGregorianChange('add')"></select>
                     <span class="date-sep">/</span>
-                    <div class="field-group"><span class="field-label">Day</span><input type="number" class="date-field day" id="add-g-day" placeholder="DD" min="1" max="31" oninput="validateField(this, 1, 31); onGregorianChange('add')"></div>
+                    <input type="number" class="date-input year" id="add-g-year" placeholder="Year" min="1" max="9999" oninput="updateDays('add', 'g'); onGregorianChange('add')">
+                    <button type="button" class="date-picker-btn" onclick="toggleCalendar('add', 'gregorian')">📅</button>
                   </div>
-                  <button type="button" class="date-picker-btn" onclick="toggleCalendar('add', 'gregorian')">📅</button>
                 </div>
-                <div class="date-row hijri">
-                  <span class="date-row-label">Hijri</span>
-                  <div class="date-fields">
-                    <div class="field-group"><span class="field-label">Year</span><input type="number" class="date-field year" id="add-h-year" placeholder="YYYY" min="1" max="9999" oninput="validateField(this, 1, 9999); onHijriChange('add')"></div>
+                <div class="date-block hijri">
+                  <span class="block-label">🌙 Hijri</span>
+                  <div class="block-fields">
+                    <select class="date-select day" id="add-h-day" onchange="onHijriChange('add')"></select>
                     <span class="date-sep">/</span>
-                    <div class="field-group"><span class="field-label">Month</span><input type="number" class="date-field month" id="add-h-month" placeholder="MM" min="1" max="12" oninput="validateField(this, 1, 12); onHijriChange('add')"></div>
+                    <select class="date-select month hijri-month" id="add-h-month" onchange="updateDays('add', 'h'); onHijriChange('add')"></select>
                     <span class="date-sep">/</span>
-                    <div class="field-group"><span class="field-label">Day</span><input type="number" class="date-field day" id="add-h-day" placeholder="DD" min="1" max="30" oninput="validateField(this, 1, 30); onHijriChange('add')"></div>
+                    <input type="number" class="date-input year" id="add-h-year" placeholder="Year" min="1" max="9999" oninput="updateDays('add', 'h'); onHijriChange('add')">
+                    <button type="button" class="date-picker-btn" onclick="toggleCalendar('add', 'hijri')">🌙</button>
                   </div>
-                  <button type="button" class="date-picker-btn" onclick="toggleCalendar('add', 'hijri')">🌙</button>
                 </div>
-                <div class="date-row time-row">
-                  <span class="date-row-label">Time</span>
-                  <div class="date-fields">
-                    <div class="field-group"><span class="field-label">Hour</span><input type="number" class="date-field hour" id="add-hour" placeholder="HH" min="0" max="23" oninput="validateField(this, 0, 23); calculateAdd()"></div>
-                    <span class="time-sep">:</span>
-                    <div class="field-group"><span class="field-label">Min</span><input type="number" class="date-field minute" id="add-minute" placeholder="MM" min="0" max="59" oninput="validateField(this, 0, 59); calculateAdd()"></div>
-                    <span class="time-sep">:</span>
-                    <div class="field-group"><span class="field-label">Sec</span><input type="number" class="date-field second" id="add-second" placeholder="SS" min="0" max="59" oninput="validateField(this, 0, 59); calculateAdd()"></div>
-                  </div>
-                  <button type="button" class="date-picker-btn" onclick="setNowTime('add')">⏱️</button>
+              </div>
+              <div class="time-block-row">
+                <span class="block-label">🕐 Time</span>
+                <div class="time-fields-12">
+                  <select class="date-select hour12" id="add-hour12" onchange="calculateAdd()"></select>
+                  <span class="time-sep">:</span>
+                  <select class="date-select minute" id="add-minute" onchange="calculateAdd()"></select>
+                  <span class="time-sep">:</span>
+                  <select class="date-select second" id="add-second" onchange="calculateAdd()"></select>
+                  <select class="date-select ampm" id="add-ampm" onchange="calculateAdd()">
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                  </select>
+                  <button type="button" class="now-btn" onclick="setNowAdd()">Now</button>
                 </div>
               </div>
               <div class="calendar-popup" id="add-calendar"></div>
-              <div class="time-picker-popup" id="add-time-picker"></div>
             </div>
           </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label>Years</label><input type="number" id="add-years" placeholder="0" oninput="calculateAdd()"></div>
-          <div class="form-group"><label>Months</label><input type="number" id="add-months" placeholder="0" oninput="calculateAdd()"></div>
-          <div class="form-group"><label>Days</label><input type="number" id="add-days" placeholder="0" oninput="calculateAdd()"></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label>Hours</label><input type="number" id="add-hours" placeholder="0" oninput="calculateAdd()"></div>
-          <div class="form-group"><label>Minutes</label><input type="number" id="add-minutes" placeholder="0" oninput="calculateAdd()"></div>
-          <div class="form-group"><label>Seconds</label><input type="number" id="add-seconds" placeholder="0" oninput="calculateAdd()"></div>
+          
+          <!-- Values to Add/Subtract -->
+          <div class="add-values-col">
+            <label class="main-label" id="add-values-label">Add</label>
+            <div class="add-values-grid">
+              <div class="add-value-row">
+                <div class="add-value-item">
+                  <label>Years</label>
+                  <input type="number" id="add-years" placeholder="0" oninput="calculateAdd()">
+                </div>
+                <div class="add-value-item">
+                  <label>Months</label>
+                  <input type="number" id="add-months" placeholder="0" oninput="calculateAdd()">
+                </div>
+                <div class="add-value-item">
+                  <label>Days</label>
+                  <input type="number" id="add-days" placeholder="0" oninput="calculateAdd()">
+                </div>
+              </div>
+              <div class="add-value-row">
+                <div class="add-value-item">
+                  <label>Hours</label>
+                  <input type="number" id="add-hours" placeholder="0" oninput="calculateAdd()">
+                </div>
+                <div class="add-value-item">
+                  <label>Minutes</label>
+                  <input type="number" id="add-minutes" placeholder="0" oninput="calculateAdd()">
+                </div>
+                <div class="add-value-item">
+                  <label>Seconds</label>
+                  <input type="number" id="add-seconds" placeholder="0" oninput="calculateAdd()">
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="result-box" id="add-result">
         <div class="add-result">
-          <div class="add-result-date" id="add-result-date"></div>
-          <div class="add-result-hijri" id="add-result-hijri"></div>
-          <div class="add-result-time" id="add-result-time"></div>
-          <div class="add-result-day" id="add-result-day"></div>
+          <button class="copy-btn" onclick="copyAddResult()"><span>📋</span> Copy</button>
+          <div class="add-result-main">
+            <div class="add-result-date" id="add-result-date"></div>
+            <div class="add-result-hijri" id="add-result-hijri"></div>
+          </div>
+          <div class="add-result-details">
+            <span class="add-result-day" id="add-result-day"></span>
+            <span class="add-result-time" id="add-result-time"></span>
+          </div>
         </div>
       </div>
     </div>
@@ -812,7 +879,21 @@ function getDateValues(p) {
 }
 function setGregorian(p, y, m, d) { setVal(`${p}-g-year`, y); setVal(`${p}-g-month`, m); setVal(`${p}-g-day`, d); }
 function setHijri(p, y, m, d) { setVal(`${p}-h-year`, y); setVal(`${p}-h-month`, m); setVal(`${p}-h-day`, d); }
-function setTime(p, h, m, s) { setVal(`${p}-hour`, h); setVal(`${p}-minute`, m); setVal(`${p}-second`, s); }
+function setTime(p, h, m, s) { 
+  // Support 12-hour format
+  const hour12El = document.getElementById(`${p}-hour12`);
+  if (hour12El) {
+    const h12 = h === 0 ? 12 : (h > 12 ? h - 12 : h);
+    const ampm = h < 12 ? 'AM' : 'PM';
+    setVal(`${p}-hour12`, h12);
+    const ampmEl = document.getElementById(`${p}-ampm`);
+    if (ampmEl) ampmEl.value = ampm;
+  } else {
+    setVal(`${p}-hour`, h);
+  }
+  setVal(`${p}-minute`, m); 
+  setVal(`${p}-second`, s); 
+}
 
 function onGregorianChange(p) { const v = getDateValues(p); if (v.gY >= 1 && v.gM >= 1 && v.gM <= 12 && v.gD >= 1 && v.gD <= 31) { const h = gregorianToHijri(v.gY, v.gM, v.gD); setHijri(p, h.year, h.month, h.day); } triggerCalc(p); }
 function onHijriChange(p) { const v = getDateValues(p); if (v.hY >= 1 && v.hM >= 1 && v.hM <= 12 && v.hD >= 1 && v.hD <= 30) { const g = hijriToGregorian(v.hY, v.hM, v.hD); setGregorian(p, g.year, g.month, g.day); } triggerCalc(p); }
@@ -1172,12 +1253,59 @@ function setNowDiff() {
 }
 
 // Add Calculator
-function calculateAdd() { const sd = getDateTime('add'); if (!sd) { document.getElementById('add-result').classList.remove('show'); return; }
-const aY = getVal('add-years'), aM = getVal('add-months'), aD = getVal('add-days'), aH = getVal('add-hours'), aMn = getVal('add-minutes'), aS = getVal('add-seconds'); const r = new Date(sd);
-if (currentOperation === 'add') { r.setFullYear(r.getFullYear() + aY); r.setMonth(r.getMonth() + aM); r.setDate(r.getDate() + aD); r.setHours(r.getHours() + aH); r.setMinutes(r.getMinutes() + aMn); r.setSeconds(r.getSeconds() + aS); } else { r.setFullYear(r.getFullYear() - aY); r.setMonth(r.getMonth() - aM); r.setDate(r.getDate() - aD); r.setHours(r.getHours() - aH); r.setMinutes(r.getMinutes() - aMn); r.setSeconds(r.getSeconds() - aS); }
-document.getElementById('add-result-date').textContent = isArabic ? `${r.getDate()} ${monthNames[r.getMonth()]} ${r.getFullYear()}` : `${monthNames[r.getMonth()]} ${r.getDate()}, ${r.getFullYear()}`;
-const hR = gregorianToHijri(r.getFullYear(), r.getMonth() + 1, r.getDate()); document.getElementById('add-result-hijri').textContent = formatHijri(hR);
-document.getElementById('add-result-time').textContent = `${String(r.getHours()).padStart(2, '0')}:${String(r.getMinutes()).padStart(2, '0')}:${String(r.getSeconds()).padStart(2, '0')}`; document.getElementById('add-result-day').textContent = dayNames[r.getDay()]; document.getElementById('add-result').classList.add('show'); }
+function calculateAdd() { 
+  const sd = getDateTime('add'); 
+  if (!sd) { document.getElementById('add-result').classList.remove('show'); return; }
+  const aY = getVal('add-years'), aM = getVal('add-months'), aD = getVal('add-days'), aH = getVal('add-hours'), aMn = getVal('add-minutes'), aS = getVal('add-seconds'); 
+  const r = new Date(sd);
+  if (currentOperation === 'add') { 
+    r.setFullYear(r.getFullYear() + aY); r.setMonth(r.getMonth() + aM); r.setDate(r.getDate() + aD); 
+    r.setHours(r.getHours() + aH); r.setMinutes(r.getMinutes() + aMn); r.setSeconds(r.getSeconds() + aS); 
+  } else { 
+    r.setFullYear(r.getFullYear() - aY); r.setMonth(r.getMonth() - aM); r.setDate(r.getDate() - aD); 
+    r.setHours(r.getHours() - aH); r.setMinutes(r.getMinutes() - aMn); r.setSeconds(r.getSeconds() - aS); 
+  }
+  
+  const dateText = isArabic ? `${r.getDate()} ${monthNames[r.getMonth()]} ${r.getFullYear()}` : `${monthNames[r.getMonth()]} ${r.getDate()}, ${r.getFullYear()}`;
+  const hR = gregorianToHijri(r.getFullYear(), r.getMonth() + 1, r.getDate()); 
+  const hijriText = formatHijri(hR);
+  const timeText = `${String(r.getHours()).padStart(2, '0')}:${String(r.getMinutes()).padStart(2, '0')}:${String(r.getSeconds()).padStart(2, '0')}`;
+  const dayText = dayNames[r.getDay()];
+  
+  document.getElementById('add-result-date').textContent = dateText;
+  document.getElementById('add-result-hijri').textContent = hijriText;
+  document.getElementById('add-result-time').textContent = timeText; 
+  document.getElementById('add-result-day').textContent = dayText; 
+  
+  // Store for copy
+  window.addInfo = {
+    date: dateText,
+    hijri: hijriText,
+    day: dayText,
+    time: timeText
+  };
+  
+  document.getElementById('add-result').classList.add('show'); 
+}
+
+// Set Now for Add
+function setNowAdd() {
+  const now = new Date();
+  const h = now.getHours();
+  const h12 = h === 0 ? 12 : (h > 12 ? h - 12 : h);
+  const ampm = h < 12 ? 'AM' : 'PM';
+  
+  document.getElementById('add-g-day').value = now.getDate();
+  document.getElementById('add-g-month').value = now.getMonth() + 1;
+  document.getElementById('add-g-year').value = now.getFullYear();
+  document.getElementById('add-hour12').value = h12;
+  document.getElementById('add-minute').value = now.getMinutes();
+  document.getElementById('add-second').value = now.getSeconds();
+  document.getElementById('add-ampm').value = ampm;
+  
+  onGregorianChange('add');
+  calculateAdd();
+}
 
 // Zodiac
 const zodiacSigns = [ { n: isArabic ? 'الجدي' : 'Capricorn', i: '♑', s: [12, 22], e: [1, 19] }, { n: isArabic ? 'الدلو' : 'Aquarius', i: '♒', s: [1, 20], e: [2, 18] }, { n: isArabic ? 'الحوت' : 'Pisces', i: '♓', s: [2, 19], e: [3, 20] }, { n: isArabic ? 'الحمل' : 'Aries', i: '♈', s: [3, 21], e: [4, 19] }, { n: isArabic ? 'الثور' : 'Taurus', i: '♉', s: [4, 20], e: [5, 20] }, { n: isArabic ? 'الجوزاء' : 'Gemini', i: '♊', s: [5, 21], e: [6, 20] }, { n: isArabic ? 'السرطان' : 'Cancer', i: '♋', s: [6, 21], e: [7, 22] }, { n: isArabic ? 'الأسد' : 'Leo', i: '♌', s: [7, 23], e: [8, 22] }, { n: isArabic ? 'العذراء' : 'Virgo', i: '♍', s: [8, 23], e: [9, 22] }, { n: isArabic ? 'الميزان' : 'Libra', i: '♎', s: [9, 23], e: [10, 22] }, { n: isArabic ? 'العقرب' : 'Scorpio', i: '♏', s: [10, 23], e: [11, 21] }, { n: isArabic ? 'القوس' : 'Sagittarius', i: '♐', s: [11, 22], e: [12, 21] } ];
@@ -1254,6 +1382,7 @@ function initDropdowns() {
   initDropdownsFor('birth');
   initDropdownsFor('diff-from');
   initDropdownsFor('diff-to');
+  initDropdownsFor('add');
 }
 
 // Update days based on month/year
@@ -1299,6 +1428,13 @@ function copyDiffResult() {
   const title = isArabic ? 'الفرق بين التاريخين' : 'Date Difference';
   const text = [title, window.diffInfo.main, window.diffInfo.details, window.diffInfo.stats].join('\n');
   copyToClipboard(text, 'diff-result-box');
+}
+
+function copyAddResult() {
+  if (!window.addInfo) return;
+  const title = isArabic ? 'النتيجة' : 'Result';
+  const text = [title, window.addInfo.date, window.addInfo.hijri, window.addInfo.day, window.addInfo.time].join('\n');
+  copyToClipboard(text, 'add-result');
 }
 
 function copyToClipboard(text, containerId) {

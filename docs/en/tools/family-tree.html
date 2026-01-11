@@ -845,6 +845,89 @@
 
 .context-menu-divider { height: 1px; background: var(--border-color); margin: 3px 0; }
 
+/* Add Menu */
+.add-menu {
+  position: fixed;
+  background: var(--bg-card);
+  border: 2px solid var(--primary);
+  border-radius: 10px;
+  min-width: 140px;
+  z-index: 2000;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  display: none;
+  transform: translate(-50%, 5px);
+}
+
+.add-menu.show { display: block; }
+
+.add-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.add-menu-item:first-child { border-radius: 8px 8px 0 0; }
+.add-menu-item:last-child { border-radius: 0 0 8px 8px; }
+.add-menu-item:hover { background: var(--primary); }
+
+/* Drag Ghost */
+.drag-ghost {
+  position: fixed;
+  background: var(--bg-card);
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  padding: 8px 14px;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  z-index: 3000;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.drag-ghost span { font-size: 1.1rem; }
+
+/* Drop Relation Options */
+.drop-relation-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.drop-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 10px;
+  background: var(--bg-card);
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.drop-option:hover {
+  border-color: var(--primary);
+  background: rgba(5, 150, 105, 0.1);
+}
+
+.drop-option span:first-child { font-size: 1.5rem; }
+
 /* Toast */
 .toast {
   position: fixed;
@@ -1070,6 +1153,49 @@
   <div class="context-menu-item danger" onclick="ctxAction('delete')">🗑️ <span id="ctx-delete">حذف</span></div>
 </div>
 
+<!-- Add Menu -->
+<div class="add-menu" id="add-menu">
+  <div class="add-menu-item" onclick="addMenuAction('parent')">👨‍👩 <span id="add-parent">أب / أم</span></div>
+  <div class="add-menu-item" onclick="addMenuAction('child')">👶 <span id="add-child">ابن / ابنة</span></div>
+  <div class="add-menu-item" onclick="addMenuAction('sibling')">👫 <span id="add-sibling">أخ / أخت</span></div>
+  <div class="add-menu-item" onclick="addMenuAction('spouse')">💑 <span id="add-spouse">زوج / زوجة</span></div>
+</div>
+
+<!-- Drop Relation Modal -->
+<div class="modal-overlay" id="drop-relation-modal">
+  <div class="modal-content" style="max-width:360px">
+    <div class="modal-header">
+      <h2>🔗 <span id="drop-title">اختر العلاقة</span></h2>
+      <button class="modal-close" onclick="closeModal('drop-relation-modal')">&times;</button>
+    </div>
+    <div class="modal-body" style="text-align:center">
+      <p style="margin-bottom:15px;color:var(--text-secondary)">
+        <strong id="drop-dragged-name">-</strong> 
+        <span id="drop-relation-to">بالنسبة لـ</span> 
+        <strong id="drop-target-name">-</strong>
+      </p>
+      <div class="drop-relation-options">
+        <button class="drop-option" onclick="confirmDropRelation('child-of')">
+          <span>👶</span>
+          <span id="opt-child">ابن/ابنة</span>
+        </button>
+        <button class="drop-option" onclick="confirmDropRelation('parent-of')">
+          <span>👨‍👩</span>
+          <span id="opt-parent">أب/أم</span>
+        </button>
+        <button class="drop-option" onclick="confirmDropRelation('sibling-of')">
+          <span>👫</span>
+          <span id="opt-sibling">أخ/أخت</span>
+        </button>
+        <button class="drop-option" onclick="confirmDropRelation('spouse-of')">
+          <span>💑</span>
+          <span id="opt-spouse">زوج/زوجة</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 <input type="file" id="import-input" class="hidden-input" accept=".json" onchange="handleImport(event)">
 
@@ -1087,6 +1213,16 @@ if (!isArabic) {
   document.getElementById('ctx-relations').textContent = 'Edit Relations';
   document.getElementById('ctx-locate').textContent = 'Show in Tree';
   document.getElementById('ctx-delete').textContent = 'Delete';
+  document.getElementById('add-parent').textContent = 'Father / Mother';
+  document.getElementById('add-child').textContent = 'Son / Daughter';
+  document.getElementById('add-sibling').textContent = 'Brother / Sister';
+  document.getElementById('add-spouse').textContent = 'Spouse';
+  document.getElementById('drop-title').textContent = 'Select Relation';
+  document.getElementById('drop-relation-to').textContent = 'in relation to';
+  document.getElementById('opt-child').textContent = 'Son/Daughter';
+  document.getElementById('opt-parent').textContent = 'Father/Mother';
+  document.getElementById('opt-sibling').textContent = 'Sibling';
+  document.getElementById('opt-spouse').textContent = 'Spouse';
 }
 
 let data = { persons: {}, rootId: null };
@@ -1101,7 +1237,7 @@ let ctxTargetId = null;
 let zoom = 1, panX = 0, panY = 0;
 let isDragging = false, dragStartX = 0, dragStartY = 0;
 
-const CARD_W = 125, CARD_H = 80, GAP_H = 40, GAP_V = 60;
+const CARD_W = 125, CARD_H = 85, GAP_H = 40, GAP_V = 65;
 
 function init() {
   setupCanvas();
@@ -1109,9 +1245,14 @@ function init() {
   renderTree();
   updateStats();
   
-  document.addEventListener('click', () => {
+  document.addEventListener('click', (e) => {
     document.getElementById('context-menu').classList.remove('show');
     document.querySelectorAll('.dropdown.open').forEach(d => d.classList.remove('open'));
+    
+    // إغلاق قائمة الإضافة إذا لم نضغط عليها
+    if (!e.target.closest('.add-menu') && !e.target.closest('.add-btn-internal')) {
+      hideAddMenu();
+    }
   });
   
   document.addEventListener('keydown', e => {
@@ -1119,6 +1260,8 @@ function init() {
       closeModal('person-modal');
       closeModal('relations-modal');
       closeModal('link-modal');
+      closeModal('drop-relation-modal');
+      hideAddMenu();
     }
   });
 }
@@ -1466,7 +1609,14 @@ function openLinkModal(relationType, personId) {
   selectedLinkId = null;
   linkTab = 'existing';
   
-  const titles = { father: t('اختر الأب', 'Select Father'), mother: t('اختر الأم', 'Select Mother'), spouse: t('اختر الزوج/ة', 'Select Spouse'), child: t('اختر الابن/ة', 'Select Child') };
+  const titles = { 
+    father: t('اختر الأب', 'Select Father'), 
+    mother: t('اختر الأم', 'Select Mother'), 
+    parent: t('اختر الأب/الأم', 'Select Parent'),
+    spouse: t('اختر الزوج/ة', 'Select Spouse'), 
+    child: t('اختر الابن/ة', 'Select Child'),
+    sibling: t('اختر الأخ/الأخت', 'Select Sibling')
+  };
   document.getElementById('link-title').textContent = titles[relationType] || t('ربط', 'Link');
   document.querySelectorAll('.link-tab').forEach(tab => { tab.classList.toggle('active', tab.dataset.tab === 'existing'); });
   renderLinkContent();
@@ -1483,21 +1633,36 @@ function renderLinkContent() {
   const content = document.getElementById('link-content');
   
   if (linkTab === 'new') {
+    // تحديد الجنس الافتراضي
+    let defaultGender = 'male';
+    if (linkCallback === 'mother') defaultGender = 'female';
+    
     content.innerHTML = `
       <div class="form-group"><label>${t('الاسم', 'Name')} *</label><input type="text" id="new-link-name"></div>
       <div class="form-group"><label>${t('الجنس', 'Gender')}</label>
         <div class="gender-toggle">
-          <label class="gender-option male"><input type="radio" name="new-gender" value="male" ${linkCallback === 'father' ? 'checked' : ''}><span>👨 ${t('ذكر', 'Male')}</span></label>
-          <label class="gender-option female"><input type="radio" name="new-gender" value="female" ${linkCallback === 'mother' ? 'checked' : ''}><span>👩 ${t('أنثى', 'Female')}</span></label>
+          <label class="gender-option male"><input type="radio" name="new-gender" value="male" ${defaultGender === 'male' ? 'checked' : ''}><span>👨 ${t('ذكر', 'Male')}</span></label>
+          <label class="gender-option female"><input type="radio" name="new-gender" value="female" ${defaultGender === 'female' ? 'checked' : ''}><span>👩 ${t('أنثى', 'Female')}</span></label>
         </div>
       </div>`;
     return;
   }
   
   let candidates = Object.values(data.persons).filter(p => p.id !== currentPersonId);
-  if (linkCallback === 'father') candidates = candidates.filter(p => p.gender === 'male' && !isDescendant(p.id, currentPersonId));
-  else if (linkCallback === 'mother') candidates = candidates.filter(p => p.gender === 'female' && !isDescendant(p.id, currentPersonId));
-  else if (linkCallback === 'child') candidates = candidates.filter(p => !isDescendant(currentPersonId, p.id));
+  
+  // فلترة حسب النوع
+  if (linkCallback === 'father') {
+    candidates = candidates.filter(p => p.gender === 'male' && !isDescendant(p.id, currentPersonId));
+  } else if (linkCallback === 'mother') {
+    candidates = candidates.filter(p => p.gender === 'female' && !isDescendant(p.id, currentPersonId));
+  } else if (linkCallback === 'parent') {
+    candidates = candidates.filter(p => !isDescendant(p.id, currentPersonId));
+  } else if (linkCallback === 'child') {
+    candidates = candidates.filter(p => !isDescendant(currentPersonId, p.id));
+  } else if (linkCallback === 'sibling') {
+    // الإخوة يجب أن لا يكونوا أجداد أو أحفاد
+    candidates = candidates.filter(p => !isDescendant(p.id, currentPersonId) && !isDescendant(currentPersonId, p.id));
+  }
   
   content.innerHTML = `
     <input type="text" class="link-search" placeholder="${t('ابحث...', 'Search...')}" oninput="filterLinkOptions(this.value)">
@@ -1540,6 +1705,15 @@ function confirmLink() {
   switch (linkCallback) {
     case 'father': person.fatherId = selectedLinkId; break;
     case 'mother': person.motherId = selectedLinkId; break;
+    case 'parent':
+      if (selectedLinkId) {
+        const selected = data.persons[selectedLinkId];
+        if (selected) {
+          if (selected.gender === 'male') person.fatherId = selectedLinkId;
+          else person.motherId = selectedLinkId;
+        }
+      }
+      break;
     case 'spouse':
       if (selectedLinkId) {
         const spouse = data.persons[selectedLinkId];
@@ -1560,13 +1734,23 @@ function confirmLink() {
         }
       }
       break;
+    case 'sibling':
+      if (selectedLinkId) {
+        const sibling = data.persons[selectedLinkId];
+        if (sibling) {
+          if (person.fatherId) sibling.fatherId = person.fatherId;
+          if (person.motherId) sibling.motherId = person.motherId;
+        }
+      }
+      break;
   }
   
   closeModal('link-modal');
-  openRelationsModal(currentPersonId);
   renderPersonsList();
   layoutTree();
   renderTree();
+  updateStats();
+  showToast(t('تم', 'Done'));
 }
 
 // ========== PHOTO ==========
@@ -1685,8 +1869,11 @@ function drawMarriageLine(p1, p2, status, layer) {
 function drawCard(person, layer) {
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
   g.setAttribute('transform', `translate(${person._x}, ${person._y})`);
+  g.setAttribute('class', 'person-card-group');
+  g.setAttribute('data-id', person.id);
   g.style.cursor = 'pointer';
   
+  // الخلفية
   const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
   rect.setAttribute('width', CARD_W); rect.setAttribute('height', CARD_H); rect.setAttribute('rx', '8');
   rect.setAttribute('fill', '#334155');
@@ -1696,62 +1883,86 @@ function drawCard(person, layer) {
   rect.setAttribute('filter', 'url(#shadow)');
   g.appendChild(rect);
   
+  // الصورة أو الأيقونة
   if (person.photo) {
     const img = document.createElementNS('http://www.w3.org/2000/svg', 'image');
-    img.setAttribute('x', CARD_W/2 - 16); img.setAttribute('y', 6); img.setAttribute('width', 32); img.setAttribute('height', 32);
-    img.setAttribute('href', person.photo); img.setAttribute('clip-path', 'circle(16px at 16px 16px)');
+    img.setAttribute('x', CARD_W/2 - 14); img.setAttribute('y', 5); img.setAttribute('width', 28); img.setAttribute('height', 28);
+    img.setAttribute('href', person.photo); img.setAttribute('clip-path', 'circle(14px at 14px 14px)');
     g.appendChild(img);
   } else {
     const icon = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    icon.setAttribute('x', CARD_W/2); icon.setAttribute('y', 28); icon.setAttribute('text-anchor', 'middle'); icon.setAttribute('font-size', '22');
+    icon.setAttribute('x', CARD_W/2); icon.setAttribute('y', 24); icon.setAttribute('text-anchor', 'middle'); icon.setAttribute('font-size', '20');
     icon.textContent = person.gender === 'female' ? '👩' : '👨';
     g.appendChild(icon);
   }
   
+  // الاسم
   const name = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-  name.setAttribute('x', CARD_W/2); name.setAttribute('y', 52); name.setAttribute('text-anchor', 'middle');
-  name.setAttribute('fill', '#f8fafc'); name.setAttribute('font-size', '11'); name.setAttribute('font-weight', '600');
-  name.textContent = person.name.length > 13 ? person.name.substring(0, 13) + '..' : person.name;
+  name.setAttribute('x', CARD_W/2); name.setAttribute('y', 46); name.setAttribute('text-anchor', 'middle');
+  name.setAttribute('fill', '#f8fafc'); name.setAttribute('font-size', '10'); name.setAttribute('font-weight', '600');
+  name.textContent = person.name.length > 14 ? person.name.substring(0, 14) + '..' : person.name;
   g.appendChild(name);
   
+  // العمر
   if (person.birthDate) {
     const age = calcAge(person.birthDate, person.deathDate);
     const ageText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    ageText.setAttribute('x', CARD_W/2); ageText.setAttribute('y', 66); ageText.setAttribute('text-anchor', 'middle');
-    ageText.setAttribute('fill', '#94a3b8'); ageText.setAttribute('font-size', '9');
+    ageText.setAttribute('x', CARD_W/2); ageText.setAttribute('y', 58); ageText.setAttribute('text-anchor', 'middle');
+    ageText.setAttribute('fill', '#94a3b8'); ageText.setAttribute('font-size', '8');
     ageText.textContent = age + (isArabic ? ' سنة' : ' y') + (person.deathDate ? ' ✝' : '');
     g.appendChild(ageText);
   }
   
-  g.addEventListener('click', e => { e.stopPropagation(); openEditPersonModal(person.id); });
+  // زر + داخل البطاقة
+  const addBtnG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  addBtnG.setAttribute('class', 'add-btn-internal');
+  addBtnG.style.cursor = 'pointer';
+  
+  const addRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  addRect.setAttribute('x', CARD_W/2 - 14); addRect.setAttribute('y', CARD_H - 18);
+  addRect.setAttribute('width', 28); addRect.setAttribute('height', 14);
+  addRect.setAttribute('rx', 4);
+  addRect.setAttribute('fill', '#1e293b');
+  addRect.setAttribute('stroke', '#059669');
+  addRect.setAttribute('stroke-width', '1.5');
+  addBtnG.appendChild(addRect);
+  
+  const addText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  addText.setAttribute('x', CARD_W/2); addText.setAttribute('y', CARD_H - 8);
+  addText.setAttribute('text-anchor', 'middle'); addText.setAttribute('fill', '#059669');
+  addText.setAttribute('font-size', '11'); addText.setAttribute('font-weight', 'bold');
+  addText.textContent = '+';
+  addBtnG.appendChild(addText);
+  
+  addBtnG.addEventListener('click', e => {
+    e.stopPropagation();
+    showAddMenu(e, person.id, person._x + CARD_W/2, person._y + CARD_H);
+  });
+  
+  addBtnG.addEventListener('mouseenter', () => {
+    addRect.setAttribute('fill', '#059669');
+    addText.setAttribute('fill', '#fff');
+  });
+  addBtnG.addEventListener('mouseleave', () => {
+    addRect.setAttribute('fill', '#1e293b');
+    addText.setAttribute('fill', '#059669');
+  });
+  
+  g.appendChild(addBtnG);
+  
+  // أحداث البطاقة
+  g.addEventListener('click', e => {
+    if (e.target.closest('.add-btn-internal')) return;
+    e.stopPropagation();
+    openEditPersonModal(person.id);
+  });
   g.addEventListener('contextmenu', e => { e.preventDefault(); showCtxMenu(e, person.id); });
   g.addEventListener('dblclick', e => { e.stopPropagation(); openRelationsModal(person.id); });
-  layer.appendChild(g);
   
-  drawAddBtn(person._x + CARD_W/2, person._y - 12, () => openLinkModal('father', person.id), layer);
-  drawAddBtn(person._x + CARD_W + 12, person._y + CARD_H/2, () => openLinkModal('spouse', person.id), layer);
-  drawAddBtn(person._x + CARD_W/2, person._y + CARD_H + 12, () => openLinkModal('child', person.id), layer);
-}
-
-function drawAddBtn(x, y, onClick, layer) {
-  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-  g.setAttribute('transform', `translate(${x - 9}, ${y - 9})`);
-  g.style.cursor = 'pointer';
+  // السحب والإفلات
+  g.setAttribute('draggable', 'true');
+  g.addEventListener('mousedown', e => startDragCard(e, person.id));
   
-  const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-  circle.setAttribute('cx', 9); circle.setAttribute('cy', 9); circle.setAttribute('r', 9);
-  circle.setAttribute('fill', '#1e293b'); circle.setAttribute('stroke', '#059669'); circle.setAttribute('stroke-width', '2');
-  g.appendChild(circle);
-  
-  const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-  text.setAttribute('x', 9); text.setAttribute('y', 9); text.setAttribute('text-anchor', 'middle'); text.setAttribute('dominant-baseline', 'central');
-  text.setAttribute('fill', '#059669'); text.setAttribute('font-size', '12'); text.setAttribute('font-weight', 'bold');
-  text.textContent = '+';
-  g.appendChild(text);
-  
-  g.addEventListener('click', e => { e.stopPropagation(); onClick(); });
-  g.addEventListener('mouseenter', () => { circle.setAttribute('fill', '#059669'); text.setAttribute('fill', '#fff'); });
-  g.addEventListener('mouseleave', () => { circle.setAttribute('fill', '#1e293b'); text.setAttribute('fill', '#059669'); });
   layer.appendChild(g);
 }
 
@@ -1760,6 +1971,197 @@ function calcAge(birth, death) {
   let age = e.getFullYear() - b.getFullYear();
   if (e.getMonth() < b.getMonth() || (e.getMonth() === b.getMonth() && e.getDate() < b.getDate())) age--;
   return age;
+}
+
+// ========== ADD MENU ==========
+function showAddMenu(e, personId, x, y) {
+  hideAddMenu();
+  const person = data.persons[personId];
+  if (!person) return;
+  
+  const menu = document.getElementById('add-menu');
+  const canvas = document.getElementById('tree-canvas');
+  const rect = canvas.getBoundingClientRect();
+  
+  // حساب الموقع مع مراعاة الـ zoom و pan
+  const screenX = rect.left + (x * zoom + panX);
+  const screenY = rect.top + (y * zoom + panY);
+  
+  menu.style.left = screenX + 'px';
+  menu.style.top = screenY + 'px';
+  menu.dataset.personId = personId;
+  menu.classList.add('show');
+  
+  e.stopPropagation();
+}
+
+function hideAddMenu() {
+  document.getElementById('add-menu').classList.remove('show');
+}
+
+function addMenuAction(relationType) {
+  const personId = document.getElementById('add-menu').dataset.personId;
+  hideAddMenu();
+  if (personId) openLinkModal(relationType, personId);
+}
+
+// ========== DRAG & DROP ==========
+let dragState = {
+  active: false,
+  personId: null,
+  startX: 0,
+  startY: 0,
+  ghost: null
+};
+
+function startDragCard(e, personId) {
+  if (e.target.closest('.add-btn-internal')) return;
+  if (e.button !== 0) return; // فقط الزر الأيسر
+  
+  dragState.active = true;
+  dragState.personId = personId;
+  dragState.startX = e.clientX;
+  dragState.startY = e.clientY;
+  
+  // إنشاء شبح للسحب
+  const person = data.persons[personId];
+  const ghost = document.createElement('div');
+  ghost.className = 'drag-ghost';
+  ghost.innerHTML = `<span>${person.gender === 'female' ? '👩' : '👨'}</span> ${person.name}`;
+  ghost.style.left = e.clientX + 'px';
+  ghost.style.top = e.clientY + 'px';
+  document.body.appendChild(ghost);
+  dragState.ghost = ghost;
+  
+  document.addEventListener('mousemove', onDragMove);
+  document.addEventListener('mouseup', onDragEnd);
+  
+  e.preventDefault();
+}
+
+function onDragMove(e) {
+  if (!dragState.active || !dragState.ghost) return;
+  
+  dragState.ghost.style.left = e.clientX + 'px';
+  dragState.ghost.style.top = e.clientY + 'px';
+  
+  // إظهار مناطق الإفلات
+  const canvas = document.getElementById('tree-canvas');
+  const rect = canvas.getBoundingClientRect();
+  
+  // البحث عن البطاقة تحت المؤشر
+  const cards = document.querySelectorAll('.person-card-group');
+  let foundTarget = null;
+  
+  cards.forEach(card => {
+    if (card.dataset.id === dragState.personId) return;
+    
+    const person = data.persons[card.dataset.id];
+    if (!person) return;
+    
+    const cardX = rect.left + (person._x * zoom + panX);
+    const cardY = rect.top + (person._y * zoom + panY);
+    const cardW = CARD_W * zoom;
+    const cardH = CARD_H * zoom;
+    
+    if (e.clientX >= cardX && e.clientX <= cardX + cardW &&
+        e.clientY >= cardY && e.clientY <= cardY + cardH) {
+      foundTarget = card.dataset.id;
+      card.querySelector('rect').setAttribute('stroke', '#059669');
+      card.querySelector('rect').setAttribute('stroke-width', '4');
+    } else {
+      const p = data.persons[card.dataset.id];
+      card.querySelector('rect').setAttribute('stroke', p.gender === 'female' ? '#ec4899' : '#3b82f6');
+      card.querySelector('rect').setAttribute('stroke-width', p.deathDate ? '2' : '2.5');
+    }
+  });
+  
+  dragState.targetId = foundTarget;
+}
+
+function onDragEnd(e) {
+  document.removeEventListener('mousemove', onDragMove);
+  document.removeEventListener('mouseup', onDragEnd);
+  
+  if (dragState.ghost) {
+    dragState.ghost.remove();
+    dragState.ghost = null;
+  }
+  
+  // إعادة ألوان البطاقات
+  document.querySelectorAll('.person-card-group').forEach(card => {
+    const p = data.persons[card.dataset.id];
+    if (p) {
+      card.querySelector('rect').setAttribute('stroke', p.gender === 'female' ? '#ec4899' : '#3b82f6');
+      card.querySelector('rect').setAttribute('stroke-width', p.deathDate ? '2' : '2.5');
+    }
+  });
+  
+  if (dragState.active && dragState.targetId && dragState.personId !== dragState.targetId) {
+    showDropRelationModal(dragState.personId, dragState.targetId);
+  }
+  
+  dragState.active = false;
+  dragState.personId = null;
+  dragState.targetId = null;
+}
+
+function showDropRelationModal(draggedId, targetId) {
+  const dragged = data.persons[draggedId];
+  const target = data.persons[targetId];
+  if (!dragged || !target) return;
+  
+  // فتح نافذة لاختيار نوع العلاقة
+  currentPersonId = draggedId;
+  linkCallback = null;
+  
+  const modal = document.getElementById('drop-relation-modal');
+  document.getElementById('drop-dragged-name').textContent = dragged.name;
+  document.getElementById('drop-target-name').textContent = target.name;
+  document.getElementById('drop-relation-modal').dataset.targetId = targetId;
+  
+  modal.classList.add('show');
+}
+
+function confirmDropRelation(relationType) {
+  const draggedId = currentPersonId;
+  const targetId = document.getElementById('drop-relation-modal').dataset.targetId;
+  closeModal('drop-relation-modal');
+  
+  const dragged = data.persons[draggedId];
+  const target = data.persons[targetId];
+  if (!dragged || !target) return;
+  
+  switch (relationType) {
+    case 'child-of': // المسحوب يصبح ابن الهدف
+      if (target.gender === 'male') dragged.fatherId = targetId;
+      else dragged.motherId = targetId;
+      break;
+    case 'parent-of': // المسحوب يصبح أب/أم الهدف
+      if (dragged.gender === 'male') target.fatherId = draggedId;
+      else target.motherId = draggedId;
+      break;
+    case 'spouse-of': // المسحوب يصبح زوج الهدف
+      if (!dragged.marriages) dragged.marriages = [];
+      if (!target.marriages) target.marriages = [];
+      if (!dragged.marriages.find(m => m.spouseId === targetId)) {
+        dragged.marriages.push({ spouseId: targetId, status: 'married', startYear: null, endYear: null });
+      }
+      if (!target.marriages.find(m => m.spouseId === draggedId)) {
+        target.marriages.push({ spouseId: draggedId, status: 'married', startYear: null, endYear: null });
+      }
+      break;
+    case 'sibling-of': // المسحوب يصبح أخ الهدف
+      dragged.fatherId = target.fatherId;
+      dragged.motherId = target.motherId;
+      break;
+  }
+  
+  renderPersonsList();
+  layoutTree();
+  renderTree();
+  updateStats();
+  showToast(t('تم الربط', 'Linked'));
 }
 
 function locateInTree(personId) {

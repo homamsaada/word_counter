@@ -343,9 +343,17 @@
 .age-full { font-size: 1.1rem; color: var(--text-secondary); margin-top: 8px; }
 .age-live, .diff-live { margin-top: 16px; padding: 16px 20px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 12px; color: white; font-family: 'Courier New', monospace; font-size: 1.1rem; font-weight: 600; text-align: center; direction: ltr; }
 
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; margin: 20px 0; }
-.stat-card { background: var(--bg-secondary); border-radius: 12px; padding: 16px; text-align: center; }
-.stat-value { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+.stats-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin: 20px 0; }
+.stat-card { background: var(--bg-secondary); border-radius: 12px; padding: 12px 8px; text-align: center; overflow: hidden; }
+.stat-value { font-weight: 700; color: var(--primary); direction: ltr; display: block; white-space: nowrap; }
+.stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+/* Different font sizes based on expected digit count */
+.stat-card.months .stat-value { font-size: 1.4rem; }
+.stat-card.weeks .stat-value { font-size: 1.4rem; }
+.stat-card.days .stat-value { font-size: 1.3rem; }
+.stat-card.hours .stat-value { font-size: 1.1rem; }
+.stat-card.minutes .stat-value { font-size: 1rem; }
+.stat-card.seconds .stat-value { font-size: 0.95rem; }
 .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
 
 .birthday-info { background: var(--bg-secondary); border-radius: 12px; padding: 16px; margin: 20px 0; }
@@ -387,21 +395,17 @@
 /* Date Section Box */
 .date-section-box { background: var(--bg-secondary); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
 
-/* Add/Subtract Layout */
-.add-main-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.add-date-col { }
-.add-values-col { }
-.add-values-grid { }
-.add-value-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 12px; }
-.add-value-row:last-child { margin-bottom: 0; }
+/* Add/Subtract Layout - Vertical */
+.add-values-section { background: var(--bg-secondary); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+.add-values-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 12px; }
+.add-values-row:last-child { margin-bottom: 0; }
 .add-value-item { }
 .add-value-item label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; }
 .add-value-item input { width: 100%; padding: 10px 12px; border: 2px solid var(--border-color); border-radius: 8px; background: var(--bg-primary); color: var(--text-primary); font-size: 1rem; font-weight: 600; text-align: center; }
 .add-value-item input:focus { border-color: var(--primary); outline: none; }
 
 @media (max-width: 768px) { 
-  .add-main-row { grid-template-columns: 1fr; } 
-  .add-value-row { grid-template-columns: repeat(3, 1fr); }
+  .add-values-row { grid-template-columns: repeat(3, 1fr); }
 }
 
 /* Add Result */
@@ -460,7 +464,7 @@
 }
 
 .diff-result { text-align: center; }
-.diff-main { font-size: 1.3rem; font-weight: 700; color: var(--text-primary); padding: 20px; background: var(--bg-secondary); border-radius: 12px; margin-bottom: 16px; }
+.diff-main { font-size: 1.3rem; font-weight: 700; color: var(--text-primary); padding: 20px; background: var(--bg-secondary); border-radius: 12px; margin-bottom: 16px; text-align: center; }
 
 .operation-toggle { display: flex; gap: 8px; }
 .op-btn { flex: 1; padding: 12px; border: 2px solid var(--border-color); border-radius: 10px; background: var(--bg-primary); color: var(--text-secondary); font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
@@ -482,7 +486,7 @@
   .date-time-divider { display: none; }
   .date-fields { width: 100%; justify-content: center; }
   .age-big { font-size: 3rem; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid { grid-template-columns: repeat(3, 1fr); }
   .birthday-row { flex-direction: column; gap: 4px; }
 }
 </style>
@@ -682,12 +686,12 @@
           <div class="diff-main" id="diff-main"></div>
           <div class="diff-live" id="diff-live"></div>
           <div class="stats-grid">
-            <div class="stat-card"><div class="stat-value" id="diff-months">0</div><div class="stat-label">شهر</div></div>
-            <div class="stat-card"><div class="stat-value" id="diff-weeks">0</div><div class="stat-label">أسبوع</div></div>
-            <div class="stat-card"><div class="stat-value" id="diff-days">0</div><div class="stat-label">يوم</div></div>
-            <div class="stat-card"><div class="stat-value" id="diff-hours">0</div><div class="stat-label">ساعة</div></div>
-            <div class="stat-card"><div class="stat-value" id="diff-minutes">0</div><div class="stat-label">دقائق</div></div>
-            <div class="stat-card"><div class="stat-value" id="diff-seconds">0</div><div class="stat-label">ثواني</div></div>
+            <div class="stat-card months"><div class="stat-value" id="diff-months">0</div><div class="stat-label">شهر</div></div>
+            <div class="stat-card weeks"><div class="stat-value" id="diff-weeks">0</div><div class="stat-label">أسبوع</div></div>
+            <div class="stat-card days"><div class="stat-value" id="diff-days">0</div><div class="stat-label">يوم</div></div>
+            <div class="stat-card hours"><div class="stat-value" id="diff-hours">0</div><div class="stat-label">ساعة</div></div>
+            <div class="stat-card minutes"><div class="stat-value" id="diff-minutes">0</div><div class="stat-label">دقائق</div></div>
+            <div class="stat-card seconds"><div class="stat-value" id="diff-seconds">0</div><div class="stat-label">ثواني</div></div>
           </div>
         </div>
       </div>
@@ -704,87 +708,82 @@
           </div>
         </div>
         
-        <!-- Date Input Row: Date on right, Values on left -->
-        <div class="add-main-row">
-          <!-- Start Date -->
-          <div class="add-date-col">
-            <label class="main-label">تاريخ البداية</label>
-            <div class="date-input-container" id="add-container">
-              <div class="compact-date-input">
-                <div class="date-block gregorian">
-                  <span class="block-label">📅 ميلادي</span>
-                  <div class="block-fields">
-                    <select class="date-select day" id="add-g-day" onchange="onGregorianChange('add')"></select>
-                    <span class="date-sep">/</span>
-                    <select class="date-select month" id="add-g-month" onchange="updateDays('add', 'g'); onGregorianChange('add')"></select>
-                    <span class="date-sep">/</span>
-                    <input type="number" class="date-input year" id="add-g-year" placeholder="سنة" min="1" max="9999" oninput="updateDays('add', 'g'); onGregorianChange('add')">
-                    <button type="button" class="date-picker-btn" onclick="toggleCalendar('add', 'gregorian')">📅</button>
-                  </div>
-                </div>
-                <div class="date-block hijri">
-                  <span class="block-label">🌙 هجري</span>
-                  <div class="block-fields">
-                    <select class="date-select day" id="add-h-day" onchange="onHijriChange('add')"></select>
-                    <span class="date-sep">/</span>
-                    <select class="date-select month hijri-month" id="add-h-month" onchange="updateDays('add', 'h'); onHijriChange('add')"></select>
-                    <span class="date-sep">/</span>
-                    <input type="number" class="date-input year" id="add-h-year" placeholder="سنة" min="1" max="9999" oninput="updateDays('add', 'h'); onHijriChange('add')">
-                    <button type="button" class="date-picker-btn" onclick="toggleCalendar('add', 'hijri')">🌙</button>
-                  </div>
+        <!-- Start Date Section -->
+        <div class="date-section-box">
+          <label class="main-label">تاريخ البداية</label>
+          <div class="date-input-container" id="add-container">
+            <div class="compact-date-input">
+              <div class="date-block gregorian">
+                <span class="block-label">📅 ميلادي</span>
+                <div class="block-fields">
+                  <select class="date-select day" id="add-g-day" onchange="onGregorianChange('add')"></select>
+                  <span class="date-sep">/</span>
+                  <select class="date-select month" id="add-g-month" onchange="updateDays('add', 'g'); onGregorianChange('add')"></select>
+                  <span class="date-sep">/</span>
+                  <input type="number" class="date-input year" id="add-g-year" placeholder="سنة" min="1" max="9999" oninput="updateDays('add', 'g'); onGregorianChange('add')">
+                  <button type="button" class="date-picker-btn" onclick="toggleCalendar('add', 'gregorian')">📅</button>
                 </div>
               </div>
-              <div class="time-block-row">
-                <span class="block-label">🕐 توقيت</span>
-                <div class="time-fields-12">
-                  <select class="date-select hour12" id="add-hour12" onchange="calculateAdd()"></select>
-                  <span class="time-sep">:</span>
-                  <select class="date-select minute" id="add-minute" onchange="calculateAdd()"></select>
-                  <span class="time-sep">:</span>
-                  <select class="date-select second" id="add-second" onchange="calculateAdd()"></select>
-                  <select class="date-select ampm" id="add-ampm" onchange="calculateAdd()">
-                    <option value="AM">صباحاً</option>
-                    <option value="PM">مساءً</option>
-                  </select>
-                  <button type="button" class="now-btn" onclick="setNowAdd()">الآن</button>
+              <div class="date-block hijri">
+                <span class="block-label">🌙 هجري</span>
+                <div class="block-fields">
+                  <select class="date-select day" id="add-h-day" onchange="onHijriChange('add')"></select>
+                  <span class="date-sep">/</span>
+                  <select class="date-select month hijri-month" id="add-h-month" onchange="updateDays('add', 'h'); onHijriChange('add')"></select>
+                  <span class="date-sep">/</span>
+                  <input type="number" class="date-input year" id="add-h-year" placeholder="سنة" min="1" max="9999" oninput="updateDays('add', 'h'); onHijriChange('add')">
+                  <button type="button" class="date-picker-btn" onclick="toggleCalendar('add', 'hijri')">🌙</button>
                 </div>
               </div>
-              <div class="calendar-popup" id="add-calendar"></div>
+            </div>
+            <div class="time-block-row">
+              <span class="block-label">🕐 توقيت</span>
+              <div class="time-fields-12">
+                <select class="date-select hour12" id="add-hour12" onchange="calculateAdd()"></select>
+                <span class="time-sep">:</span>
+                <select class="date-select minute" id="add-minute" onchange="calculateAdd()"></select>
+                <span class="time-sep">:</span>
+                <select class="date-select second" id="add-second" onchange="calculateAdd()"></select>
+                <select class="date-select ampm" id="add-ampm" onchange="calculateAdd()">
+                  <option value="AM">صباحاً</option>
+                  <option value="PM">مساءً</option>
+                </select>
+                <button type="button" class="now-btn" onclick="setNowAdd()">الآن</button>
+              </div>
+            </div>
+            <div class="calendar-popup" id="add-calendar"></div>
+          </div>
+        </div>
+        
+        <!-- Values to Add/Subtract -->
+        <div class="add-values-section">
+          <label class="main-label" id="add-values-label">إضافة</label>
+          <div class="add-values-row">
+            <div class="add-value-item">
+              <label>سنوات</label>
+              <input type="number" id="add-years" placeholder="0" oninput="calculateAdd()">
+            </div>
+            <div class="add-value-item">
+              <label>أشهر</label>
+              <input type="number" id="add-months" placeholder="0" oninput="calculateAdd()">
+            </div>
+            <div class="add-value-item">
+              <label>أيام</label>
+              <input type="number" id="add-days" placeholder="0" oninput="calculateAdd()">
             </div>
           </div>
-          
-          <!-- Values to Add/Subtract -->
-          <div class="add-values-col">
-            <label class="main-label" id="add-values-label">إضافة</label>
-            <div class="add-values-grid">
-              <div class="add-value-row">
-                <div class="add-value-item">
-                  <label>سنوات</label>
-                  <input type="number" id="add-years" placeholder="0" oninput="calculateAdd()">
-                </div>
-                <div class="add-value-item">
-                  <label>أشهر</label>
-                  <input type="number" id="add-months" placeholder="0" oninput="calculateAdd()">
-                </div>
-                <div class="add-value-item">
-                  <label>أيام</label>
-                  <input type="number" id="add-days" placeholder="0" oninput="calculateAdd()">
-                </div>
-              </div>
-              <div class="add-value-row">
-                <div class="add-value-item">
-                  <label>ساعات</label>
-                  <input type="number" id="add-hours" placeholder="0" oninput="calculateAdd()">
-                </div>
-                <div class="add-value-item">
-                  <label>دقائق</label>
-                  <input type="number" id="add-minutes" placeholder="0" oninput="calculateAdd()">
-                </div>
-                <div class="add-value-item">
-                  <label>ثواني</label>
-                  <input type="number" id="add-seconds" placeholder="0" oninput="calculateAdd()">
-                </div>
-              </div>
+          <div class="add-values-row">
+            <div class="add-value-item">
+              <label>ساعات</label>
+              <input type="number" id="add-hours" placeholder="0" oninput="calculateAdd()">
+            </div>
+            <div class="add-value-item">
+              <label>دقائق</label>
+              <input type="number" id="add-minutes" placeholder="0" oninput="calculateAdd()">
+            </div>
+            <div class="add-value-item">
+              <label>ثواني</label>
+              <input type="number" id="add-seconds" placeholder="0" oninput="calculateAdd()">
             </div>
           </div>
         </div>
